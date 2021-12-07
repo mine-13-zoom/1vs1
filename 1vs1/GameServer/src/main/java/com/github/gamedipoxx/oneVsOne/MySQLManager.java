@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
+import com.github.gamedipoxx.oneVsOne.arena.GameState;
+import com.github.gamedipoxx.oneVsOne.arena.Kit;
+import com.github.gamedipoxx.oneVsOne.sql.SimpleArenaDatabaseObject;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {
@@ -118,14 +125,14 @@ public class MySQLManager {
 		});
 	}
 
-	public static void deleteArena(Arena arena) {
+	public static void deleteArena(String arenaUUID) {
 		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
 
 			@Override
 			public void run() {
 				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Arenas WHERE ArenaName = ?;")) {
 
-					stmt.setString(1, arena.getArenaName());
+					stmt.setString(1, arenaUUID);
 					stmt.execute();
 
 				} catch (SQLException e) {
@@ -135,13 +142,36 @@ public class MySQLManager {
 			}
 		});
 	}
-	
+
 	public static void purgeDatabase() {
-		try(Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Arenas")){
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Arenas")) {
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public static ArrayList<SimpleArenaDatabaseObject> readArenas() {
+
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit FROM Arenas;")) {
+			ResultSet resultSet = stmt.executeQuery();
+			
+			ArrayList<SimpleArenaDatabaseObject> sado = new ArrayList<>();
+			
+			while(resultSet.next()) {
+				String arenaName = resultSet.getString("ArenaName");
+				GameState gameState = GameState.valueOf(resultSet.getString("ArenaState"));
+				int players = resultSet.getInt("Players");
+				Kit kit = Kit.valueOf(resultSet.getString("Kit"));
+				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit));
+			}
+			return sado;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+
+	}
 }

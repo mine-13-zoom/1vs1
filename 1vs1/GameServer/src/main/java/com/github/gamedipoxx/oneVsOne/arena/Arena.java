@@ -126,7 +126,7 @@ public class Arena {
 		}
 		worldmanager.deleteWorld(arenaworld.getName());
 		
-		MySQLManager.deleteArena(arena); //Purge Arena from Database
+		MySQLManager.deleteArena(arena.getArenaName()); //Purge Arena from Database
 		
 		ArrayList<Arena> arenalist = (ArrayList<Arena>) OneVsOne.getArena();
 		arenalist.remove(arena);

@@ -6,6 +6,5 @@ public enum GameState {
 	STARTING, // 1 Player, Arena wait for an other Player
 	INGAME, // Both players are playing
 	ENDING, // Both players are done with fighting and will be teleported to the Lobby
-	UNDEFINED // The Arena doesnt know its state
-
+	UNDEFINED; // The Arena doesnt know its state
 }
