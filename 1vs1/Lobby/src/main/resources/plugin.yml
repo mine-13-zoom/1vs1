@@ -1,0 +1,8 @@
+name: OneVsOneLobby
+main: com.github.gamedipoxx.oneVsOne.OneVsOneLobby
+author: Professor_Sam 
+version: 1.1.1
+api-version: 1.17
+commands:
+   OneVsOneLobby:
+      description: "Verwaltet die OneVsOneLobby"
