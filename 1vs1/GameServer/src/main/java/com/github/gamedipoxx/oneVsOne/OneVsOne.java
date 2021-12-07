@@ -2,7 +2,6 @@ package com.github.gamedipoxx.oneVsOne;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
