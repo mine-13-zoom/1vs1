@@ -1,4 +1,4 @@
-package com.github.gamedipoxx.oneVsOne;
+package com.github.gamedipoxx.oneVsOneLobby;
 
 import java.util.ArrayList;
 
