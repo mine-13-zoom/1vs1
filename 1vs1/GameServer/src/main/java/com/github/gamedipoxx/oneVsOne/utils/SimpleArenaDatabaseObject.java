@@ -1,7 +1,4 @@
-package com.github.gamedipoxx.oneVsOne.sql;
-
-import com.github.gamedipoxx.oneVsOne.arena.GameState;
-import com.github.gamedipoxx.oneVsOne.arena.Kit;
+package com.github.gamedipoxx.oneVsOne.utils;
 
 public class SimpleArenaDatabaseObject {
 	private String arenaName;

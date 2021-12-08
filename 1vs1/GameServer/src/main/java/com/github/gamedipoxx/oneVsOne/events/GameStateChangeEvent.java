@@ -4,7 +4,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
-import com.github.gamedipoxx.oneVsOne.arena.GameState;
+import com.github.gamedipoxx.oneVsOne.utils.GameState;
 
 public class GameStateChangeEvent extends Event{
 	private static final HandlerList HANDLERS = new HandlerList();

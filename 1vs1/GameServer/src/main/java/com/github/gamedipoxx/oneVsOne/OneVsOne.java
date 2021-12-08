@@ -10,6 +10,7 @@ import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
+import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class OneVsOne extends JavaPlugin{

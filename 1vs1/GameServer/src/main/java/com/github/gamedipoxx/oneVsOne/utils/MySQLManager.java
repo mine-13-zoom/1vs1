@@ -1,4 +1,4 @@
-package com.github.gamedipoxx.oneVsOne;
+package com.github.gamedipoxx.oneVsOne.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,10 +13,8 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
-import com.github.gamedipoxx.oneVsOne.arena.GameState;
-import com.github.gamedipoxx.oneVsOne.arena.Kit;
-import com.github.gamedipoxx.oneVsOne.sql.SimpleArenaDatabaseObject;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {

@@ -15,11 +15,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import com.github.gamedipoxx.oneVsOne.Messages;
-import com.github.gamedipoxx.oneVsOne.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
+import com.github.gamedipoxx.oneVsOne.utils.GameState;
+import com.github.gamedipoxx.oneVsOne.utils.Kit;
+import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class Arena {

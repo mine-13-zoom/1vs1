@@ -16,15 +16,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import com.github.gamedipoxx.oneVsOne.Messages;
-import com.github.gamedipoxx.oneVsOne.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.arena.GameCountDown;
-import com.github.gamedipoxx.oneVsOne.arena.GameState;
 import com.github.gamedipoxx.oneVsOne.arena.ScheduledArenaDelete;
 import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
+import com.github.gamedipoxx.oneVsOne.utils.GameState;
+import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
 public class ArenaManager implements Listener{
 	

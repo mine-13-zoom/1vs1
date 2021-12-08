@@ -1,4 +1,4 @@
-package com.github.gamedipoxx.oneVsOne.arena;
+package com.github.gamedipoxx.oneVsOne.utils;
 
 import java.util.HashMap;
 
