@@ -52,8 +52,9 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				if(args.length != 1) {
 					break;
 				}
-				player.sendMessage(LobbyMessages.FETCHING.getString() + LobbyMessages.FETCHING.getString());
+				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.FETCHING.getString());
 				LobbySQLManager.fetchFromDatabase();
+				break;
 			}
 			default:
 				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGARGS.getString());
