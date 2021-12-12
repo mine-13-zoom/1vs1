@@ -5,7 +5,8 @@ public enum LobbyMessages {
     WRONGARGS("§cFalsche Argumente! Nutze /onevsonelobby [join, list]"),
     NOPERMISSION("§cDu hast dazu keine Rechte!"),
     WRONGJOINARG("§cNutze /onevsonelobby join arenaname"),
-    CONNECTING("§2Du wirst verbunden")
+    CONNECTING("§2Du wirst verbunden"),
+    WRONGLISTARGS("§c /onevsonelobby list!")
 	;
  
     private String string;

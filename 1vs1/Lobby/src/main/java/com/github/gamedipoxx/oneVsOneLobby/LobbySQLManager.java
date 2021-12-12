@@ -25,7 +25,7 @@ public class LobbySQLManager {
 		});
 	}
 	
-	public ArrayList<SimpleArenaDatabaseObject> getArenas() {
+	public static ArrayList<SimpleArenaDatabaseObject> getArenas() {
 		return arenas;
 	}
 
