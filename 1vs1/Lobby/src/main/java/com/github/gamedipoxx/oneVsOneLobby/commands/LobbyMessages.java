@@ -6,7 +6,8 @@ public enum LobbyMessages {
     NOPERMISSION("§cDu hast dazu keine Rechte!"),
     WRONGJOINARG("§cNutze /onevsonelobby join arenaname"),
     CONNECTING("§2Du wirst verbunden"),
-    WRONGLISTARGS("§c /onevsonelobby list!")
+    WRONGLISTARGS("§cNutze /onevsonelobby list!"),
+    FETCHING("§2Lade Daten")
 	;
  
     private String string;
