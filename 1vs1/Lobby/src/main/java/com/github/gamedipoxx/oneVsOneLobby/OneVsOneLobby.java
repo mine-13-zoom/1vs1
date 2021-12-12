@@ -1,11 +1,10 @@
 package com.github.gamedipoxx.oneVsOneLobby;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
+import com.github.gamedipoxx.oneVsOneLobby.commands.OneVsOneLobbyCommand;
 
 public class OneVsOneLobby extends JavaPlugin {
 	
@@ -13,17 +12,20 @@ public class OneVsOneLobby extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Date startDate = new Date();
 		
 		plugin = this;
+		MySQLManager.setConfig(getConfig());
+		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
+		MySQLManager.setPlugin(this);
 		this.saveDefaultConfig();
 		this.reloadConfig();
-		MySQLManager.init();
+		if(MySQLManager.init() == false) {
+			Bukkit.getPluginManager().disablePlugin(this);
+		}
 		
-		Date endDate = new Date();
-		long difference = endDate.getTime() - startDate.getTime();
-		getLogger().info("§cTime to start 1vs1: " + TimeUnit.MILLISECONDS.toSeconds(difference));
-				
+		this.getCommand("onevsonelobby").setExecutor(new OneVsOneLobbyCommand());
+			
+		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 	
 	public static OneVsOneLobby getPlugin() {

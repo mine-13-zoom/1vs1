@@ -53,6 +53,7 @@ public class OneVsOne extends JavaPlugin{
 	public static OneVsOne getPlugin() {
 		return plugin;
 	}
+	
 	public static MultiverseCore getMultiversecore() {
 		return multiversecore;
 	}

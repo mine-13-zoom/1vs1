@@ -7,11 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -20,8 +19,25 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 public class MySQLManager {
 
 	private static MysqlDataSource datasource;
+	private static FileConfiguration config;
+	private static InputStream setupFile;
+	private static JavaPlugin plugin;
 
 	public static Boolean init() {
+		
+		
+		if(plugin == null) {
+			plugin = OneVsOne.getPlugin();
+		}
+		if(setupFile == null) {
+			OneVsOne.getPlugin().getResource("setupdb.sql");
+		}
+		if(config == null) {
+			config = OneVsOne.getPlugin().getConfig();
+		}
+		
+		plugin.getLogger().info("§2Starting Database Setup");
+		
 		try {
 			connect();
 		} catch (Exception e) {
@@ -34,14 +50,13 @@ public class MySQLManager {
 	private static void connect() throws SQLException {
 
 		datasource = new MysqlDataSource();
-		FileConfiguration config = OneVsOne.getPlugin().getConfig();
 
 		datasource.setServerName(config.getString("Database.Host"));
 		datasource.setPortNumber(config.getInt("Database.Port"));
 		datasource.setDatabaseName(config.getString("Database.Database"));
 		datasource.setUser(config.getString("Database.User"));
 		datasource.setPassword(config.getString("Database.Password"));
-
+		plugin.getLogger().info("§2Connecting to Database");
 		try (Connection connection = datasource.getConnection()) {
 			if (!connection.isValid(1000)) {
 				throw new SQLException("Could not establish database connection.");
@@ -49,6 +64,7 @@ public class MySQLManager {
 		}
 
 		try {
+			plugin.getLogger().info("§2Initialize Tables");
 			setupDB();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -60,7 +76,7 @@ public class MySQLManager {
 
 	private static void setupDB() throws IOException, SQLException {
 		String setup;
-		try (InputStream in = OneVsOne.getPlugin().getResource("dbsetup.sql")) {
+		try (InputStream in = setupFile) {
 			setup = new String(in.readAllBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,7 +90,7 @@ public class MySQLManager {
 				stmt.execute();
 			}
 		}
-		OneVsOne.getPlugin().getLogger().info("§2Database setup complete.");
+		plugin.getLogger().info("§2Database setup complete.");
 	}
 
 	public static MysqlDataSource getDatasource() {
@@ -82,7 +98,7 @@ public class MySQLManager {
 	}
 
 	public static void updateArena(Arena arena) {
-		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
@@ -103,7 +119,7 @@ public class MySQLManager {
 	}
 
 	public static void addArena(Arena arena) {
-		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
@@ -124,7 +140,7 @@ public class MySQLManager {
 	}
 
 	public static void deleteArena(String arenaUUID) {
-		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
@@ -171,5 +187,17 @@ public class MySQLManager {
 		}
 		
 
+	}
+
+	public static void setConfig(FileConfiguration config) {
+		MySQLManager.config = config;
+	}
+
+	public static void setSetupFile(InputStream setupFile) {
+		MySQLManager.setupFile = setupFile;
+	}
+
+	public static void setPlugin(JavaPlugin plugin) {
+		MySQLManager.plugin = plugin;
 	}
 }
