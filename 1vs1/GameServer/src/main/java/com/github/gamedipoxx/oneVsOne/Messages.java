@@ -13,7 +13,8 @@ public enum Messages {
 	PLAYERDIED("§cist gestorben!"),
 	STARTTITLE("§4Kämpft"),
 	STARTSUBTITLE("§7um Leben und Tot"),
-	PLAYERLEAVEARENA("§chat das Spiel verlassen!")
+	PLAYERLEAVEARENA("§chat das Spiel verlassen!"),
+	LOADDATATITLE("§2Lade Daten")
 	;
  
     private String string;

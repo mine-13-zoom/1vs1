@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
+import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
 

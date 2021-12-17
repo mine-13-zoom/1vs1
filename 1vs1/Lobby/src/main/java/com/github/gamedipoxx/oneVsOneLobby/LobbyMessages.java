@@ -1,4 +1,4 @@
-package com.github.gamedipoxx.oneVsOneLobby.commands;
+package com.github.gamedipoxx.oneVsOneLobby;
 
 public enum LobbyMessages {
     PREFIX("§7[§f§lGamedipoxx§r§7] §r"), 
