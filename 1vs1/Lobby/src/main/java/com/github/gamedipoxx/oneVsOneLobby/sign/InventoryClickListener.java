@@ -4,10 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
-import com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby;
+import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
 
 public class InventoryClickListener implements Listener {
@@ -17,9 +19,8 @@ public class InventoryClickListener implements Listener {
 			return;
 		}
 		event.setCancelled(true);
+		LobbySQLManager.fetchFromDatabase();
 		SimpleArenaDatabaseObject sado = JoinGUI.arenaMapping.get(event.getSlot());
-		OneVsOneLobby.getPlugin().getLogger().info("Slot: " + event.getSlot());
-		OneVsOneLobby.getPlugin().getLogger().info("RawSlot: " + event.getRawSlot());
 		if(sado == null) {
 			return;
 		}
@@ -33,5 +34,14 @@ public class InventoryClickListener implements Listener {
 			return;
 		}
 		new PlayerConnector(Bukkit.getPlayer(event.getWhoClicked().getUniqueId()), sado.getArenaName());
+	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		LobbySQLManager.fetchFromDatabase();
+	}
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		LobbySQLManager.fetchFromDatabase();
 	}
 }

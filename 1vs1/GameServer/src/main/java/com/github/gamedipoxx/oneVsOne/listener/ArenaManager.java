@@ -90,7 +90,7 @@ public class ArenaManager implements Listener{
 			
 			
 		}
-		if(before == GameState.INGAME && after == GameState.ENDING) {
+		if(after == GameState.ENDING) {
 			for(Player player : arena.getPlayers()) {
 				player.getInventory().clear();
 				player.setHealth(20);
@@ -100,8 +100,6 @@ public class ArenaManager implements Listener{
 				}
 			}
 			new ScheduledArenaDelete(arena);
-			
-			
 			
 		}
 		
