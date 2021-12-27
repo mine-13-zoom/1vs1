@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
+import com.github.gamedipoxx.oneVsOneLobby.sign.JoinGUI;
 
 public class LobbySQLManager {
 	private static ArrayList<SimpleArenaDatabaseObject> arenas = new ArrayList<>();
@@ -20,11 +21,22 @@ public class LobbySQLManager {
 			@Override
 			public void run() {
 				arenas = MySQLManager.readArenas();
+				updateGui();
 				
 			}
 		});
 	}
 	
+	private static void updateGui() {
+		Bukkit.getScheduler().runTask(OneVsOneLobby.getPlugin(), new Runnable() {
+			
+			@Override
+			public void run() {
+				JoinGUI.updateGui();
+				
+			}
+		});
+	}
 	public static ArrayList<SimpleArenaDatabaseObject> getArenas() {
 		return arenas;
 	}

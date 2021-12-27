@@ -9,6 +9,7 @@ import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
 import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
+import com.github.gamedipoxx.oneVsOneLobby.sign.JoinGUI;
 
 public class OneVsOneLobbyCommand implements CommandExecutor {
 	@Override
@@ -56,6 +57,15 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.FETCHING.getString());
 				LobbySQLManager.fetchFromDatabase();
 				break;
+			}
+			case "gui": {
+				if(args.length != 1) {
+					break;
+				}
+				JoinGUI.openForPlayer(player);
+				LobbySQLManager.fetchFromDatabase();
+				break;
+				
 			}
 			default:
 				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGARGS.getString());
