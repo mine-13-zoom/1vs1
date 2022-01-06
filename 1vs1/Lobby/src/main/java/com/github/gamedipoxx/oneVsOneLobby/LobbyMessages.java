@@ -13,7 +13,8 @@ public enum LobbyMessages {
     JOINSIGN_LINE3("§dzum"),
     JOINSIGN_LINE4("§dbeitreten"),
 	WRONGSIGNCREATE("§cDieser Block ist kein Schild!"),
-	SIGNCREATESUCESS("Schild erfolgreich erstellt");
+	SIGNCREATESUCESS("Schild erfolgreich erstellt"),
+	PLEASEWAIT("§2Bitte warte einen Moment");
  
     private String string;
  
