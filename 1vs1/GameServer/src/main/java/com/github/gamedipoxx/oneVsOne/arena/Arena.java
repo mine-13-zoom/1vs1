@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
@@ -26,7 +27,6 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class Arena {
 	private String arenaUuid;
-	private final static Location lobby = new Location(Bukkit.getWorld(OneVsOne.getPlugin().getConfig().getString("Lobby.World")), OneVsOne.getPlugin().getConfig().getInt("Lobby.X"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Y"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Z"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Pitch"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Yaw"));
 	private static MVWorldManager worldmanager;
 	private String worldname;
 	private int playercount;
@@ -38,7 +38,7 @@ public class Arena {
 	
 	public Arena(@NotNull String arenaname) {
 		arenaUuid = "" + Instant.now().getEpochSecond() + RandomUtils.nextInt();	 //generate a uuid
-		//Check if Arenatemplete is loaded and vailble
+		//Check if Arenatemplete is loaded and availble
 		if(Bukkit.getWorld(arenaname) == null) {
 			OneVsOne.getPlugin().getLogger().warning("Cant find world " + arenaname);
 			Bukkit.getServer().getPluginManager().disablePlugin(OneVsOne.getPlugin());
@@ -99,13 +99,15 @@ public class Arena {
 	public void removePlayer(Player player) {
 		player.getInventory().clear();
 		if(player.isOnline()) {
-			player.teleport(lobby);
+			player.teleport(new Location(Bukkit.getWorld(OneVsOne.getPlugin().getConfig().getString("Lobby.World")), OneVsOne.getPlugin().getConfig().getInt("Lobby.X"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Y"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Z"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Pitch"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Yaw")));
 		}
 		players.remove(player);
 		playercount = players.size();
 		
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(this, player);
 		Bukkit.getServer().getPluginManager().callEvent(event);
+		
+		BungeeCordManager.connectPlayerToLobby(player);
 	
 	}
 	

@@ -27,16 +27,19 @@ public class OneVsOne extends JavaPlugin{
 		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
-		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
-		getServer().getPluginManager().registerEvents(new PlayerMoveEventCancel(), this);
-		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		MySQLManager.setConfig(getConfig());
 		MySQLManager.setPlugin(this);
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
 		if (!MySQLManager.init()) {
 			getServer().getPluginManager().disablePlugin(this);
 		}
+		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
+		getServer().getPluginManager().registerEvents(new PlayerMoveEventCancel(), this);
+		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
+		
+		ArenaManager.createMaxArenas();
 	}
 	
 	@Override

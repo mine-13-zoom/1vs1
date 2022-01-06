@@ -14,5 +14,7 @@ public class ScheduledArenaDelete {
 				
 			}
 		}, 20*5);
+		
+		Arena.createAndRegisterArena();
 	}
 }

@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -108,6 +110,9 @@ public class ArenaManager implements Listener{
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
+		if(event.getEntity().getType() != EntityType.PLAYER) {
+			return;
+		}
 		Player player = (Player) event.getEntity();
 		for(Arena arena : OneVsOne.getArena()) {
 			for(Player arenaplayer : arena.getPlayers()) {
@@ -122,7 +127,9 @@ public class ArenaManager implements Listener{
 							arena.broadcastMessage(Messages.PREFIX.getString() + winPlayer.getDisplayName() + " " + Messages.PLAYERWIN.getString());
 						}
 					}
-					player.spigot().respawn();
+					if(player.isDead()) {
+						player.spigot().respawn();
+					}
 				}
 			}
 		}
@@ -155,6 +162,10 @@ public class ArenaManager implements Listener{
 			event.setCancelled(true);
 		}
 	}
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		event.setCancelled(true);
+	}
 	
 	private void giveInv(Arena arena) {
 		for(Player player : arena.getPlayers()) {
@@ -163,6 +174,13 @@ public class ArenaManager implements Listener{
 			    ItemStack value = entry.getValue();
 			    player.getInventory().setItem(key, value);
 			}
+		}
+	}
+	
+	public static void createMaxArenas() {
+		int arenas = OneVsOne.getPlugin().getConfig().getInt("Arenas");
+		for(int i = 0; i <= arenas; i++) {
+			Arena.createAndRegisterArena();
 		}
 	}
 }

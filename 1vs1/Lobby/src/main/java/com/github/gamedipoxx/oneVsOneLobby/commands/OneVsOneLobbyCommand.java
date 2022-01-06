@@ -1,13 +1,19 @@
 package com.github.gamedipoxx.oneVsOneLobby.commands;
 
+import java.util.Set;
+
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
 import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
+import com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
 import com.github.gamedipoxx.oneVsOneLobby.sign.JoinGUI;
 
@@ -64,6 +70,31 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				}
 				JoinGUI.openForPlayer(player);
 				LobbySQLManager.fetchFromDatabase();
+				break;
+				
+			}
+			case "addsign": {
+				if(args.length != 1) {
+					break;
+				}
+				Block block = player.getTargetBlock(null, 6);
+				if(block.getState() == null) {
+					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
+					OneVsOneLobby.getPlugin().getLogger().warning("CHECK1");	//DEBUG ONLY
+					break;
+				}
+				if(block.getState() instanceof Sign == false) {
+					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
+					OneVsOneLobby.getPlugin().getLogger().warning("CHECK2");	//DEBUG ONLY
+					break;
+				}
+				Sign sign = (Sign) block.getState();
+				sign.setLine(0, LobbyMessages.JOINSIGN_LINE1.getString());
+				sign.setLine(1, LobbyMessages.JOINSIGN_LINE2.getString());
+				sign.setLine(2, LobbyMessages.JOINSIGN_LINE3.getString());
+				sign.setLine(3, LobbyMessages.JOINSIGN_LINE4.getString());
+				sign.update();
+				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.SIGNCREATESUCESS.getString());
 				break;
 				
 			}

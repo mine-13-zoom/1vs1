@@ -7,17 +7,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
 public class PlayerJoinListener implements Listener {
-	private final static Location LOBBY = new Location(Bukkit.getWorld(OneVsOne.getPlugin().getConfig().getString("Lobby.World")), OneVsOne.getPlugin().getConfig().getInt("Lobby.X"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Y"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Z"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Pitch"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Yaw"));
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		player.teleport(LOBBY);
+		player.teleport(new Location(Bukkit.getWorld(OneVsOne.getPlugin().getConfig().getString("Lobby.World")), OneVsOne.getPlugin().getConfig().getInt("Lobby.X"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Y"), OneVsOne.getPlugin().getConfig().getInt("Lobby.Z"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Pitch"), OneVsOne.getPlugin().getConfig().getLong("Lobby.Yaw")));
 		player.sendTitle(Messages.LOADDATATITLE.getString(), null, 1, 20, 20);
 		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
 			
@@ -44,7 +45,7 @@ public class PlayerJoinListener implements Listener {
 			
 			@Override
 			public void run() {
-				if(player.getWorld() != LOBBY) {
+				if(player.getWorld().getName() != OneVsOne.getPlugin().getConfig().getString("Lobby.World")) {
 					return;
 				}
 				if(player.hasPermission("*")) {
@@ -52,7 +53,7 @@ public class PlayerJoinListener implements Listener {
 					return;
 				}
 				else {
-					player.kickPlayer("§cError while loading data! Please check the console or database!");
+					BungeeCordManager.connectPlayerToLobby(player);
 					return;
 				}
 				

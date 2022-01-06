@@ -49,7 +49,8 @@ public class MySQLManager {
 		plugin.getLogger().info("§2Connecting to Database");
 		try (Connection connection = datasource.getConnection()) {
 			if (!connection.isValid(1000)) {
-				throw new SQLException("Could not establish database connection.");
+				disableplugin();
+				throw new SQLException("Could not establish database connection.");	
 			}
 		}
 
@@ -60,6 +61,7 @@ public class MySQLManager {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			disableplugin();
 		}
 
 	}
@@ -255,5 +257,11 @@ public class MySQLManager {
 
 	public static void setPlugin(JavaPlugin plugin) {
 		MySQLManager.plugin = plugin;
+	}
+	
+	private static void disableplugin() {
+		plugin.getLogger().warning("Disableing plugins because of a SQL-Exception!");
+		Bukkit.broadcastMessage("§2Disable 1vs1 caused by an Exception!");
+		Bukkit.getPluginManager().disablePlugin(plugin);
 	}
 }

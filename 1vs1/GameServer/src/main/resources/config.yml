@@ -24,3 +24,5 @@ Database:
   Database: db
   User: username
   Password: passy
+LobbyServer: "Lobby"
+Arenas: 10
