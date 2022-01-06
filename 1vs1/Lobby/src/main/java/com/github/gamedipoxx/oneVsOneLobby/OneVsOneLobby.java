@@ -10,12 +10,12 @@ import com.github.gamedipoxx.oneVsOneLobby.sign.JoinGUI;
 import com.github.gamedipoxx.oneVsOneLobby.sign.SignClick;
 
 public class OneVsOneLobby extends JavaPlugin {
-	
+
 	private static OneVsOneLobby plugin;
 
 	@Override
 	public void onEnable() {
-		
+
 		plugin = this;
 		MySQLManager.setConfig(getConfig());
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
@@ -23,16 +23,22 @@ public class OneVsOneLobby extends JavaPlugin {
 		JoinGUI.init();
 		this.saveDefaultConfig();
 		this.reloadConfig();
-		if(MySQLManager.init() == false) {
+		if (MySQLManager.init() == false) {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		getServer().getPluginManager().registerEvents(new SignClick(), this);
 		this.getCommand("onevsonelobby").setExecutor(new OneVsOneLobbyCommand());
-			
+
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
-	
+
+	@Override
+	public void onDisable() {
+		getServer().getScheduler().cancelTasks(this);
+		super.onDisable();
+	}
+
 	public static OneVsOneLobby getPlugin() {
 		return plugin;
 	}
