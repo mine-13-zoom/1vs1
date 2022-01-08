@@ -1,5 +1,6 @@
 package com.github.gamedipoxx.oneVsOne.listener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -114,11 +115,10 @@ public class ArenaManager implements Listener{
 			return;
 		}
 		Player player = (Player) event.getEntity();
-		for(Arena arena : OneVsOne.getArena()) {
+		ArrayList<Arena> tempArenaList = new ArrayList<>(OneVsOne.getArena());
+		for(Arena arena : tempArenaList) {
 			for(Player arenaplayer : arena.getPlayers()) {
 				if(arenaplayer == player && arena.getGameState() == GameState.INGAME) {
-					event.setDeathMessage(" ");
-					event.setKeepInventory(true);
 					event.setDroppedExp(0);
 					arena.setGameState(GameState.ENDING);
 					arena.broadcastMessage(Messages.PREFIX.getString() + player.getDisplayName() + " " + Messages.PLAYERDIED.getString());
@@ -139,7 +139,8 @@ public class ArenaManager implements Listener{
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		Player quitPlayer = event.getPlayer();
 		event.setQuitMessage(" ");
-		for(Arena arena : OneVsOne.getArena()) {
+		ArrayList<Arena> templist = new ArrayList<>(OneVsOne.getArena());
+		for(Arena arena : templist) {
 			for(Player player : arena.getPlayers()) {
 				if(quitPlayer == player) {
 					arena.broadcastMessage(Messages.PREFIX.getString() + quitPlayer.getDisplayName() + " " + Messages.PLAYERLEAVEARENA.getString());

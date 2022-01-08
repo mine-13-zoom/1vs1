@@ -52,6 +52,8 @@ public class Arena {
 		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_MOB_SPAWNING, false);
 		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
 		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+		Bukkit.getWorld(arenaname).setGameRule(GameRule.KEEP_INVENTORY, true);
+		Bukkit.getWorld(arenaname).setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
 		
 		
 		//playercound & Gamestate init
