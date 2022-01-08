@@ -16,6 +16,9 @@ public class LobbySQLManager {
 	}
 	
 	public static void fetchFromDatabase() {
+		if(Bukkit.getServer().getOnlinePlayers().size() == 0) {
+			return;
+		}
 		Bukkit.getScheduler().runTaskAsynchronously(OneVsOneLobby.getPlugin(), new Runnable() {
 			
 			@Override

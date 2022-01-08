@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.commands.OneVsOneLobbyCommand;
 import com.github.gamedipoxx.oneVsOneLobby.sign.InventoryClickListener;
+import com.github.gamedipoxx.oneVsOneLobby.sign.JoinAndLeaveListener;
 import com.github.gamedipoxx.oneVsOneLobby.sign.JoinGUI;
 import com.github.gamedipoxx.oneVsOneLobby.sign.SignClick;
 
@@ -28,6 +29,7 @@ public class OneVsOneLobby extends JavaPlugin {
 		}
 		getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		getServer().getPluginManager().registerEvents(new SignClick(), this);
+		getServer().getPluginManager().registerEvents(new JoinAndLeaveListener(), this);
 		this.getCommand("onevsonelobby").setExecutor(new OneVsOneLobbyCommand());
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
