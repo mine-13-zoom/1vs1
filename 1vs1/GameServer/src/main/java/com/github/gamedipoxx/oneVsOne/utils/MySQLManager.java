@@ -39,6 +39,9 @@ public class MySQLManager {
 
 	private static void connect() throws SQLException {
 
+		if(plugin.getConfig().getBoolean("debug") == true) {
+			plugin.getLogger().info("MySqlCredentails [Host: " + config.getString("Database.Host") + " Port: " + config.getInt("Database.Port") + " Database: " + config.getString("Database.Database") + " User: " +  config.getString("Database.User") + " Password: " + config.getString("Database.Password") + "]");
+		}
 		datasource = new MysqlDataSource();
 
 		datasource.setServerName(config.getString("Database.Host"));

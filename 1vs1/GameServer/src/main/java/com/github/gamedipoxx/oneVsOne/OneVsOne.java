@@ -9,8 +9,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
+import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
+import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -20,7 +22,6 @@ public class OneVsOne extends JavaPlugin{
 	private static MultiverseCore multiversecore;
 	@Override
 	public void onEnable() {
-		
 		saveDefaultConfig();
 		saveConfig();
 		plugin = this;
@@ -37,8 +38,10 @@ public class OneVsOne extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerMoveEventCancel(), this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
+		getServer().getPluginManager().registerEvents(new TabListRemover(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
-		
+		MySQLManager.purgeDatabase();
 		ArenaManager.createMaxArenas();
 	}
 	

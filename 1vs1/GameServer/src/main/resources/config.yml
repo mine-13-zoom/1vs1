@@ -26,3 +26,6 @@ Database:
   Password: passy
 LobbyServer: "Lobby"
 Arenas: 10
+
+#do NOT use this in production mode
+debug: false

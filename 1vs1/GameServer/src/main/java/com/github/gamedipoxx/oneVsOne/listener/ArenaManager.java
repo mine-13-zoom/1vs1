@@ -127,9 +127,6 @@ public class ArenaManager implements Listener{
 							arena.broadcastMessage(Messages.PREFIX.getString() + winPlayer.getDisplayName() + " " + Messages.PLAYERWIN.getString());
 						}
 					}
-					if(player.isDead()) {
-						player.spigot().respawn();
-					}
 				}
 			}
 		}
@@ -138,7 +135,7 @@ public class ArenaManager implements Listener{
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		Player quitPlayer = event.getPlayer();
-		event.setQuitMessage(" ");
+		event.setQuitMessage(null);
 		ArrayList<Arena> templist = new ArrayList<>(OneVsOne.getArena());
 		for(Arena arena : templist) {
 			for(Player player : arena.getPlayers()) {

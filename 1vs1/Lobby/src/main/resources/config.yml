@@ -8,9 +8,5 @@ Database:
   User: username
   Password: passy
   
-Joinsign:
-   World: world
-   X: 0
-   Y: 0
-   Z: 0
-   Direction: null
+#do NOT enable this in production mode
+debug: false
