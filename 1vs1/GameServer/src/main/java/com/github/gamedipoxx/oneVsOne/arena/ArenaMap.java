@@ -2,6 +2,9 @@ package com.github.gamedipoxx.oneVsOne.arena;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -9,7 +12,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
@@ -19,7 +27,7 @@ public class ArenaMap {
 	private String templateWorldName;
 	private World arenaWorld;
 	private String kitName;
-	private HashMap<Integer, ItemStack> inventory;
+	private PlayerInventory inventory;
 	private Location spawn1;
 	private Location spawn2;
 	private FileConfiguration arenaMapConfig;
@@ -39,6 +47,10 @@ public class ArenaMap {
 		// Load Stuff from Config
 		loadDataFromConfig();
 	}
+	
+	public void deleteMap() {
+		worldmanager.deleteWorld(worldName);
+	}
 
 	private void loadDataFromConfig() {
 		double spawn1x = arenaMapConfig.getDouble("Spawn1.X");
@@ -54,8 +66,23 @@ public class ArenaMap {
 		long spawn2pitch = arenaMapConfig.getLong("Spawn2.Pitch");
 		long spawn2yaw = arenaMapConfig.getLong("Spawn2.Yaw");
 		spawn2 = new Location(arenaWorld, spawn2x, spawn2y, spawn2z, spawn2yaw, spawn2pitch);
-
 		
+		loadKit();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadKit() {
+
+		PlayerInventory inv = (PlayerInventory) Bukkit.createInventory(null, InventoryType.PLAYER);
+		ItemStack[] content = ((List<ItemStack>) arenaMapConfig.get("Kit.Armor")).toArray(new ItemStack[0]);
+		inv.setArmorContents(content);
+		content = ((List<ItemStack>) arenaMapConfig.get("Kit.Content")).toArray(new ItemStack[0]);
+		inv.setContents(content);
+		
+		inventory = inv;
+		
+
 	}
 
 	private void createWorld() {
@@ -92,7 +119,7 @@ public class ArenaMap {
 		return kitName;
 	}
 
-	public HashMap<Integer, ItemStack> getInventory() {
+	public PlayerInventory getInventory() {
 		return inventory;
 	}
 
