@@ -167,11 +167,7 @@ public class ArenaManager implements Listener{
 	
 	private void giveInv(Arena arena) {
 		for(Player player : arena.getPlayers()) {
-			for (Entry<Integer, ItemStack> entry : arena.getKit().getInv().entrySet()) {
-			    Integer key = entry.getKey();
-			    ItemStack value = entry.getValue();
-			    player.getInventory().setItem(key, value);
-			}
+			player.getInventory().setContents(arena.getArenaMap().getInventory().getContents());
 		}
 	}
 	

@@ -7,6 +7,11 @@ Database:
   Database: db
   User: username
   Password: passy
+
+Maps:
+   - Example
+   - Example2
+   - Example3
   
 #do NOT enable this in production mode
 debug: false

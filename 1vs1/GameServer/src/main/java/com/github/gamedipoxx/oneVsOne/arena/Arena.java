@@ -4,13 +4,12 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,73 +20,44 @@ import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
-import com.github.gamedipoxx.oneVsOne.utils.Kit;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class Arena {
 	private String arenaUuid;
-	private static MVWorldManager worldmanager;
-	private String worldname;
+	private ArenaMap arenamap;
 	private int playercount;
-	private Location spawn1;
-	private Location spawn2;
 	private GameState gameState;
-	private Kit kit;
 	private Collection<Player> players = new ArrayList<Player>();
 	
-	public Arena(@NotNull String arenaname) {
+	public Arena() {
 		arenaUuid = "" + Instant.now().getEpochSecond() + RandomUtils.nextInt();	 //generate a uuid
-		//Check if Arenatemplete is loaded and availble
-		if(Bukkit.getWorld(arenaname) == null) {
-			OneVsOne.getPlugin().getLogger().warning("Cant find world " + arenaname);
-			Bukkit.getServer().getPluginManager().disablePlugin(OneVsOne.getPlugin());
-		}
 		
-		//worldstuff
-		worldname = arenaUuid;
-		worldmanager = OneVsOne.getMultiversecore().getMVWorldManager(); //set Multiverse wolrdmanager
-		worldmanager.cloneWorld(arenaname, worldname); //clone world
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_MOB_SPAWNING, false);
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.KEEP_INVENTORY, true);
-		Bukkit.getWorld(arenaname).setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+		//Map
+		String mapName;
+		if(ArenaMap.getMaps().size() == 0) {
+			OneVsOne.getPlugin().getLogger().warning("No Maps in config.yml");
+			Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+			return;
+		}
+		Random random = new Random();
+		mapName = ArenaMap.getMaps().get(random.nextInt(ArenaMap.getMaps().size()));
+		arenamap = new ArenaMap(mapName, arenaUuid);
+		
 		
 		
 		//playercound & Gamestate init
 		playercount = 0;
 		gameState = GameState.WAITING;
 		
-		//Generate Spawns
-		spawn1 = initSpawn(1);
-		spawn2 = initSpawn(2);
-		
-		//random kit
-		this.kit = Kit.getRandom();
-		
-		
-	}
-	
-	//Init the Spawn from Config
-	private Location initSpawn(int spawn) {
-		double x = OneVsOne.getPlugin().getConfig().getDouble("Spawn" + spawn + ".X");
-		double y = OneVsOne.getPlugin().getConfig().getDouble("Spawn" + spawn + ".Y");
-		double z = OneVsOne.getPlugin().getConfig().getDouble("Spawn" + spawn + ".Z");
-		float pitch = OneVsOne.getPlugin().getConfig().getLong("Spawn" + spawn + ".Pitch");
-		float yaw = OneVsOne.getPlugin().getConfig().getLong("Spawn" + spawn + ".Yaw");
-		
-		return new Location(Bukkit.getWorld(worldname), x, y, z, pitch, yaw);
 		
 	}
 	
 	public void joinPlayer(Player player) { //adds a player to the arena and fires event
 		if(playercount == 0) {
-			player.teleport(spawn1);
+			player.teleport(arenamap.getSpawn1());
 		}
 		if(playercount == 1) {
-			player.teleport(spawn2);
+			player.teleport(arenamap.getSpawn2());
 		}
 		
 		players.add(player);
@@ -121,16 +91,12 @@ public class Arena {
 	}
 	
 	public static void deleteAndUnregisterArena(Arena arena) {	 //teleports players to Lobby and destroy the arena and unregister it and fire a Event
-		World arenaworld = Bukkit.getWorld(arena.getArenaName());
-		if(arenaworld == null) {
-			return;
-		}
-		for(Player player : arenaworld.getPlayers()) {
+		for(Player player : arena.getPlayers()) {
 			arena.removePlayer(player);
 			player.sendMessage(Messages.PREFIX.getString() + Messages.TELEPORTTOLOBBY.getString());
 			Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveArenaEvent(arena, player));
 		}
-		worldmanager.deleteWorld(arenaworld.getName());
+		arena.getArenaMap().deleteMap();
 		
 		MySQLManager.deleteArena(arena.getArenaName()); //Purge Arena from Database
 		
@@ -141,16 +107,13 @@ public class Arena {
 	}
 	
 	public static void deleteAndUnregisterArenaForOnDisable(Arena arena) { //Just for OneVsOne.onDisable()
-		World arenaworld = Bukkit.getWorld(arena.getArenaName());
-		if(arenaworld == null) {
-			return;
-		}
-		for(Player player : arenaworld.getPlayers()) {
+		for(Player player : arena.getPlayers()) {
 			arena.removePlayer(player);
 			player.sendMessage(Messages.PREFIX.getString() + Messages.TELEPORTTOLOBBY.getString());
 			Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveArenaEvent(arena, player));
 		}
-		worldmanager.deleteWorld(arenaworld.getName());
+		
+		arena.getArenaMap().deleteMap();
 		
 		ArrayList<Arena> arenalist = (ArrayList<Arena>) OneVsOne.getArena();
 		arenalist.remove(arena);
@@ -159,7 +122,7 @@ public class Arena {
 	}
 	
 	public static Arena createAndRegisterArena() { //create a arena (Name based on the amout of arenas) and register it in the OneVsOne Class
-		Arena arena = new Arena(OneVsOne.getPlugin().getConfig().getString("Arenaworld"));
+		Arena arena = new Arena();
 		Collection<Arena> arenaCollection = OneVsOne.getArena();
 		arenaCollection.add(arena);
 		OneVsOne.setArena(new ArrayList<>(arenaCollection));
@@ -183,8 +146,8 @@ public class Arena {
 	
 	public List<Location> getSpawns(){
 		List<Location> list = new ArrayList<>();
-		list.add(spawn1);
-		list.add(spawn2);
+		list.add(arenamap.getSpawn1());
+		list.add(arenamap.getSpawn2());
 		return list;
 	}
 	
@@ -207,18 +170,14 @@ public class Arena {
 	}
 	
 	public String getArenaName() {
-		return worldname;
+		return arenaUuid;
 	}
 
 	public Collection<Player> getPlayers() {
 		return players;
 	}
-
-	public Kit getKit() {
-		return kit;
-	}
 	
-	
-
-	
+	public ArenaMap getArenaMap() {
+		return arenamap;
+	}	
 }

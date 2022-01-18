@@ -1,6 +1,7 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class ArenaMap {
 	private FileConfiguration arenaMapConfig;
 	private String uuid;
 	private MVWorldManager worldmanager;
+	private static List<String> maps;
 
 	public ArenaMap(String templateWorldName, String uuid) {
 
@@ -131,6 +133,18 @@ public class ArenaMap {
 
 	public Location getSpawn2() {
 		return spawn2;
+	}
+
+	public static List<String> getMaps() {
+		return maps;
+	}
+
+	public static void setMaps(List<String> list) {
+		ArenaMap.maps = list;
+	}
+	
+	public World getArenaWorld() {
+		return arenaWorld;
 	}
 
 }
