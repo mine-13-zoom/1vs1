@@ -67,6 +67,8 @@ public class ArenaMap {
 		long spawn2yaw = arenaMapConfig.getLong("Spawn2.Yaw");
 		spawn2 = new Location(arenaWorld, spawn2x, spawn2y, spawn2z, spawn2yaw, spawn2pitch);
 		
+		kitName = arenaMapConfig.getString("Kit.Name");
+		
 		loadKit();
 
 	}
