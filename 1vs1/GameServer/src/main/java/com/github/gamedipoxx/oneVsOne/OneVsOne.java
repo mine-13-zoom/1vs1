@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.arena.ArenaMap;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
+import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
@@ -32,7 +33,13 @@ public class OneVsOne extends JavaPlugin{
 		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
+		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		
+		if(getConfig().getBoolean("setupmode") == true) {
+			OneVsOneSetupCommand.resetSetupObject();
+			return;
+		}
 		
 		//init Database
 		MySQLManager.setConfig(getConfig());

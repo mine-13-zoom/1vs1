@@ -1,9 +1,12 @@
 name: OneVsOne
 main: com.github.gamedipoxx.oneVsOne.OneVsOne
-author: Professor_Sam 
-softdepend: ['Multiverse-Core']
+author: Professor_Sam
+softdepend:
+- Multiverse-Core
 version: 1.1.1
 api-version: 1.17
 commands:
    OneVsOne:
-      description: "Verwaltet OneVsOne"
+      description: Manage OneVsOne
+   OneVsOneSetup:
+      description: Setup OneVsOne

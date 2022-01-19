@@ -87,7 +87,7 @@ public class JoinGUI {
 		list.add("§7" + sado.getGameState().name());
 		list.add(" ");
 		list.add("§e§lKit");
-		list.add("§7" + sado.getKit().name());
+		list.add("§7" + sado.getKit());
 		list.add(" ");
 		list.add("§e§lSpieler");
 		list.add("§7" + sado.getPlayercount() + "§7/2");

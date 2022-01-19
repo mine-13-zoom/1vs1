@@ -101,7 +101,7 @@ public class MySQLManager {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
-					stmt.setString(3, arena.getKit().toString());
+					stmt.setString(3, arena.getArenaMap().getKitName());
 					stmt.setInt(4, arena.getPlayerCount());
 					stmt.execute();
 
@@ -122,7 +122,7 @@ public class MySQLManager {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
-					stmt.setString(3, arena.getKit().toString());
+					stmt.setString(3, arena.getArenaMap().getKitName());
 					stmt.setInt(4, arena.getPlayerCount());
 					stmt.execute();
 
@@ -178,7 +178,7 @@ public class MySQLManager {
 				String arenaName = resultSet.getString("ArenaName");
 				GameState gameState = GameState.valueOf(resultSet.getString("ArenaState"));
 				int players = resultSet.getInt("Players");
-				Kit kit = Kit.valueOf(resultSet.getString("Kit"));
+				String kit = resultSet.getString("Kit");
 				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit));
 			}
 			return sado;

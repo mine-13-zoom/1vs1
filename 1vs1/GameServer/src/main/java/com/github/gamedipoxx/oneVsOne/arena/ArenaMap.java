@@ -1,11 +1,7 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -13,9 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -37,8 +31,13 @@ public class ArenaMap {
 	private static List<String> maps;
 
 	public ArenaMap(String templateWorldName, String uuid) {
+		
+		if(OneVsOne.getPlugin().getConfig().getBoolean("debug")) {
+			OneVsOne.getPlugin().getLogger().info("Trying to load Map " + templateWorldName + " with uuid " + uuid);
+		}
 
 		this.uuid = uuid;
+		this.templateWorldName = templateWorldName;
 
 		// Config Stuff
 		loadConfig();
@@ -85,8 +84,6 @@ public class ArenaMap {
 		inv.setContents(content);
 		
 		inventory = inv;
-		
-
 	}
 
 	private void createWorld() {
@@ -109,7 +106,7 @@ public class ArenaMap {
 			arenaMapConfig.load(configFile);
 
 		} catch (Exception e) {
-			OneVsOne.getPlugin().getLogger().warning("No Config for world '" + worldName + "' found!");
+			OneVsOne.getPlugin().getLogger().warning("No Config for world '" + templateWorldName + "' found!");
 			e.printStackTrace();
 			Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
 		}

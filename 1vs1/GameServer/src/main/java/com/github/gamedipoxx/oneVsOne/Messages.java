@@ -14,7 +14,12 @@ public enum Messages {
 	STARTTITLE("§4Kämpft"),
 	STARTSUBTITLE("§7um Leben und Tot"),
 	PLAYERLEAVEARENA("§chat das Spiel verlassen!"),
-	LOADDATATITLE("§2Lade Daten")
+	LOADDATATITLE("§2Lade Daten"),
+	NOPERMISSION("§cDu hast hierzu keine Rechte!"),
+	SETUPLIST("§cNutze [spawn1, spawn2, inv, kitname, save]"),
+	SETUPSPECIFYNAME("§cBitte gib einen Namen an!"),
+	OK("§2OK!"),
+	PLEASEENABLESETUPMODE("Bitte aktiviere den Setup Modus in der Config.yml!")
 	;
  
     private String string;
