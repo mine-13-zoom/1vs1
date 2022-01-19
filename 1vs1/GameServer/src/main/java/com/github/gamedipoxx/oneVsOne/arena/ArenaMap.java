@@ -1,6 +1,7 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -9,9 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
@@ -22,7 +21,8 @@ public class ArenaMap {
 	private String templateWorldName;
 	private World arenaWorld;
 	private String kitName;
-	private PlayerInventory inventory;
+	private List<ItemStack> inventory;
+	private List<ItemStack> armor;
 	private Location spawn1;
 	private Location spawn2;
 	private FileConfiguration arenaMapConfig;
@@ -74,16 +74,17 @@ public class ArenaMap {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	private void loadKit() {
-
-		PlayerInventory inv = (PlayerInventory) Bukkit.createInventory(null, InventoryType.PLAYER);
-		ItemStack[] content = ((List<ItemStack>) arenaMapConfig.get("Kit.Armor")).toArray(new ItemStack[0]);
-		inv.setArmorContents(content);
-		content = ((List<ItemStack>) arenaMapConfig.get("Kit.Content")).toArray(new ItemStack[0]);
-		inv.setContents(content);
-		
-		inventory = inv;
+		armor = new ArrayList<>();
+		inventory = new ArrayList<>();
+		for(Object obj : arenaMapConfig.getList("Kit.Contens")){
+			ItemStack item = (ItemStack) obj;
+			inventory.add(item);
+		}
+		for(Object obj : arenaMapConfig.getList("Kit.Armor")){
+			ItemStack item = (ItemStack) obj;
+			armor.add(item);
+		}
 	}
 
 	private void createWorld() {
@@ -120,8 +121,11 @@ public class ArenaMap {
 		return kitName;
 	}
 
-	public PlayerInventory getInventory() {
+	public List<ItemStack> getInventory() {
 		return inventory;
+	}
+	public List<ItemStack> getArmor() {
+		return armor;
 	}
 
 	public Location getSpawn1() {
