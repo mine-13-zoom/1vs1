@@ -1,3 +1,4 @@
+#This option is not necessary because players are in the lobby for a maximum of 1-5 seconds
 Lobby:
    World: world
    X: 100
@@ -5,15 +6,20 @@ Lobby:
    Z: 100
    Pitch: 100
    Yaw: 100
+#Without a database this plugin would not work
 Database:
    Host: localhost
    Port: 3306
    Database: db
    User: username
    Password: passy
+#The server there the game ends
 LobbyServer: Lobby
+#The number of arenas which are online
 Arenas: 10
+#The enabled maps. This will be set with /onevsonesetup save
 Maps: []
+#Disable this in production. It is only for setting up the plugin
 setupmode: true
-#do NOT use this in production mode
+#do NOT use this in production mode. It is only for debuging
 debug: false

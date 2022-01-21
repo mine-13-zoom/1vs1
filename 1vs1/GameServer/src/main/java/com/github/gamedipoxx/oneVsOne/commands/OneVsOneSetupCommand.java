@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
+import com.google.protobuf.Message;
 
 public class OneVsOneSetupCommand implements CommandExecutor{
 	
@@ -62,8 +63,26 @@ public class OneVsOneSetupCommand implements CommandExecutor{
 			}
 		}
 		case "save": {
+			if(getSetupObject().getKitname() == null) {
+				player.sendMessage(Messages.PREFIX.getString() + Messages.SETUPFORGET.getString() + "§c" + Messages.SETUPKITNAME.getString());
+				break;
+			}
+			if(getSetupObject().getSpawn1() == null) {
+				player.sendMessage(Messages.PREFIX.getString() + Messages.SETUPFORGET.getString() + "§c" + Messages.SETUPSPAWN1.getString());
+				break;
+			}
+			if(getSetupObject().getSpawn2() == null) {
+				player.sendMessage(Messages.PREFIX.getString() + Messages.SETUPFORGET.getString() + "§c" + Messages.SETUPSPAWN2.getString());
+				break;
+			}
+			if(getSetupObject().getInv() == null) {
+				player.sendMessage(Messages.PREFIX.getString() + Messages.SETUPFORGET.getString() + "§c" + Messages.SETUPKIT.getString());
+				break;
+			}
+			
 			getSetupObject().save();
 			resetSetupObject();
+			
 			player.sendMessage(Messages.PREFIX.getString() + Messages.OK.getString());
 			break;
 		}

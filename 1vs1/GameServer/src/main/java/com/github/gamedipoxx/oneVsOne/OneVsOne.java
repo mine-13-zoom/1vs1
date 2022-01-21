@@ -69,6 +69,10 @@ public class OneVsOne extends JavaPlugin{
 	
 	@Override
 	public void onDisable() {
+		if(getConfig().getBoolean("setupmode")) {
+			return;
+		}
+		
 		MySQLManager.purgeDatabase();
 		@SuppressWarnings("unchecked")
 		ArrayList<Arena> templist = (ArrayList<Arena>) arena.clone();

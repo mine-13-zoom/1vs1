@@ -19,7 +19,12 @@ public enum Messages {
 	SETUPLIST("§cNutze [spawn1, spawn2, inv, kitname, save]"),
 	SETUPSPECIFYNAME("§cBitte gib einen Namen an!"),
 	OK("§2OK!"),
-	PLEASEENABLESETUPMODE("Bitte aktiviere den Setup Modus in der Config.yml!")
+	PLEASEENABLESETUPMODE("Bitte aktiviere den Setup Modus in der Config.yml!"),
+	SETUPFORGET("Du hast folgendes vergessen: "),
+	SETUPKITNAME("Kitname"),
+	SETUPSPAWN1("Spawn 1"),
+	SETUPSPAWN2("Spawn 2"),
+	SETUPKIT("Kit"),
 	;
  
     private String string;

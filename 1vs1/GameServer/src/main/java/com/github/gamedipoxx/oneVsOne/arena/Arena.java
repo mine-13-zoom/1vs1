@@ -76,17 +76,18 @@ public class Arena {
 		players.remove(player);
 		playercount = players.size();
 		
+		BungeeCordManager.connectPlayerToLobby(player);
+		
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(this, player);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		
-		BungeeCordManager.connectPlayerToLobby(player);
-	
 	}
 	
 	public void broadcastMessage(String message) {
 		for(Player player : players) {
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, 1);
 			player.sendMessage(message);
+			
 		}
 	}
 	

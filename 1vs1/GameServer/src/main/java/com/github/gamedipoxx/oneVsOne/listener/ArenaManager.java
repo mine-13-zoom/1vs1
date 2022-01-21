@@ -2,7 +2,6 @@ package com.github.gamedipoxx.oneVsOne.listener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
