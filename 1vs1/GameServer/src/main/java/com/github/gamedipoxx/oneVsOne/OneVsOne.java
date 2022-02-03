@@ -7,7 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
+import com.github.gamedipoxx.oneVsOne.arena.ArenaMap;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
+import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
@@ -22,31 +24,55 @@ public class OneVsOne extends JavaPlugin{
 	private static MultiverseCore multiversecore;
 	@Override
 	public void onEnable() {
+		//Config stuff
 		saveDefaultConfig();
 		saveConfig();
+		
+		//init plugins and Apis
 		plugin = this;
 		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
+		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		
+		if(getConfig().getBoolean("setupmode") == true) {
+			OneVsOneSetupCommand.resetSetupObject();
+			return;
+		}
+		
+		//init Database
 		MySQLManager.setConfig(getConfig());
 		MySQLManager.setPlugin(this);
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
 		if (!MySQLManager.init()) {
 			getServer().getPluginManager().disablePlugin(this);
 		}
+		//register all Events
 		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerMoveEventCancel(), this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
 		getServer().getPluginManager().registerEvents(new TabListRemover(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
+		
+		//Create a Kit list
+		ArenaMap.setMaps(getConfig().getStringList("Maps"));
+		
+		//clear Database
 		MySQLManager.purgeDatabase();
+		
+		//create all Arenas as definded in the config.yml
 		ArenaManager.createMaxArenas();
+		
 	}
 	
 	@Override
 	public void onDisable() {
+		if(getConfig().getBoolean("setupmode")) {
+			return;
+		}
+		
 		MySQLManager.purgeDatabase();
 		@SuppressWarnings("unchecked")
 		ArrayList<Arena> templist = (ArrayList<Arena>) arena.clone();

@@ -2,7 +2,6 @@ package com.github.gamedipoxx.oneVsOne.listener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -167,11 +166,8 @@ public class ArenaManager implements Listener{
 	
 	private void giveInv(Arena arena) {
 		for(Player player : arena.getPlayers()) {
-			for (Entry<Integer, ItemStack> entry : arena.getKit().getInv().entrySet()) {
-			    Integer key = entry.getKey();
-			    ItemStack value = entry.getValue();
-			    player.getInventory().setItem(key, value);
-			}
+			player.getInventory().setContents(arena.getArenaMap().getInventory().toArray(new ItemStack[0]));
+			player.getInventory().setArmorContents(arena.getArenaMap().getArmor().toArray(new ItemStack[0]));
 		}
 	}
 	

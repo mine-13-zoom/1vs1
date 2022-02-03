@@ -1,7 +1,9 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 
 public class ScheduledArenaDelete {
@@ -10,6 +12,9 @@ public class ScheduledArenaDelete {
 			
 			@Override
 			public void run() {
+				for(Player player : arena.getPlayers()) {
+					BungeeCordManager.connectPlayerToLobby(player);
+				}
 				Arena.deleteAndUnregisterArena(arena);
 				
 			}
