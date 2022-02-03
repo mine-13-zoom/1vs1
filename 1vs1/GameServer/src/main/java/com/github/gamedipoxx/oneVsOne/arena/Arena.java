@@ -91,8 +91,9 @@ public class Arena {
 		}
 	}
 	
-	public static void deleteAndUnregisterArena(Arena arena) {	 //teleports players to Lobby and destroy the arena and unregister it and fire a Event
-		for(Player player : arena.getPlayers()) {
+	public static void deleteAndUnregisterArena(Arena arena) {	 //teleports players to Lobby and destroy the arena and unregister it and fire a Event	
+		ArrayList<Player> list = new ArrayList<>(arena.getPlayers());
+		for(Player player : list) {
 			arena.removePlayer(player);
 			player.sendMessage(Messages.PREFIX.getString() + Messages.TELEPORTTOLOBBY.getString());
 			Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveArenaEvent(arena, player));

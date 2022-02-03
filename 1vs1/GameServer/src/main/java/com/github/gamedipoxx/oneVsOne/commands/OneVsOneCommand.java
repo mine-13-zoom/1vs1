@@ -1,5 +1,8 @@
 package com.github.gamedipoxx.oneVsOne.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -74,7 +77,10 @@ public class OneVsOneCommand implements CommandExecutor {
 					
 					break;
 				case("leave"):
-					for(Arena arena : OneVsOne.getArena()) {
+					
+					ArrayList<Arena> list = new ArrayList<>(OneVsOne.getArena());
+					
+					for(Arena arena : list) {
 						for(Player forPlayer : arena.getPlayers()) {
 							if(forPlayer == player) {
 								arena.removePlayer(player);
