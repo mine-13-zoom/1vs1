@@ -183,10 +183,3 @@ public class ArenaManager implements Listener{
 		}
 	}
 }
-
-
-
-//cases:
-//Kein Bock auf warten -> Starting -> Strting|Waiting
-//RageQuit -> Ingame -> Ending
-//Game zu ende -> Ending -> Ending
