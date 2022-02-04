@@ -178,7 +178,7 @@ public class ArenaManager implements Listener{
 	
 	public static void createMaxArenas() {
 		int arenas = OneVsOne.getPlugin().getConfig().getInt("Arenas");
-		for(int i = 0; i <= arenas; i++) {
+		for(int i = 1; i <= arenas; i++) {
 			Arena.createAndRegisterArena();
 		}
 	}
