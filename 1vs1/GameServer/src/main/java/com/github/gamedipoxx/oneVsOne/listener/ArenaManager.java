@@ -1,5 +1,6 @@
 package com.github.gamedipoxx.oneVsOne.listener;
 
+import java.lang.annotation.Documented;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -133,8 +135,11 @@ public class ArenaManager implements Listener{
 	
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
-		Player quitPlayer = event.getPlayer();
 		event.setQuitMessage(null);
+		leavePlayer(event.getPlayer());
+	}
+	
+	public static void leavePlayer(Player quitPlayer) {
 		ArrayList<Arena> templist = new ArrayList<>(OneVsOne.getArena());
 		for(Arena arena : templist) {
 			for(Player player : arena.getPlayers()) {
