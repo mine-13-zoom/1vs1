@@ -13,6 +13,7 @@ import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneLeaveCommand;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
+import com.github.gamedipoxx.oneVsOne.listener.LeaveItem;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
@@ -68,6 +69,7 @@ public class OneVsOne extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
 		getServer().getPluginManager().registerEvents(new TabListRemover(), this);
+		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
 		
 		//Create a Kit list

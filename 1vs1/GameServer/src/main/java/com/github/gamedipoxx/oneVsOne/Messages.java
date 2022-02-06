@@ -32,6 +32,7 @@ public enum Messages {
 	SETUPKIT(MessagesFile.getMessageConfig().getString("SetupKit")),
 	RELOADERROR(MessagesFile.getMessageConfig().getString("ReloadError")),
 	GETREADY(MessagesFile.getMessageConfig().getString("GetReady")),
+	LEAVEITEM(MessagesFile.getMessageConfig().getString("LeaveItem")),
 	BRANDING("§f§l1vs1 §7by Professor_Sam. Discord: ProfSam#3975 GitHub: ProfessorSam")
 	;
  
