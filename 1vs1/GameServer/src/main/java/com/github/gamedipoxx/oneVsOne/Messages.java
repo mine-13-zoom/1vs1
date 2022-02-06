@@ -31,6 +31,7 @@ public enum Messages {
 	SETUPSPAWN2(MessagesFile.getMessageConfig().getString("SetupSpawn2")),
 	SETUPKIT(MessagesFile.getMessageConfig().getString("SetupKit")),
 	RELOADERROR(MessagesFile.getMessageConfig().getString("ReloadError")),
+	GETREADY(MessagesFile.getMessageConfig().getString("GetReady")),
 	BRANDING("§f§l1vs1 §7by Professor_Sam. Discord: ProfSam#3975 GitHub: ProfessorSam")
 	;
  

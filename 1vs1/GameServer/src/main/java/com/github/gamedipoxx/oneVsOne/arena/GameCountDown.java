@@ -34,19 +34,19 @@ public class GameCountDown implements Listener {
 			public void run() {
 				i++;
 				if(i == 1) {
-					showTitle("§25", "§7Mache dich bereit", arena);
+					showTitle("§25", Messages.GETREADY.getString(), arena);
 				}
 				if(i == 2) {
-					showTitle("§24", "§7Mache dich bereit", arena);
+					showTitle("§24", Messages.GETREADY.getString(), arena);
 				}
 				if(i == 3) {
-					showTitle("§23", "§7Mache dich bereit", arena);
+					showTitle("§23", Messages.GETREADY.getString(), arena);
 				}
 				if(i == 4) {
-					showTitle("§22", "§7Mache dich bereit", arena);
+					showTitle("§22", Messages.GETREADY.getString(), arena);
 				}
 				if(i == 5) {
-					showTitle("§21", "§7Mache dich bereit", arena);
+					showTitle("§21", Messages.GETREADY.getString(), arena);
 				}
 				if(i == 6) {
 					showStartSubTitle(arena);
