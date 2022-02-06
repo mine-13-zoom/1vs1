@@ -27,6 +27,7 @@ public class JoinGUI {
 	}
 	
 	public static void init() {
+		int delay = OneVsOneLobby.getPlugin().getConfig().getInt("updatedelay");
 		joingui = new JoinGUI();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(OneVsOneLobby.getPlugin(), new Runnable() {
 			
@@ -34,7 +35,7 @@ public class JoinGUI {
 			public void run() {
 				LobbySQLManager.fetchFromDatabase();
 			}
-		}, 20L, 5*20L);
+		}, 20L, delay*20L);
 	}
 	
 	public static void updateGui() {

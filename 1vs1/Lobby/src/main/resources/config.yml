@@ -7,6 +7,9 @@ Database:
   Database: db
   User: username
   Password: passy
+
+#This is the delay after which the arenas are updated from the database. Good-performance-server = low delay, Low-performance-server=high delay
+updatedelay: 3
   
 #do NOT enable this in production mode
 debug: false
