@@ -21,5 +21,7 @@ Arenas: 10
 Maps: []
 #Disable this in production. It is only for setting up the plugin
 setupmode: true
+#When you enable this the player can use the /leave command to go back to the lobby
+leaveCommand: true 
 #do NOT use this in production mode. It is only for debuging
 debug: false

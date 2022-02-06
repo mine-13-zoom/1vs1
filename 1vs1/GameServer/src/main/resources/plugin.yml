@@ -10,3 +10,5 @@ commands:
       description: Manage OneVsOne
    OneVsOneSetup:
       description: Setup OneVsOne
+   leave: 
+      description: leave arena

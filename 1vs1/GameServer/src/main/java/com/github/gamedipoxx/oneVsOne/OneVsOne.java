@@ -2,6 +2,7 @@ package com.github.gamedipoxx.oneVsOne;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.arena.ArenaMap;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
+import com.github.gamedipoxx.oneVsOne.commands.OneVsOneLeaveCommand;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
@@ -44,6 +46,13 @@ public class OneVsOne extends JavaPlugin{
 		if(getConfig().getBoolean("setupmode") == true) {
 			OneVsOneSetupCommand.resetSetupObject();
 			return;
+		}
+		
+		if(getConfig().getBoolean("leaveCommand")) {
+			this.getCommand("leave").setExecutor(new OneVsOneLeaveCommand());
+			ArrayList<String> list = new ArrayList<>();
+			list.add("l");
+			this.getCommand("leave").setAliases((List<String>)list);
 		}
 		
 		//init Database
