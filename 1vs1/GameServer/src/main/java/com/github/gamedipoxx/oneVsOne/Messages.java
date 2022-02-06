@@ -2,6 +2,8 @@ package com.github.gamedipoxx.oneVsOne;
 
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 
+import net.md_5.bungee.api.ChatColor;
+
 public enum Messages {
 	
     PREFIX(MessagesFile.getMessageConfig().getString("Prefix")), 
@@ -20,7 +22,7 @@ public enum Messages {
 	LOADDATATITLE(MessagesFile.getMessageConfig().getString("LoadDataTitle")),
 	NOPERMISSION(MessagesFile.getMessageConfig().getString("NoPermission")),
 	SETUPLIST(MessagesFile.getMessageConfig().getString("SetupList")),
-	SETUPSPECIFYNAME(MessagesFile.getMessageConfig().getString("setupSpecifyName")),
+	SETUPSPECIFYNAME(MessagesFile.getMessageConfig().getString("SetupSpecifyName")),
 	OK(MessagesFile.getMessageConfig().getString("Ok")),
 	PLEASEENABLESETUPMODE(MessagesFile.getMessageConfig().getString("PleaseEnableSetupMode")),
 	SETUPFORGET(MessagesFile.getMessageConfig().getString("SetupForget")),
@@ -33,13 +35,14 @@ public enum Messages {
 	;
  
     private String string;
+    
  
     Messages(String string) {
         this.string = string;
     }
  
     public String getString() {
-        return string;
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }
 

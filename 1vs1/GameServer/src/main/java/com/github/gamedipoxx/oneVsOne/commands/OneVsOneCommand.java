@@ -29,7 +29,7 @@ public class OneVsOneCommand implements CommandExecutor {
 				String message = "§cArena: " + Arena.createAndRegisterArena().getArenaName();
 				player.sendMessage(message);
 				OneVsOne.getPlugin().getLogger().info(message);
-				break;
+ 				break;
 			case ("join"):
 				if(!checkPermissions(player)) {
 					break;
