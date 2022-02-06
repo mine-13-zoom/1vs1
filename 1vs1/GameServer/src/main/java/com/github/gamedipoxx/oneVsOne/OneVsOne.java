@@ -15,6 +15,7 @@ import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
 import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
+import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -27,15 +28,19 @@ public class OneVsOne extends JavaPlugin{
 		//Config stuff
 		saveDefaultConfig();
 		saveConfig();
+		MessagesFile.setPlugin(this);
+		MessagesFile.init();
 		
 		//init plugins and Apis
 		plugin = this;
 		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		
+		//register Commands and Bungeecord
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
 		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
+		//check for setupmode and cancel the rest of onEnable()
 		if(getConfig().getBoolean("setupmode") == true) {
 			OneVsOneSetupCommand.resetSetupObject();
 			return;

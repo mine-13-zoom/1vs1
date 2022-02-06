@@ -1,28 +1,40 @@
 package com.github.gamedipoxx.oneVsOneLobby;
 
+import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
+
+import net.md_5.bungee.api.ChatColor;
+
 public enum LobbyMessages {
-    PREFIX("§7[§f§lGamedipoxx§r§7] §r"), 
-    WRONGARGS("§cFalsche Argumente! Nutze /onevsonelobby [join, list]"),
-    NOPERMISSION("§cDu hast dazu keine Rechte!"),
-    WRONGJOINARG("§cNutze /onevsonelobby join arenaname"),
-    CONNECTING("§2Du wirst verbunden"),
-    WRONGLISTARGS("§cNutze /onevsonelobby list!"),
-    FETCHING("§2Lade Daten"),
-    JOINSIGN_LINE1("§e§l1vs1"),
-    JOINSIGN_LINE2("§dKlicke"),
-    JOINSIGN_LINE3("§dzum"),
-    JOINSIGN_LINE4("§dbeitreten"),
-	WRONGSIGNCREATE("§cDieser Block ist kein Schild!"),
-	SIGNCREATESUCESS("Schild erfolgreich erstellt"),
-	PLEASEWAIT("§2Bitte warte einen Moment");
+	
+    PREFIX(MessagesFile.getMessageConfig().getString("Prefix")), 
+    WRONGARGS(MessagesFile.getMessageConfig().getString("WrongArgs")),
+    NOPERMISSION(MessagesFile.getMessageConfig().getString("NoPermission")),
+    WRONGJOINARG(MessagesFile.getMessageConfig().getString("WrongJoinArgs")),
+    CONNECTING(MessagesFile.getMessageConfig().getString("Connecting")),
+    WRONGLISTARGS(MessagesFile.getMessageConfig().getString("WrongListArgs")),
+    FETCHING(MessagesFile.getMessageConfig().getString("Fetching")),
+    JOINSIGN_LINE1(MessagesFile.getMessageConfig().getString("JoinSignLine1")),
+    JOINSIGN_LINE2(MessagesFile.getMessageConfig().getString("JoinSignLine2")),
+    JOINSIGN_LINE3(MessagesFile.getMessageConfig().getString("JoinSignLine3")),
+    JOINSIGN_LINE4(MessagesFile.getMessageConfig().getString("JoinSignLine4")),
+	WRONGSIGNCREATE(MessagesFile.getMessageConfig().getString("WrongSignCreate")),
+	SIGNCREATESUCESS(MessagesFile.getMessageConfig().getString("SignCreateSucess")),
+	PLEASEWAIT(MessagesFile.getMessageConfig().getString("PleaseWait")),
+	ARENA(MessagesFile.getMessageConfig().getString("Arena")),
+	PLAYER(MessagesFile.getMessageConfig().getString("Player")),
+	STATUS(MessagesFile.getMessageConfig().getString("Status")),
+	KIT(MessagesFile.getMessageConfig().getString("Kit")),
+	GUITITLE(MessagesFile.getMessageConfig().getString("GuiTitle")),
+	BRANDING("§f§l1vs1 §7 by ProfessorSam. Discord: ProfSam#3975 " + " Github: ProfessorSam");
  
     private String string;
  
     LobbyMessages(String string) {
-        this.string = string;
+    	this.string = string;
     }
- 
+    
     public String getString() {
-        return string;
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }
+

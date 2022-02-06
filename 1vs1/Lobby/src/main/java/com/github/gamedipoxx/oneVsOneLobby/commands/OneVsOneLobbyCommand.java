@@ -1,7 +1,5 @@
 package com.github.gamedipoxx.oneVsOneLobby.commands;
 
-import java.util.Set;
-
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -9,7 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
 import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
@@ -25,6 +22,7 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		if (!player.hasPermission("*")) {
+			player.sendMessage(LobbyMessages.BRANDING.getString());
 			return false;
 		}
 

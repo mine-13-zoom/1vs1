@@ -3,6 +3,7 @@ package com.github.gamedipoxx.oneVsOneLobby;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.commands.OneVsOneLobbyCommand;
 import com.github.gamedipoxx.oneVsOneLobby.sign.InventoryClickListener;
@@ -18,10 +19,17 @@ public class OneVsOneLobby extends JavaPlugin {
 	public void onEnable() {
 
 		plugin = this;
+		
+		MessagesFile.setPlugin(this);
+		MessagesFile.init();
+		
 		MySQLManager.setConfig(getConfig());
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
 		MySQLManager.setPlugin(this);
+		
 		JoinGUI.init();
+
+		
 		this.saveDefaultConfig();
 		this.reloadConfig();
 		if (MySQLManager.init() == false) {

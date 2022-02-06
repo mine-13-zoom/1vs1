@@ -10,6 +10,7 @@ import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
+import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 
 public class OneVsOneCommand implements CommandExecutor {
 
@@ -28,7 +29,7 @@ public class OneVsOneCommand implements CommandExecutor {
 				String message = "§cArena: " + Arena.createAndRegisterArena().getArenaName();
 				player.sendMessage(message);
 				OneVsOne.getPlugin().getLogger().info(message);
-				break;
+ 				break;
 			case ("join"):
 				if(!checkPermissions(player)) {
 					break;
@@ -84,6 +85,12 @@ public class OneVsOneCommand implements CommandExecutor {
 				}
 				OneVsOne.getPlugin().saveConfig();
 				OneVsOne.getPlugin().reloadConfig();
+				try {
+					MessagesFile.reload();
+				} catch (Exception e) {
+					player.sendMessage(Messages.PREFIX.getString() + Messages.RELOADERROR.getString());
+					e.printStackTrace();
+				}
 				player.sendMessage(Messages.PREFIX.getString() + Messages.CONFIGRELOADED.getString());
 
 				break;
@@ -91,9 +98,18 @@ public class OneVsOneCommand implements CommandExecutor {
 				BungeeCordManager.connectPlayerToLobby(player);
 				break;
 			default:
+				if(player.hasPermission("OneVsOne.admin")) {
+					player.sendMessage(Messages.COMMANDS.getString());
+				}
+				else {
+					player.sendMessage(Messages.BRANDING.getString());
+				}
 				break;
 			}
 		} 
+		else {
+			player.sendMessage(Messages.BRANDING.getString());
+		}
 		return false;
 
 	}

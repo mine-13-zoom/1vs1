@@ -1,40 +1,49 @@
 package com.github.gamedipoxx.oneVsOne;
 
+import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
+
+import net.md_5.bungee.api.ChatColor;
+
 public enum Messages {
-    PREFIX("§7[§f§lGamedipoxx§r§7] §r"), 
-    TELEPORTTOLOBBY("§7Du wurdest zur Lobby teleportiert"), 
-    NOARENAFOUND("§cEs konnte keine Arena gefunden werden"), 
-    COMMANDS("§cCommands: /onevsone [create, join, delete, list, delete, leave]"),
-    NOARENAAVAIBLE("§cKeine Arena verfügbar!"),
-    CONFIGRELOADED("§2Die Konfigurationen wurden neu geladen!"),
-	WAITINGFORMOREPLAYER("§cWarte auf weitere Spieler"),
-	STARTINGGAME("§2Das Spiel startet jetzt"),
-	PLAYERWIN("§2hat gewonnen"),
-	PLAYERDIED("§cist gestorben!"),
-	STARTTITLE("§4Kämpft"),
-	STARTSUBTITLE("§7um Leben und Tot"),
-	PLAYERLEAVEARENA("§chat das Spiel verlassen!"),
-	LOADDATATITLE("§2Lade Daten"),
-	NOPERMISSION("§cDu hast hierzu keine Rechte!"),
-	SETUPLIST("§cNutze [spawn1, spawn2, inv, kitname, save]"),
-	SETUPSPECIFYNAME("§cBitte gib einen Namen an!"),
-	OK("§2OK!"),
-	PLEASEENABLESETUPMODE("Bitte aktiviere den Setup Modus in der Config.yml!"),
-	SETUPFORGET("Du hast folgendes vergessen: "),
-	SETUPKITNAME("Kitname"),
-	SETUPSPAWN1("Spawn 1"),
-	SETUPSPAWN2("Spawn 2"),
-	SETUPKIT("Kit"),
+	
+    PREFIX(MessagesFile.getMessageConfig().getString("Prefix")), 
+    TELEPORTTOLOBBY(MessagesFile.getMessageConfig().getString("TeleportToLobby")), 
+    NOARENAFOUND(MessagesFile.getMessageConfig().getString("NoArenaFound")), 
+    COMMANDS(MessagesFile.getMessageConfig().getString("Commands")),
+    NOARENAAVAIBLE(MessagesFile.getMessageConfig().getString("NoArenaAvaible")),
+    CONFIGRELOADED(MessagesFile.getMessageConfig().getString("ConfigReloaded")),
+	WAITINGFORMOREPLAYER(MessagesFile.getMessageConfig().getString("WaitingForMorePlayer")),
+	STARTINGGAME(MessagesFile.getMessageConfig().getString("StartingGame")),
+	PLAYERWIN(MessagesFile.getMessageConfig().getString("PlayerWin")),
+	PLAYERDIED(MessagesFile.getMessageConfig().getString("PlayerDied")),
+	STARTTITLE(MessagesFile.getMessageConfig().getString("StartTitle")),
+	STARTSUBTITLE(MessagesFile.getMessageConfig().getString("StartSubTitle")),
+	PLAYERLEAVEARENA(MessagesFile.getMessageConfig().getString("PlayerLeaveArena")),
+	LOADDATATITLE(MessagesFile.getMessageConfig().getString("LoadDataTitle")),
+	NOPERMISSION(MessagesFile.getMessageConfig().getString("NoPermission")),
+	SETUPLIST(MessagesFile.getMessageConfig().getString("SetupList")),
+	SETUPSPECIFYNAME(MessagesFile.getMessageConfig().getString("SetupSpecifyName")),
+	OK(MessagesFile.getMessageConfig().getString("Ok")),
+	PLEASEENABLESETUPMODE(MessagesFile.getMessageConfig().getString("PleaseEnableSetupMode")),
+	SETUPFORGET(MessagesFile.getMessageConfig().getString("SetupForget")),
+	SETUPKITNAME(MessagesFile.getMessageConfig().getString("SetupKitname")),
+	SETUPSPAWN1(MessagesFile.getMessageConfig().getString("SetupSpawn1")),
+	SETUPSPAWN2(MessagesFile.getMessageConfig().getString("SetupSpawn2")),
+	SETUPKIT(MessagesFile.getMessageConfig().getString("SetupKit")),
+	RELOADERROR(MessagesFile.getMessageConfig().getString("ReloadError")),
+	GETREADY(MessagesFile.getMessageConfig().getString("GetReady")),
+	BRANDING("§f§l1vs1 §7by Professor_Sam. Discord: ProfSam#3975 GitHub: ProfessorSam")
 	;
  
     private String string;
+    
  
     Messages(String string) {
         this.string = string;
     }
  
     public String getString() {
-        return string;
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }
 
