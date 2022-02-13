@@ -22,6 +22,9 @@ public class LeaveItem implements Listener {
 	
 	@EventHandler
 	public void onPlayerDragItem(InventoryClickEvent event) {
+		if(event.getCurrentItem() == null) {
+			return;
+		}
 		if(!event.getCurrentItem().equals(getItem())) {
 			return;
 		}
