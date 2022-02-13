@@ -109,7 +109,8 @@ public class Arena {
 	}
 	
 	public static void deleteAndUnregisterArenaForOnDisable(Arena arena) { //Just for OneVsOne.onDisable()
-		for(Player player : arena.getPlayers()) {
+		ArrayList<Player> players = new ArrayList<>(arena.getPlayers());
+		for(Player player : players) {
 			arena.removePlayer(player);
 			player.sendMessage(Messages.PREFIX.getString() + Messages.TELEPORTTOLOBBY.getString());
 			Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveArenaEvent(arena, player));
