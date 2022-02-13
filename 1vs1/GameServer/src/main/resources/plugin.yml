@@ -3,7 +3,7 @@ main: com.github.gamedipoxx.oneVsOne.OneVsOne
 author: Professor_Sam
 softdepend:
 - Multiverse-Core
-version: 1.2.1
+version: ${project.version}
 api-version: 1.17
 commands:
    OneVsOne:
