@@ -77,7 +77,24 @@
 						<includes>
 							<include>com.github.gamedipoxx:GameServer</include>
 						</includes>
+						<excludes>
+							<exclude>/*.yml</exclude>
+							<exclude>/*.sql</exclude>
+						</excludes>
 					</artifactSet>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.MF</exclude>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+								<exclude>*.yml</exclude>
+								<exclude>*.sql</exclude>
+							</excludes>
+						</filter>
+					</filters>
 				</configuration>
 				<executions>
 					<execution>
