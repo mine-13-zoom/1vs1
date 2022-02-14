@@ -79,11 +79,11 @@ public class ArenaManager implements Listener{
 		}
 		if(before == GameState.STARTING && after == GameState.INGAME) {
 			arena.broadcastMessage(Messages.PREFIX.getString() + Messages.STARTINGGAME.getString());
+			MySQLManager.increateGamesPlayedByArena(arena);
 			for(Player player : arena.getPlayers()) {
 				player.getInventory().clear();
 				player.setHealth(20);
 				player.setFoodLevel(20);
-				MySQLManager.increateGamesPlayedByArena(arena);
 				for(PotionEffect effect : player.getActivePotionEffects()) {
 					player.removePotionEffect(effect.getType());
 				}
