@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -84,6 +83,7 @@ public class ArenaManager implements Listener{
 				player.getInventory().clear();
 				player.setHealth(20);
 				player.setFoodLevel(20);
+				MySQLManager.increateGamesPlayedByArena(arena);
 				for(PotionEffect effect : player.getActivePotionEffects()) {
 					player.removePotionEffect(effect.getType());
 				}
@@ -131,6 +131,7 @@ public class ArenaManager implements Listener{
 					for(Player winPlayer : arena.getPlayers()) {
 						if(winPlayer != player) {
 							arena.broadcastMessage(Messages.PREFIX.getString() + winPlayer.getDisplayName() + " " + Messages.PLAYERWIN.getString());
+							MySQLManager.increateWinsBy1(winPlayer);
 						}
 					}
 				}

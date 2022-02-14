@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,8 +41,9 @@ public class MySQLManager {
 
 	private static void connect() throws SQLException {
 
-		if(plugin.getConfig().getBoolean("debug") == true) {
-			plugin.getLogger().info("MySqlCredentails [Host: " + config.getString("Database.Host") + " Port: " + config.getInt("Database.Port") + " Database: " + config.getString("Database.Database") + " User: " +  config.getString("Database.User") + " Password: " + config.getString("Database.Password") + "]");
+		if (plugin.getConfig().getBoolean("debug") == true) {
+			plugin.getLogger().info(
+					"MySqlCredentails [Host: " + config.getString("Database.Host") + " Port: " + config.getInt("Database.Port") + " Database: " + config.getString("Database.Database") + " User: " + config.getString("Database.User") + " Password: " + config.getString("Database.Password") + "]");
 		}
 		datasource = new MysqlDataSource();
 
@@ -53,7 +56,7 @@ public class MySQLManager {
 		try (Connection connection = datasource.getConnection()) {
 			if (!connection.isValid(1000)) {
 				disableplugin();
-				throw new SQLException("Could not establish database connection.");	
+				throw new SQLException("Could not establish database connection.");
 			}
 		}
 
@@ -194,15 +197,14 @@ public class MySQLManager {
 		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName FROM Teleport WHERE PlayerName = ?;")) {
 			stmt.setString(1, player.getName());
 			ResultSet resultSet = stmt.executeQuery();
-			
+
 			String arenaname = null;
-			if(resultSet.next()) {
+			if (resultSet.next()) {
 				arenaname = resultSet.getString("ArenaName");
 			}
-			if(arenaname == null) {
+			if (arenaname == null) {
 				return null;
-			}
-			else {
+			} else {
 				return arenaname;
 			}
 
@@ -212,7 +214,7 @@ public class MySQLManager {
 		}
 
 	}
-	
+
 	public static void deletePlayerFromTeleport(String player) {
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
@@ -230,7 +232,7 @@ public class MySQLManager {
 			}
 		});
 	}
-	
+
 	public static void addPlayerToTeleport(String player, String arena) {
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
@@ -250,6 +252,69 @@ public class MySQLManager {
 		});
 	}
 
+	public static void increateGamesPlayedByArena(Arena arena) {
+		ArrayList<Player> players = new ArrayList<>(arena.getPlayers());
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				for (Player player : players) {
+					UUID uuid = player.getUniqueId();
+					try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, GamesPlayed, GamesWon) VALUES (?, 1, 0) ON DUPLICATE KEY UPDATE GamesPlayed = GamesPlayed + 1;")) {
+						stmt.setString(1, uuid.toString());
+						stmt.execute();
+
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+
+	public static void increateWinsBy1(Player player) {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run() {
+				UUID uuid = player.getUniqueId();
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, GamesPlayed, GamesWon) VALUES (?, 1, 1) ON DUPLICATE KEY UPDATE GamesWon = GamesWon + 1;")) {
+					stmt.setString(1, uuid.toString());
+					stmt.execute();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+	}
+	
+	public static void updateStats() {
+
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT PlayerUUID, GamesPlayed, GamesWon FROM Arenas;")) {
+			ResultSet resultSet = stmt.executeQuery();
+
+			HashMap<UUID, StatsObject> stats = new HashMap<>();
+
+			while (resultSet.next()) {
+				UUID uuid = UUID.fromString(resultSet.getString("PlayerUUID"));
+				int gamesPlayed = resultSet.getInt("GamesPlayed");
+				int gamesWon = resultSet.getInt("GamesWon");
+				stats.put(uuid, new StatsObject(uuid, gamesPlayed, gamesWon));
+			}
+			StatsObject.setStatsCach(stats);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+	}
+	
+	
+	
+	
+
 	public static void setConfig(FileConfiguration config) {
 		MySQLManager.config = config;
 	}
@@ -261,7 +326,7 @@ public class MySQLManager {
 	public static void setPlugin(JavaPlugin plugin) {
 		MySQLManager.plugin = plugin;
 	}
-	
+
 	private static void disableplugin() {
 		plugin.getLogger().warning("Disableing plugins because of a SQL-Exception!");
 		Bukkit.broadcastMessage("§2Disable 1vs1 caused by an Exception!");
