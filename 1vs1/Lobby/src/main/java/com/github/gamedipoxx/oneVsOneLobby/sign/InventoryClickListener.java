@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
-import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
+import com.github.gamedipoxx.oneVsOneLobby.Messages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
@@ -41,7 +41,7 @@ public class InventoryClickListener implements Listener {
 			return;
 		}
 		if(blacklist.contains(playerwhoclicked)) {
-			playerwhoclicked.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.PLEASEWAIT.getString());
+			playerwhoclicked.sendMessage(Messages.PREFIX.getString() + Messages.PLEASEWAIT.getString());
 			return;
 		}
 		new PlayerConnector(playerwhoclicked, sado.getArenaName());

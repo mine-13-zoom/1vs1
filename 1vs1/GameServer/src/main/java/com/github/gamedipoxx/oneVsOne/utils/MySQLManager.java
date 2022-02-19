@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -17,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
+import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
+import com.github.gamedipoxx.oneVsOne.utils.stats.StatsObject;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {
@@ -260,8 +263,10 @@ public class MySQLManager {
 			public void run() {
 				for (Player player : players) {
 					UUID uuid = player.getUniqueId();
-					try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, GamesPlayed, GamesWon) VALUES (?, 1, 0) ON DUPLICATE KEY UPDATE GamesPlayed = GamesPlayed + 1;")) {
+					try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, PlayerName, GamesPlayed, GamesWon) VALUES (?, ?, 1, 0) ON DUPLICATE KEY UPDATE GamesPlayed = GamesPlayed + 1, PlayerName = ?;")) {
 						stmt.setString(1, uuid.toString());
+						stmt.setString(2, player.getName());
+						stmt.setString(3, player.getName());
 						stmt.execute();
 
 					} catch (SQLException e) {
@@ -277,8 +282,11 @@ public class MySQLManager {
 			@Override
 			public void run() {
 				UUID uuid = player.getUniqueId();
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, GamesPlayed, GamesWon) VALUES (?, 1, 1) ON DUPLICATE KEY UPDATE GamesWon = GamesWon + 1;")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Stats (PlayerUUID, PlayerName, GamesPlayed, GamesWon) VALUES (?, ?, 1, 1) ON DUPLICATE KEY UPDATE GamesWon = GamesWon + 1, GamesPlayed = GamesPlayed, PlayerUUID = ?, PlayerName = ?;")) {
 					stmt.setString(1, uuid.toString());
+					stmt.setString(2, player.getName());
+					stmt.setString(3, uuid.toString());
+					stmt.setString(4, player.getName());
 					stmt.execute();
 
 				} catch (SQLException e) {
@@ -288,32 +296,65 @@ public class MySQLManager {
 			}
 		});
 	}
-	
+
 	public static void updateStats() {
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT PlayerUUID, GamesPlayed, GamesWon FROM Arenas;")) {
-			ResultSet resultSet = stmt.executeQuery();
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
-			HashMap<UUID, StatsObject> stats = new HashMap<>();
+			@Override
+			public void run() {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT PlayerUUID, PlayerName, GamesPlayed, GamesWon FROM Stats;")) {
+					ResultSet resultSet = stmt.executeQuery();
 
-			while (resultSet.next()) {
-				UUID uuid = UUID.fromString(resultSet.getString("PlayerUUID"));
-				int gamesPlayed = resultSet.getInt("GamesPlayed");
-				int gamesWon = resultSet.getInt("GamesWon");
-				stats.put(uuid, new StatsObject(uuid, gamesPlayed, gamesWon));
+					HashMap<UUID, StatsObject> stats = new HashMap<>();
+
+					while (resultSet.next()) {
+						UUID uuid = UUID.fromString(resultSet.getString("PlayerUUID"));
+						int gamesPlayed = resultSet.getInt("GamesPlayed");
+						int gamesWon = resultSet.getInt("GamesWon");
+						String playername = resultSet.getString("PlayerName");
+						stats.put(uuid, new StatsObject(uuid, gamesPlayed, gamesWon, playername));
+					}
+					StatsObject.setStatsCach(stats);
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}
+
 			}
-			StatsObject.setStatsCach(stats);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		}
+		});
 
 	}
-	
-	
-	
-	
+
+	public static void updateTopPlayers() {
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT PlayerUUID, PlayerName, GamesPlayed, GamesWon FROM Stats ORDER BY GamesWon DESC LIMIT 53;")) {
+					ResultSet resultSet = stmt.executeQuery();
+					
+					ArrayList<StatsObject> top = new ArrayList<>();
+
+					while (resultSet.next()) {
+						UUID uuid = UUID.fromString(resultSet.getString("PlayerUUID"));
+						String playername = resultSet.getString("PlayerName");
+						int gamesPlayed = resultSet.getInt("GamesPlayed");
+						int gamesWon = resultSet.getInt("GamesWon");
+						top.add(new StatsObject(uuid, gamesPlayed, gamesWon, playername));
+					}
+					GlobalStatsGUI.setTopPlayers(top);
+					GlobalStatsGUI.updateGui();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return;
+				}
+
+			}
+		});
+	}
 
 	public static void setConfig(FileConfiguration config) {
 		MySQLManager.config = config;

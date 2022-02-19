@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
-import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
+import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
+import com.github.gamedipoxx.oneVsOneLobby.Messages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby;
 import com.github.gamedipoxx.oneVsOneLobby.PlayerConnector;
@@ -22,26 +23,26 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		if (!player.hasPermission("*")) {
-			player.sendMessage(LobbyMessages.BRANDING.getString());
+			player.sendMessage(Messages.BRANDING.getString());
 			return false;
 		}
 
 		if (args.length == 0) {
-			player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGARGS.getString());
+			player.sendMessage(Messages.PREFIX.getString() + Messages.WRONGARGS.getString());
 			return false;
 		}
 		if (args.length >= 1) {
 			switch (args[0]) {
 			case "join": {
 				if (args.length == 1) {
-					player.sendMessage(LobbyMessages.WRONGJOINARG.getString());
+					player.sendMessage(Messages.WRONGJOINARG.getString());
 					break;
 				}
 				if (args.length == 2) {
 					new PlayerConnector(player, args[1]);
-					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.CONNECTING.getString());
+					player.sendMessage(Messages.PREFIX.getString() + Messages.CONNECTING.getString());
 				} else {
-					player.sendMessage(LobbyMessages.WRONGJOINARG.getString());
+					player.sendMessage(Messages.WRONGJOINARG.getString());
 				}
 				break;
 			}
@@ -50,7 +51,7 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 					break;
 				}
 				for(SimpleArenaDatabaseObject sado : LobbySQLManager.getArenas()) {
-					player.sendMessage(LobbyMessages.PREFIX.getString() + sado.getArenaName() + " | " + sado.getPlayercount());
+					player.sendMessage(Messages.PREFIX.getString() + sado.getArenaName() + " | " + sado.getPlayercount());
 				}
 				break;
 			}
@@ -58,7 +59,7 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				if(args.length != 1) {
 					break;
 				}
-				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.FETCHING.getString());
+				player.sendMessage(Messages.PREFIX.getString() + Messages.FETCHING.getString());
 				LobbySQLManager.fetchFromDatabase();
 				break;
 			}
@@ -71,33 +72,41 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				break;
 				
 			}
+			case "stats": {
+				if(args.length != 1) {
+					break;
+				}
+				player.openInventory(GlobalStatsGUI.getGui());
+				break;
+				
+			}
 			case "addsign": {
 				if(args.length != 1) {
 					break;
 				}
 				Block block = player.getTargetBlock(null, 6);
 				if(block.getState() == null) {
-					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
+					player.sendMessage(Messages.PREFIX.getString() + Messages.WRONGSIGNCREATE.getString());
 					OneVsOneLobby.getPlugin().getLogger().warning("CHECK1");	//DEBUG ONLY
 					break;
 				}
 				if(block.getState() instanceof Sign == false) {
-					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
+					player.sendMessage(Messages.PREFIX.getString() + Messages.WRONGSIGNCREATE.getString());
 					OneVsOneLobby.getPlugin().getLogger().warning("CHECK2");	//DEBUG ONLY
 					break;
 				}
 				Sign sign = (Sign) block.getState();
-				sign.setLine(0, LobbyMessages.JOINSIGN_LINE1.getString());
-				sign.setLine(1, LobbyMessages.JOINSIGN_LINE2.getString());
-				sign.setLine(2, LobbyMessages.JOINSIGN_LINE3.getString());
-				sign.setLine(3, LobbyMessages.JOINSIGN_LINE4.getString());
+				sign.setLine(0, Messages.JOINSIGN_LINE1.getString());
+				sign.setLine(1, Messages.JOINSIGN_LINE2.getString());
+				sign.setLine(2, Messages.JOINSIGN_LINE3.getString());
+				sign.setLine(3, Messages.JOINSIGN_LINE4.getString());
 				sign.update();
-				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.SIGNCREATESUCESS.getString());
+				player.sendMessage(Messages.PREFIX.getString() + Messages.SIGNCREATESUCESS.getString());
 				break;
 				
 			}
 			default:
-				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGARGS.getString());
+				player.sendMessage(Messages.PREFIX.getString() + Messages.WRONGARGS.getString());
 			}
 		}
 		return false;

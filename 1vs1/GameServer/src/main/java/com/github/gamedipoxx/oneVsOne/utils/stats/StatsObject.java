@@ -1,4 +1,4 @@
-package com.github.gamedipoxx.oneVsOne.utils;
+package com.github.gamedipoxx.oneVsOne.utils.stats;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -8,11 +8,14 @@ public class StatsObject {
 	private final UUID uuid;
 	private final int gamesPlayed;
 	private final int gamesWon;
+	private final String playername;
 
-	public StatsObject(final UUID uuid, final int gamesPlayed, final int gamesWon) {
+	public StatsObject(final UUID uuid, final int gamesPlayed, final int gamesWon, final String playerName) {
 		this.uuid = uuid;
 		this.gamesPlayed = gamesPlayed;
 		this.gamesWon = gamesWon;
+		this.playername = playerName;
+		
 	}
 	
 
@@ -34,5 +37,10 @@ public class StatsObject {
 
 	public int getGamesWon() {
 		return gamesWon;
+	}
+
+
+	public String getPlayername() {
+		return playername;
 	}
 }

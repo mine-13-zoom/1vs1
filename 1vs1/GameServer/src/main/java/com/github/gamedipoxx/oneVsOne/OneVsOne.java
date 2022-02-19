@@ -20,6 +20,7 @@ import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
 import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
+import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class OneVsOne extends JavaPlugin{
@@ -33,6 +34,10 @@ public class OneVsOne extends JavaPlugin{
 		saveConfig();
 		MessagesFile.setPlugin(this);
 		MessagesFile.init();
+		GlobalStatsGUI.setPlugin(plugin);
+		GlobalStatsGUI.setGamesLost(Messages.GAMESLOST.getString());
+		GlobalStatsGUI.setGamesPlayed(Messages.GAMESPLAYED.getString());
+		GlobalStatsGUI.setGamesWon(Messages.GAMESWON.getString());
 		
 		//init plugins and Apis
 		plugin = this;

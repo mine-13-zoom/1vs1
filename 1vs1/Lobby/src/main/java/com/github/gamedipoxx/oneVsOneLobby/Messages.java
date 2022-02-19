@@ -4,7 +4,7 @@ import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 
 import net.md_5.bungee.api.ChatColor;
 
-public enum LobbyMessages {
+public enum Messages {
 	
     PREFIX(MessagesFile.getMessageConfig().getString("Prefix")), 
     WRONGARGS(MessagesFile.getMessageConfig().getString("WrongArgs")),
@@ -25,11 +25,14 @@ public enum LobbyMessages {
 	STATUS(MessagesFile.getMessageConfig().getString("Status")),
 	KIT(MessagesFile.getMessageConfig().getString("Kit")),
 	GUITITLE(MessagesFile.getMessageConfig().getString("GuiTitle")),
+	GAMESWON(MessagesFile.getMessageConfig().getString("GamesWon")),
+	GAMESLOST(MessagesFile.getMessageConfig().getString("GamesLost")),
+	GAMESPLAYED(MessagesFile.getMessageConfig().getString("GamesPlayed")),
 	BRANDING("§f§l1vs1 §7 by ProfessorSam. Discord: ProfSam#3975 " + " Github: ProfessorSam");
  
     private String string;
  
-    LobbyMessages(String string) {
+    Messages(String string) {
     	this.string = string;
     }
     
