@@ -21,6 +21,7 @@ import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
 import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
+import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -43,6 +44,11 @@ public class OneVsOne extends JavaPlugin{
 		//init plugins and Apis
 		plugin = this;
 		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+		
+		//Check Version
+		UpdateChecker.setCurrentVersion(getDescription().getVersion());
+		UpdateChecker.setPlugin(this);
+		UpdateChecker.check();
 		
 		//register Commands and Bungeecord
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
@@ -77,6 +83,7 @@ public class OneVsOne extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new TabListRemover(), this);
 		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakOnStartingListener(), this);
+		getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
 		
 		//Create a Kit list

@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
+import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GUIClickListener;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.github.gamedipoxx.oneVsOne.utils.stats.JoinAndFetchListener;
@@ -25,13 +26,21 @@ public class OneVsOneLobby extends JavaPlugin {
 
 		plugin = this;
 		
+		//Setting up messages
 		MessagesFile.setPlugin(this);
 		MessagesFile.init();
 		
+		//setting up UpdateChecker
+		UpdateChecker.setCurrentVersion(getDescription().getVersion());
+		UpdateChecker.setPlugin(this);
+		UpdateChecker.check();
+		
+		//init database
 		MySQLManager.setConfig(getConfig());
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
 		MySQLManager.setPlugin(this);
 		
+		//init GUIs
 		JoinGUI.init();
 		
 		GlobalStatsGUI.setPlugin(plugin);
@@ -46,21 +55,24 @@ public class OneVsOneLobby extends JavaPlugin {
 		MainStatsGUI.setGlobalStats(LobbyMessages.GLOBALSTATS.getString());
 		MainStatsGUI.setPrivateStats(LobbyMessages.PRIVATESTATS.getString());
 		 
-		
-		
-		
+		//saving config
 		this.saveDefaultConfig();
 		this.reloadConfig();
+		
+		//starting connection to database
 		if (MySQLManager.init() == false) {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
+		//register listener
 		getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		getServer().getPluginManager().registerEvents(new SignClick(), this);
 		getServer().getPluginManager().registerEvents(new JoinAndLeaveListener(), this);
 		getServer().getPluginManager().registerEvents(new JoinAndFetchListener(), this);
 		getServer().getPluginManager().registerEvents(new GUIClickListener(), this);
+		getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
+		//register Command
 		this.getCommand("onevsonelobby").setExecutor(new OneVsOneLobbyCommand());
-
+		//register Bungeecord channel
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
