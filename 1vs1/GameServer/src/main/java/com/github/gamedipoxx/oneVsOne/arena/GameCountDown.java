@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
+import com.github.gamedipoxx.oneVsOne.listener.BlockBreakOnStartingListener;
 
 public class GameCountDown implements Listener {
 	private int taskId;
@@ -50,7 +51,12 @@ public class GameCountDown implements Listener {
 				}
 				if(i == 6) {
 					showStartSubTitle(arena);
+					ArrayList<Player> blockBreakers = new ArrayList<>(BlockBreakOnStartingListener.getPlayers());
 					for(Player forplayer : arena.getPlayers()) {
+						if(blockBreakers.contains(forplayer)) {
+							blockBreakers.remove(forplayer);
+						}
+						BlockBreakOnStartingListener.setPlayers(blockBreakers);
 						players.remove(forplayer);
 					}
 					Bukkit.getScheduler().cancelTask(taskId);

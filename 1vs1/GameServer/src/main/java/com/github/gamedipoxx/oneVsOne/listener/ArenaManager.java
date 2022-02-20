@@ -38,6 +38,9 @@ public class ArenaManager implements Listener{
 	
 	@EventHandler
 	public void playerJoinArenaEvent(PlayerJoinArenaEvent event) {
+		ArrayList<Player> players = new ArrayList<>(BlockBreakOnStartingListener.getPlayers());
+		players.add(event.getPlayer());
+		BlockBreakOnStartingListener.setPlayers(players);
 		Arena arena = event.getArena();
 		//first Player join
 		if(arena.getPlayerCount() == 1 && arena.getGameState() == GameState.WAITING) {
