@@ -24,6 +24,7 @@ import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.bstats.bukkit.Metrics;
 
 public class OneVsOne extends JavaPlugin{
 	private static ArrayList<Arena> arena = new ArrayList<Arena>();
@@ -95,6 +96,9 @@ public class OneVsOne extends JavaPlugin{
 		//create all Arenas as definded in the config.yml
 		ArenaManager.createMaxArenas();
 		
+		//Integrate bstats
+		int pluginId = 14364;
+		new Metrics(this, pluginId);
 	}
 	
 	@Override
