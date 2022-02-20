@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
-import com.github.gamedipoxx.oneVsOneLobby.Messages;
+import com.github.gamedipoxx.oneVsOneLobby.LobbyMessages;
 import com.github.gamedipoxx.oneVsOneLobby.LobbySQLManager;
 import com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby;
 
@@ -23,7 +23,7 @@ public class JoinGUI {
 	public static HashMap<Integer, SimpleArenaDatabaseObject> arenaMapping = new HashMap<>();
 
 	private JoinGUI() {
-		this.inventory = Bukkit.createInventory(null, 54, Messages.GUITITLE.getString());
+		this.inventory = Bukkit.createInventory(null, 54, LobbyMessages.GUITITLE.getString());
 	}
 	
 	public static void init() {
@@ -82,16 +82,16 @@ public class JoinGUI {
 		ItemMeta itemmeta = itemstack.getItemMeta();
 		itemmeta.setDisplayName("§2");
 		List<String> list = new ArrayList<String>();
-		list.add(Messages.ARENA.getString());
+		list.add(LobbyMessages.ARENA.getString());
 		list.add("§7" + sado.getArenaName());
 		list.add(" ");
-		list.add(Messages.STATUS.getString());
+		list.add(LobbyMessages.STATUS.getString());
 		list.add("§7" + sado.getGameState().name());
 		list.add(" ");
-		list.add(Messages.KIT.getString());
+		list.add(LobbyMessages.KIT.getString());
 		list.add("§7" + sado.getKit());
 		list.add(" ");
-		list.add(Messages.PLAYER.getString());
+		list.add(LobbyMessages.PLAYER.getString());
 		list.add("§7" + sado.getPlayercount() + "§7/2");
 		itemmeta.setLore(list);
 		itemstack.setItemMeta(itemmeta);

@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -20,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.github.gamedipoxx.oneVsOne.utils.stats.StatsObject;
+import com.google.common.math.Stats;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {
@@ -307,15 +307,19 @@ public class MySQLManager {
 					ResultSet resultSet = stmt.executeQuery();
 
 					HashMap<UUID, StatsObject> stats = new HashMap<>();
+					HashMap<String, StatsObject> statsByName = new HashMap<>();
 
 					while (resultSet.next()) {
 						UUID uuid = UUID.fromString(resultSet.getString("PlayerUUID"));
 						int gamesPlayed = resultSet.getInt("GamesPlayed");
 						int gamesWon = resultSet.getInt("GamesWon");
 						String playername = resultSet.getString("PlayerName");
-						stats.put(uuid, new StatsObject(uuid, gamesPlayed, gamesWon, playername));
+						StatsObject statsobject = new StatsObject(uuid, gamesPlayed, gamesWon, playername);
+						stats.put(uuid, statsobject);
+						statsByName.put(playername, statsobject);
 					}
 					StatsObject.setStatsCach(stats);
+					StatsObject.setStatsCachByName(statsByName);
 
 				} catch (SQLException e) {
 					e.printStackTrace();

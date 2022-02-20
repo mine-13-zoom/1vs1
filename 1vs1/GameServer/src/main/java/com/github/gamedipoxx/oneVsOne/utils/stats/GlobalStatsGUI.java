@@ -66,7 +66,6 @@ public class GlobalStatsGUI {
 		lore.add("§7" + gamesLostint);
 		lore.add(" ");
 		meta.setLore(lore);
-		meta.setUnbreakable(true);
 		meta.setOwningPlayer(Bukkit.getOfflinePlayer(stats.getUuid()));
 		head.setItemMeta(meta);
 		return head;

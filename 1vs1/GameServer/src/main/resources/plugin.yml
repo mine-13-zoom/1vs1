@@ -12,3 +12,10 @@ commands:
       description: Setup OneVsOne
    leave: 
       description: leave arena
+permissions:
+   OneVsOne.admin:
+      description: Admin permission
+   OneVsOne.stats.me:
+      description: Stats for yourself
+   OneVsOne.stats.other:
+      description: View stats from others

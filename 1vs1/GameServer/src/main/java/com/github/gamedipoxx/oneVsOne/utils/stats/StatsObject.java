@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class StatsObject {
 	private static HashMap<UUID, StatsObject> statsCach;
+	private static HashMap<String, StatsObject> statsCachByName;
 	private final UUID uuid;
 	private final int gamesPlayed;
 	private final int gamesWon;
@@ -42,5 +43,15 @@ public class StatsObject {
 
 	public String getPlayername() {
 		return playername;
+	}
+
+
+	public static HashMap<String, StatsObject> getStatsCachByName() {
+		return statsCachByName;
+	}
+
+
+	public static void setStatsCachByName(HashMap<String, StatsObject> statsCachByName) {
+		StatsObject.statsCachByName = statsCachByName;
 	}
 }
