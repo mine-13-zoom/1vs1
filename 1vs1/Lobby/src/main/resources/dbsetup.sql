@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS Arenas (
+CREATE TABLE IF NOT EXISTS ${mysql.version}_Arenas (
 	ArenaName VARCHAR(50) PRIMARY KEY,
 	ArenaState VARCHAR(50) NOT NULL,
 	Kit VARCHAR(50) NOT NULL,
 	Players INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Teleport (
+CREATE TABLE IF NOT EXISTS ${mysql.version}_Teleport (
 	PlayerName VARCHAR(50) PRIMARY KEY,
 	ArenaName VARCHAR(50) NOT NULL
 );

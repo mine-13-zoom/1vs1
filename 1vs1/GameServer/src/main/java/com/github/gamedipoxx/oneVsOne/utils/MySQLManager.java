@@ -1,7 +1,9 @@
 package com.github.gamedipoxx.oneVsOne.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.github.gamedipoxx.oneVsOne.utils.stats.StatsObject;
-import com.google.common.math.Stats;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {
@@ -28,11 +29,12 @@ public class MySQLManager {
 	private static FileConfiguration config;
 	private static InputStream setupFile;
 	private static JavaPlugin plugin;
+	private static String version;
 
 	public static Boolean init() {
 
 		plugin.getLogger().info("§2Starting Database Setup");
-
+		version = getMysqlDatabaseVersion();
 		try {
 			connect();
 		} catch (Exception e) {
@@ -40,6 +42,19 @@ public class MySQLManager {
 			return false;
 		}
 		return true;
+	}
+	
+	private static String getMysqlDatabaseVersion() {
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource("mysqlversion.txt")));
+		try {
+			String mySqlVersion = reader.readLine();
+			return mySqlVersion;
+		} catch (IOException e) {
+			disableplugin();
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private static void connect() throws SQLException {
@@ -103,7 +118,7 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
@@ -124,7 +139,7 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
@@ -145,7 +160,7 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Arenas WHERE ArenaName = ?;")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas WHERE ArenaName = ?;")) {
 
 					stmt.setString(1, arenaUUID);
 					stmt.execute();
@@ -160,13 +175,13 @@ public class MySQLManager {
 
 	// Purge database but NOT Async
 	public static void purgeDatabase() {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Arenas")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas")) {
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Teleport")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport")) {
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,7 +190,7 @@ public class MySQLManager {
 
 	public static ArrayList<SimpleArenaDatabaseObject> readArenas() {
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit FROM Arenas;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit FROM "+ version +"_Arenas;")) {
 			ResultSet resultSet = stmt.executeQuery();
 
 			ArrayList<SimpleArenaDatabaseObject> sado = new ArrayList<>();
@@ -197,7 +212,7 @@ public class MySQLManager {
 	}
 
 	public static @Nullable String readPlayerTeleport(Player player) {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName FROM Teleport WHERE PlayerName = ?;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName FROM "+ version +"_Teleport WHERE PlayerName = ?;")) {
 			stmt.setString(1, player.getName());
 			ResultSet resultSet = stmt.executeQuery();
 
@@ -223,7 +238,7 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM Teleport WHERE PlayerName = ?;")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport WHERE PlayerName = ?;")) {
 
 					stmt.setString(1, player);
 					stmt.execute();
@@ -241,7 +256,7 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO Teleport(PlayerName, ArenaName) VALUES (?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Teleport(PlayerName, ArenaName) VALUES (?, ?)")) {
 
 					stmt.setString(1, player);
 					stmt.setString(2, arena);

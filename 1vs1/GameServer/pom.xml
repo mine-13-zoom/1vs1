@@ -21,6 +21,7 @@
 		<maven.compiler.target>16</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<mysql.version>1_2_1</mysql.version>
 	</properties>
 
 	<repositories>
