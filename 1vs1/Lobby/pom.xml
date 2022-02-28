@@ -93,6 +93,7 @@
 								<exclude>META-INF/*.RSA</exclude>
 								<exclude>*.yml</exclude>
 								<exclude>*.sql</exclude>
+								<exclude>*.txt</exclude>
 							</excludes>
 						</filter>
 					</filters>
