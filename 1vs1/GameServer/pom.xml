@@ -37,6 +37,13 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>fr.mrmicky</groupId>
+			<artifactId>fastboard</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -84,6 +91,12 @@
 						<relocation>
 							<pattern>org.bstats</pattern>
 							<shadedPattern>com.github.gamedipoxx.oneVsOne.bstats</shadedPattern>
+						</relocation>
+					</relocations>
+					<relocations>
+						<relocation>
+							<pattern>fr.mrmicky.fastboard</pattern>
+							<shadedPattern>com.github.gamedipoxx.fastboard</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>

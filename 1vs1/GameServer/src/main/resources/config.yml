@@ -31,5 +31,7 @@ Arenasettings:
    DropItems: false
    ItemDamage: false
    ItemPickup: false
+#Enable or disable the scoreboard
+scoreboard: true
 #do NOT use this in production mode. It is only for debuging
 debug: false

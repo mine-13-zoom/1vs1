@@ -19,6 +19,7 @@ import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
 import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
+import com.github.gamedipoxx.oneVsOne.scoreboard.ScoreboardManager;
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
@@ -86,6 +87,11 @@ public class OneVsOne extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new BlockBreakOnStartingListener(), this);
 		getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
+		
+		//Check if the scoreboard is enables and then register the listener
+		if(getConfig().getBoolean("scoreboard")) {
+			getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
+		}
 		
 		//Create a Kit list
 		ArenaMap.setMaps(getConfig().getStringList("Maps"));

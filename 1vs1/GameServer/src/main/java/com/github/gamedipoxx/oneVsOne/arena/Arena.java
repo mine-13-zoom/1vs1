@@ -19,6 +19,7 @@ import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
+import com.github.gamedipoxx.oneVsOne.scoreboard.Scoreboard;
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
@@ -28,6 +29,7 @@ public class Arena {
 	private int playercount;
 	private GameState gameState;
 	private Collection<Player> players = new ArrayList<Player>();
+	private Scoreboard scoreboard;
 	
 	public Arena() {
 		arenaUuid = "" + Instant.now().getEpochSecond() + RandomUtils.nextInt();	 //generate a uuid
@@ -43,14 +45,16 @@ public class Arena {
 		mapName = ArenaMap.getMaps().get(random.nextInt(ArenaMap.getMaps().size()));
 		arenamap = new ArenaMap(mapName, arenaUuid);
 		
-		
-		
 		//playercound & Gamestate init
 		playercount = 0;
 		gameState = GameState.WAITING;
 		
-		
+		//Scoreboard
+		if(OneVsOne.getPlugin().getConfig().getBoolean("scoreboard")) {
+			scoreboard = new Scoreboard(this);
+		}
 	}
+	
 	
 	public void joinPlayer(Player player) { //adds a player to the arena and fires event
 		if(playercount == 0) {
@@ -181,5 +185,9 @@ public class Arena {
 	
 	public ArenaMap getArenaMap() {
 		return arenamap;
+	}
+
+	public Scoreboard getScoreboard() {
+		return scoreboard;
 	}	
 }
