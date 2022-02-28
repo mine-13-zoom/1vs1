@@ -15,6 +15,7 @@ import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.BlockBreakOnStartingListener;
 import com.github.gamedipoxx.oneVsOne.listener.LeaveItem;
+import com.github.gamedipoxx.oneVsOne.listener.OnTntPlaceListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
@@ -91,6 +92,11 @@ public class OneVsOne extends JavaPlugin{
 		//Check if the scoreboard is enables and then register the listener
 		if(getConfig().getBoolean("scoreboard")) {
 			getServer().getPluginManager().registerEvents(new ScoreboardManager(), this);
+		}
+		
+		//checks if the tnt is enabled
+		if(getConfig().getBoolean("tnt")) {
+			getServer().getPluginManager().registerEvents(new OnTntPlaceListener(), this);
 		}
 		
 		//Create a Kit list

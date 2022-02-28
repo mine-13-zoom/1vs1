@@ -33,5 +33,7 @@ Arenasettings:
    ItemPickup: false
 #Enable or disable the scoreboard
 scoreboard: true
+#Enable or disable if tnt is activated after placing
+tnt: true
 #do NOT use this in production mode. It is only for debuging
 debug: false
