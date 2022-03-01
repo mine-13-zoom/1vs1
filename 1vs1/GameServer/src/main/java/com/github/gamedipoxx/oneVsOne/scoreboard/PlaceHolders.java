@@ -21,11 +21,12 @@ public class PlaceHolders {
 	private String arenaKit;
 	private String gameState;
 	private String version;
-	private String server = "null"; //TODO implement server placeholder after adding #11 multiple gameserver instances
+	private String server;
 	
 	public PlaceHolders(Arena arena) {
 		this.arena = arena;
 		version = OneVsOne.getPlugin().getDescription().getVersion();
+		server = OneVsOne.getServername();
 	}
 	
 	public void update(UpdateablePlaceholders placeholder) {
