@@ -1,5 +1,3 @@
-GameServer: "OneVsOne-1"
-
 #This are the Settings for the MySql or MariaDB Database. A database is required
 Database:
   Host: localhost

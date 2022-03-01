@@ -13,8 +13,10 @@ Database:
    Database: db
    User: username
    Password: passy
-#The server there the game ends
+#The server there the game ends. If you have more than one lobby, please join the discord and you get help
 LobbyServer: Lobby
+#The name of this server in your Bungeecord config
+ServerName: "GameHost-1"
 #The number of arenas which are online
 Arenas: 10
 #The enabled maps. This will be set with /onevsonesetup save

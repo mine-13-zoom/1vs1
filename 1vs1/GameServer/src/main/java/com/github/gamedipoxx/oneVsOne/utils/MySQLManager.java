@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
+import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
 import com.github.gamedipoxx.oneVsOne.utils.stats.StatsObject;
@@ -118,12 +119,13 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
 					stmt.setString(3, arena.getArenaMap().getKitName());
 					stmt.setInt(4, arena.getPlayerCount());
+					stmt.setString(5, OneVsOne.getServername());
 					stmt.execute();
 
 				} catch (SQLException e) {
@@ -139,12 +141,13 @@ public class MySQLManager {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players) VALUES (?, ?, ?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
 					stmt.setString(3, arena.getArenaMap().getKitName());
 					stmt.setInt(4, arena.getPlayerCount());
+					stmt.setString(5, OneVsOne.getServername());
 					stmt.execute();
 
 				} catch (SQLException e) {
@@ -175,13 +178,15 @@ public class MySQLManager {
 
 	// Purge database but NOT Async
 	public static void purgeDatabase() {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas WHERE Server = ?;")) {
+			stmt.setString(1, OneVsOne.getServername());
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport WHERE Server = ?;")) {
+			stmt.setString(1, OneVsOne.getServername());
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -190,7 +195,7 @@ public class MySQLManager {
 
 	public static ArrayList<SimpleArenaDatabaseObject> readArenas() {
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit FROM "+ version +"_Arenas;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit, Server FROM "+ version +"_Arenas;")) {
 			ResultSet resultSet = stmt.executeQuery();
 
 			ArrayList<SimpleArenaDatabaseObject> sado = new ArrayList<>();
@@ -200,7 +205,8 @@ public class MySQLManager {
 				GameState gameState = GameState.valueOf(resultSet.getString("ArenaState"));
 				int players = resultSet.getInt("Players");
 				String kit = resultSet.getString("Kit");
-				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit));
+				String server = resultSet.getString("Server");
+				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit, server));
 			}
 			return sado;
 
@@ -251,15 +257,16 @@ public class MySQLManager {
 		});
 	}
 
-	public static void addPlayerToTeleport(String player, String arena) {
+	public static void addPlayerToTeleport(String player, String arena, String server) {
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Teleport(PlayerName, ArenaName) VALUES (?, ?)")) {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Teleport(PlayerName, ArenaName, Server) VALUES (?, ?, ?)")) {
 
 					stmt.setString(1, player);
 					stmt.setString(2, arena);
+					stmt.setString(3, server);
 					stmt.execute();
 
 				} catch (SQLException e) {

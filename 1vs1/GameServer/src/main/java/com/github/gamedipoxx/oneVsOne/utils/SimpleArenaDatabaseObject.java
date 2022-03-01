@@ -5,12 +5,14 @@ public class SimpleArenaDatabaseObject {
 	private int playercount;
 	private GameState gameState;
 	private String kit;
+	private String server;
 	
-	public SimpleArenaDatabaseObject(String arenaName, int playerCount, GameState gameState, String kit) {
+	public SimpleArenaDatabaseObject(String arenaName, int playerCount, GameState gameState, String kit, String server) {
 		this.arenaName = arenaName;
 		this.playercount = playerCount;
 		this.gameState = gameState;
 		this.kit = kit;
+		this.server = server;
 	}
 
 	public String getArenaName() {
@@ -27,6 +29,10 @@ public class SimpleArenaDatabaseObject {
 
 	public String getKit() {
 		return kit;
+	}
+
+	public String getServer() {
+		return server;
 	}
 	
 }

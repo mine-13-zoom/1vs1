@@ -32,11 +32,13 @@ public class OneVsOne extends JavaPlugin{
 	private static ArrayList<Arena> arena = new ArrayList<Arena>();
 	private static OneVsOne plugin;
 	private static MultiverseCore multiversecore;
+	private static String servername;
 	@Override
 	public void onEnable() {
 		//Config stuff
 		saveDefaultConfig();
 		saveConfig();
+		servername = getConfig().getString("ServerName");
 		MessagesFile.setPlugin(this);
 		MessagesFile.init();
 		GlobalStatsGUI.setPlugin(plugin);
@@ -139,5 +141,9 @@ public class OneVsOne extends JavaPlugin{
 	
 	public static MultiverseCore getMultiversecore() {
 		return multiversecore;
+	}
+
+	public static String getServername() {
+		return servername;
 	}
 }
