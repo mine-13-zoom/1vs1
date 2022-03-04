@@ -1,7 +1,11 @@
 name: OneVsOneLobby
 main: com.github.gamedipoxx.oneVsOneLobby.OneVsOneLobby
 author: Professor_Sam 
+<<<<<<< HEAD
 version: ${project.version}
+=======
+version: 1.1.2
+>>>>>>> refs/heads/master
 api-version: 1.17
 commands:
    onevsonelobby:
