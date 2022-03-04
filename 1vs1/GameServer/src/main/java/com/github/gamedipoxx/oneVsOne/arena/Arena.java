@@ -1,12 +1,10 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -32,7 +30,7 @@ public class Arena {
 	private Scoreboard scoreboard;
 	
 	public Arena() {
-		arenaUuid = "" + Instant.now().getEpochSecond() + RandomUtils.nextInt();	 //generate a uuid
+		arenaUuid = getRandomString();	 //generate a uuid
 		
 		//Map
 		String mapName;
@@ -174,6 +172,20 @@ public class Arena {
 		GameStateChangeEvent event = new GameStateChangeEvent(this, this.gameState, gameState);
 		Bukkit.getPluginManager().callEvent(event);
 		this.gameState = gameState;
+	}
+	
+	private String getRandomString() {
+		 int leftLimit = 97; // letter 'a'
+		    int rightLimit = 122; // letter 'z'
+		    int targetStringLength = 14;
+		    Random random = new Random();
+
+		    String generatedString = random.ints(leftLimit, rightLimit + 1)
+		      .limit(targetStringLength)
+		      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+		      .toString();
+
+		  return generatedString;
 	}
 	
 	public String getArenaName() {
