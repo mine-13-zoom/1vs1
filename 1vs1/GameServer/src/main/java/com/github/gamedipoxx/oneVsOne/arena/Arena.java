@@ -1,12 +1,10 @@
 package com.github.gamedipoxx.oneVsOne.arena;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -19,6 +17,7 @@ import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
+import com.github.gamedipoxx.oneVsOne.scoreboard.Scoreboard;
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
@@ -28,9 +27,10 @@ public class Arena {
 	private int playercount;
 	private GameState gameState;
 	private Collection<Player> players = new ArrayList<Player>();
+	private Scoreboard scoreboard;
 	
 	public Arena() {
-		arenaUuid = "" + Instant.now().getEpochSecond() + RandomUtils.nextInt();	 //generate a uuid
+		arenaUuid = getRandomString();	 //generate a uuid
 		
 		//Map
 		String mapName;
@@ -43,14 +43,16 @@ public class Arena {
 		mapName = ArenaMap.getMaps().get(random.nextInt(ArenaMap.getMaps().size()));
 		arenamap = new ArenaMap(mapName, arenaUuid);
 		
-		
-		
 		//playercound & Gamestate init
 		playercount = 0;
 		gameState = GameState.WAITING;
 		
-		
+		//Scoreboard
+		if(OneVsOne.getPlugin().getConfig().getBoolean("scoreboard")) {
+			scoreboard = new Scoreboard(this);
+		}
 	}
+	
 	
 	public void joinPlayer(Player player) { //adds a player to the arena and fires event
 		if(playercount == 0) {
@@ -172,6 +174,20 @@ public class Arena {
 		this.gameState = gameState;
 	}
 	
+	private String getRandomString() {
+		 int leftLimit = 97; // letter 'a'
+		    int rightLimit = 122; // letter 'z'
+		    int targetStringLength = 14;
+		    Random random = new Random();
+
+		    String generatedString = random.ints(leftLimit, rightLimit + 1)
+		      .limit(targetStringLength)
+		      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+		      .toString();
+
+		  return generatedString;
+	}
+	
 	public String getArenaName() {
 		return arenaUuid;
 	}
@@ -182,5 +198,9 @@ public class Arena {
 	
 	public ArenaMap getArenaMap() {
 		return arenamap;
+	}
+
+	public Scoreboard getScoreboard() {
+		return scoreboard;
 	}	
 }

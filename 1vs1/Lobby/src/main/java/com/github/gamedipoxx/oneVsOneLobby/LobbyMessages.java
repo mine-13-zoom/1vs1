@@ -25,6 +25,11 @@ public enum LobbyMessages {
 	STATUS(MessagesFile.getMessageConfig().getString("Status")),
 	KIT(MessagesFile.getMessageConfig().getString("Kit")),
 	GUITITLE(MessagesFile.getMessageConfig().getString("GuiTitle")),
+	GAMESWON(MessagesFile.getMessageConfig().getString("GamesWon")),
+	GAMESLOST(MessagesFile.getMessageConfig().getString("GamesLost")),
+	GAMESPLAYED(MessagesFile.getMessageConfig().getString("GamesPlayed")),
+	PRIVATESTATS(MessagesFile.getMessageConfig().getString("PrivateStats")),
+	GLOBALSTATS(MessagesFile.getMessageConfig().getString("GlobalStats")),
 	BRANDING("§f§l1vs1 §7 by ProfessorSam. Discord: ProfSam#3975 " + " Github: ProfessorSam");
  
     private String string;

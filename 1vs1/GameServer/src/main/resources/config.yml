@@ -1,4 +1,4 @@
-#This option is not necessary because players are in the lobby for a maximum of 1-5 seconds
+#This option is not necessary because players are in the lobby for a maximum of 1-5 seconds but it should be on the ground
 Lobby:
    World: world
    X: 100
@@ -13,8 +13,10 @@ Database:
    Database: db
    User: username
    Password: passy
-#The server there the game ends
+#The server there the game ends. If you have more than one lobby, please join the discord and you get help
 LobbyServer: Lobby
+#The name of this server in your Bungeecord config
+ServerName: "GameHost-1"
 #The number of arenas which are online
 Arenas: 10
 #The enabled maps. This will be set with /onevsonesetup save
@@ -23,5 +25,17 @@ Maps: []
 setupmode: true
 #When you enable this the player can use the /leave command to go back to the lobby
 leaveCommand: true 
+#Setting for arena behavior
+Arenasettings:
+   BlockBreaking: false
+   BlockPlacing: false
+   FallDamage: true
+   DropItems: false
+   ItemDamage: false
+   ItemPickup: false
+#Enable or disable the scoreboard
+scoreboard: true
+#Enable or disable if tnt is activated after placing
+tnt: true
 #do NOT use this in production mode. It is only for debuging
 debug: false

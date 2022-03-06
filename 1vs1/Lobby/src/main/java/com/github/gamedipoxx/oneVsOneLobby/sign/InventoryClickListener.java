@@ -44,7 +44,7 @@ public class InventoryClickListener implements Listener {
 			playerwhoclicked.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.PLEASEWAIT.getString());
 			return;
 		}
-		new PlayerConnector(playerwhoclicked, sado.getArenaName());
+		new PlayerConnector(playerwhoclicked, sado.getArenaName(), sado.getServer());
 		blacklist.add(playerwhoclicked);
 		Bukkit.getScheduler().runTaskLater(OneVsOneLobby.getPlugin(), new Runnable() {
 			

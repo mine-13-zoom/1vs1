@@ -3,20 +3,26 @@ package com.github.gamedipoxx.oneVsOne.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import com.github.gamedipoxx.oneVsOne.ArenaSettings;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -32,6 +38,9 @@ public class ArenaManager implements Listener{
 	
 	@EventHandler
 	public void playerJoinArenaEvent(PlayerJoinArenaEvent event) {
+		ArrayList<Player> players = new ArrayList<>(BlockBreakOnStartingListener.getPlayers());
+		players.add(event.getPlayer());
+		BlockBreakOnStartingListener.setPlayers(players);
 		Arena arena = event.getArena();
 		//first Player join
 		if(arena.getPlayerCount() == 1 && arena.getGameState() == GameState.WAITING) {
@@ -73,6 +82,7 @@ public class ArenaManager implements Listener{
 		}
 		if(before == GameState.STARTING && after == GameState.INGAME) {
 			arena.broadcastMessage(Messages.PREFIX.getString() + Messages.STARTINGGAME.getString());
+			MySQLManager.increateGamesPlayedByArena(arena);
 			for(Player player : arena.getPlayers()) {
 				player.getInventory().clear();
 				player.setHealth(20);
@@ -124,6 +134,7 @@ public class ArenaManager implements Listener{
 					for(Player winPlayer : arena.getPlayers()) {
 						if(winPlayer != player) {
 							arena.broadcastMessage(Messages.PREFIX.getString() + winPlayer.getDisplayName() + " " + Messages.PLAYERWIN.getString());
+							MySQLManager.increateWinsBy1(winPlayer);
 						}
 					}
 				}
@@ -150,21 +161,55 @@ public class ArenaManager implements Listener{
 	}
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
+		if(ArenaSettings.DROP_ITEMS.getValue()) {
+			return;
+		}
 		event.setCancelled(true);
 	}
 	@EventHandler
 	public void onToolDamageEvent(PlayerItemDamageEvent event) {
+		if(ArenaSettings.ITEM_DAMAGE.getValue()) {
+			return;
+		}
 		event.setCancelled(true);
 	}
 	@EventHandler
 	public void onPlayerPickUpItem(EntityPickupItemEvent event) {
+		if(ArenaSettings.ITEM_PICKUP.getValue()) {
+			return;
+		}
 		if(event.getEntity() instanceof Player) {
 			event.setCancelled(true);
 		}
 	}
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		event.setCancelled(true);
+		if(ArenaSettings.BLOCK_BREAKING.getValue()) {
+			return;
+		}
+		if(event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerBreakFarmland(PlayerInteractEvent event) {
+		if(ArenaSettings.BLOCK_BREAKING.getValue()) {
+			return;
+		}
+		if(event.getAction() == Action.PHYSICAL) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerFallDamage(EntityDamageEvent event) {
+		if(ArenaSettings.FALL_DAMAGE.getValue()) {
+			return;
+		}
+		if(event.getCause() == DamageCause.FALL) {
+			event.setCancelled(true);
+		}
 	}
 	
 	private void giveInv(Arena arena) {

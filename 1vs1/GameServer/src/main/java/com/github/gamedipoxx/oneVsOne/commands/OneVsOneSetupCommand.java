@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
-import com.google.protobuf.Message;
 
 public class OneVsOneSetupCommand implements CommandExecutor{
 	

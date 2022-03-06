@@ -3,7 +3,7 @@ main: com.github.gamedipoxx.oneVsOne.OneVsOne
 author: Professor_Sam
 softdepend:
 - Multiverse-Core
-version: 1.1.2
+version: ${project.version}
 api-version: 1.17
 commands:
    OneVsOne:
@@ -12,3 +12,10 @@ commands:
       description: Setup OneVsOne
    leave: 
       description: leave arena
+permissions:
+   OneVsOne.admin:
+      description: Admin permission
+   OneVsOne.stats.me:
+      description: Stats for yourself
+   OneVsOne.stats.other:
+      description: View stats from others
