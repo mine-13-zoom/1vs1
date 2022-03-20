@@ -11,7 +11,7 @@
 
 	<groupId>com.github.gamedipoxx</groupId>
 	<artifactId>GameServer</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<packaging>jar</packaging>
 
 	<name>GameServer</name>
@@ -66,9 +66,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.onarandombox.multiversecore</groupId> <!-- Don't forget to replace this -->
-			<artifactId>Multiverse-Core</artifactId> <!-- Replace this as well -->
-			<version>4.3.1</version> <!-- This too -->
+			<groupId>com.onarandombox.multiversecore</groupId>
+			<artifactId>Multiverse-Core</artifactId> 
+			<version>4.3.1</version> 
 			<scope>provided</scope>
 		</dependency>
 
