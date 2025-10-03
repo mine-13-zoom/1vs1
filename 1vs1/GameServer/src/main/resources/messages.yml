@@ -30,6 +30,7 @@ GamesLost: "&e&lGames lost"
 GamesPlayed: "&e&lGames played"
 GlobalStats: "&e&lGlobal stats"
 PrivateStats: "&e&lPrivate stats"
+   - " "
 ScoreboardTitle: "&e&l1vs1"
 ScoreboardContent: #Placeholders are: %arenaname% %gamestate% %arenamap% %player1hp% %player2hp% %player1name% %player2name% %version% %server%
    - " "

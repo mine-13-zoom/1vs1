@@ -46,23 +46,23 @@ public class JoinGUI {
 		for(SimpleArenaDatabaseObject sado : arenas) {
 			switch (sado.getGameState()) {
 			case ENDING: {
-				joingui.addItemToInv(sado, Material.RED_CONCRETE, i);
+				joingui.addItemToInv(sado, Material.RED_TERRACOTTA, i);
 				break;
 			}
 			case INGAME: {
-				joingui.addItemToInv(sado, Material.ORANGE_CONCRETE, i);
+				joingui.addItemToInv(sado, Material.ORANGE_TERRACOTTA, i);
 				break;
 			}
 			case STARTING: {
-				joingui.addItemToInv(sado, Material.YELLOW_CONCRETE, i);
+				joingui.addItemToInv(sado, Material.YELLOW_TERRACOTTA, i);
 				break;
 			}
 			case WAITING: {
-				joingui.addItemToInv(sado, Material.LIME_CONCRETE, i);
+				joingui.addItemToInv(sado, Material.LIME_TERRACOTTA, i);
 				break;
 			}
 			case UNDEFINED: {
-				joingui.addItemToInv(sado, Material.GRAY_CONCRETE, i);
+				joingui.addItemToInv(sado, Material.GRAY_TERRACOTTA, i);
 				break;
 			}
 			default:
@@ -77,7 +77,7 @@ public class JoinGUI {
 	}
 	
 	private void addItemToInv(SimpleArenaDatabaseObject sado, Material material, int index) {
-		ItemStack itemstack = new ItemStack(Material.GRAY_CONCRETE, 1);
+		ItemStack itemstack = new ItemStack(Material.TERRACOTTA, 1);
 		itemstack.setType(material);
 		ItemMeta itemmeta = itemstack.getItemMeta();
 		itemmeta.setDisplayName("§2");

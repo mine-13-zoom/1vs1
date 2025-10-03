@@ -19,7 +19,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
 import com.github.gamedipoxx.oneVsOne.ArenaSettings;
@@ -32,6 +34,7 @@ import com.github.gamedipoxx.oneVsOne.events.GameStateChangeEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerJoinArenaEvent;
 import com.github.gamedipoxx.oneVsOne.events.PlayerLeaveArenaEvent;
 import com.github.gamedipoxx.oneVsOne.utils.GameState;
+import com.github.gamedipoxx.oneVsOne.utils.KitManager;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
 public class ArenaManager implements Listener{
@@ -213,16 +216,24 @@ public class ArenaManager implements Listener{
 	}
 	
 	private void giveInv(Arena arena) {
-		for(Player player : arena.getPlayers()) {
-			player.getInventory().setContents(arena.getArenaMap().getInventory().toArray(new ItemStack[0]));
-			player.getInventory().setArmorContents(arena.getArenaMap().getArmor().toArray(new ItemStack[0]));
-		}
-	}
+        for (Player player : arena.getPlayers()) {
+            String kitName = arena.getArenaMap().getKitName();
+            Inventory kit = KitManager.getPlayerKit(player, kitName);
+            if (kit != null) {
+                player.getInventory().setContents(kit.getContents());
+            } else {
+                player.getInventory().setContents(arena.getArenaMap().getInventory().toArray(new ItemStack[0]));
+                player.getInventory().setArmorContents(arena.getArenaMap().getArmor().toArray(new ItemStack[0]));
+            }
+        }
+    }
 	
 	public static void createMaxArenas() {
 		int arenas = OneVsOne.getPlugin().getConfig().getInt("Arenas");
-		for(int i = 1; i <= arenas; i++) {
-			Arena.createAndRegisterArena();
+		for(String map : com.github.gamedipoxx.oneVsOne.arena.ArenaMap.getMaps()) {
+			for(int i = 1; i <= arenas; i++) {
+				Arena.createAndRegisterArena(map);
+			}
 		}
 	}
 }

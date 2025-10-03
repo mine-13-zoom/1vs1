@@ -67,14 +67,15 @@ public class LeaveItem implements Listener {
 		if(event.getArena().getGameState() != GameState.STARTING) {
 			return;
 		}
-		
-		event.getPlayer().getInventory().setItem(8, getItem());
+		if(event.getArena().getPlayerCount() == 2) {
+			event.getPlayer().getInventory().setItem(8, getItem());
+		}
 	}
 	
 	private static ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.MAGMA_CREAM, 1);
+		ItemStack item = new ItemStack(Material.RED_BED, 1);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(Messages.LEAVEITEM.getString());
+		meta.setDisplayName("§cLeave");
 		item.setItemMeta(meta);
 		return item;
 	}

@@ -65,7 +65,8 @@ public class OneVsOneLobby extends JavaPlugin {
 		}
 		//register listener
 		getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
-		getServer().getPluginManager().registerEvents(new SignClick(), this);
+		//getServer().getPluginManager().registerEvents(new SignClick(), this);
+		getCommand("openduelgui").setExecutor(new SignClick());
 		getServer().getPluginManager().registerEvents(new JoinAndLeaveListener(), this);
 		getServer().getPluginManager().registerEvents(new JoinAndFetchListener(), this);
 		getServer().getPluginManager().registerEvents(new GUIClickListener(), this);

@@ -30,12 +30,11 @@ public class MySQLManager {
 	private static FileConfiguration config;
 	private static InputStream setupFile;
 	private static JavaPlugin plugin;
-	private static String version;
+	private static String version = "1_2_1";
 
 	public static Boolean init() {
 
 		plugin.getLogger().info("§2Starting Database Setup");
-		version = getMysqlDatabaseVersion();
 		try {
 			connect();
 		} catch (Exception e) {
@@ -43,19 +42,6 @@ public class MySQLManager {
 			return false;
 		}
 		return true;
-	}
-	
-	private static String getMysqlDatabaseVersion() {
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource("mysqlversion.txt")));
-		try {
-			String mySqlVersion = reader.readLine();
-			return mySqlVersion;
-		} catch (IOException e) {
-			disableplugin();
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private static void connect() throws SQLException {
@@ -99,6 +85,7 @@ public class MySQLManager {
 			e.printStackTrace();
 			throw e;
 		}
+		setup = setup.replace("${mysql.version}", version);
 		String[] queries = setup.split(";");
 		for (String query : queries) {
 			if (query.isBlank())
@@ -110,9 +97,9 @@ public class MySQLManager {
 		plugin.getLogger().info("§2Database setup complete.");
 	}
 
-	public static MysqlDataSource getDatasource() {
-		return datasource;
-	}
+	public static Connection getConnection() throws SQLException {
+        return datasource.getConnection();
+    }
 
 	public static void updateArena(Arena arena) {
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {

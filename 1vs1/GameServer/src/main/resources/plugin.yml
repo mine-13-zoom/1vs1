@@ -12,6 +12,8 @@ commands:
       description: Setup OneVsOne
    leave: 
       description: leave arena
+   kitsave:
+      description: Save your kit
 permissions:
    OneVsOne.admin:
       description: Admin permission

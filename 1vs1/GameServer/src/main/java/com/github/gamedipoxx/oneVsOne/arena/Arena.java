@@ -2,6 +2,7 @@ package com.github.gamedipoxx.oneVsOne.arena;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,26 +23,28 @@ import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 
 public class Arena {
-	private String arenaUuid;
+	private static HashMap<String, Integer> arenaCounts = new HashMap<>();
+	private String arenaName;
 	private ArenaMap arenamap;
 	private int playercount;
 	private GameState gameState;
 	private Collection<Player> players = new ArrayList<Player>();
 	private Scoreboard scoreboard;
 	
-	public Arena() {
-		arenaUuid = getRandomString();	 //generate a uuid
+	public Arena(String mapName) {
+		
+		int count = arenaCounts.getOrDefault(mapName, 0);
+		count++;
+		arenaCounts.put(mapName, count);
+		this.arenaName = mapName + "-" + count;
 		
 		//Map
-		String mapName;
 		if(ArenaMap.getMaps().size() == 0) {
 			OneVsOne.getPlugin().getLogger().warning("No Maps in config.yml");
 			Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
 			return;
 		}
-		Random random = new Random();
-		mapName = ArenaMap.getMaps().get(random.nextInt(ArenaMap.getMaps().size()));
-		arenamap = new ArenaMap(mapName, arenaUuid);
+		arenamap = new ArenaMap(mapName, arenaName);
 		
 		//playercound & Gamestate init
 		playercount = 0;
@@ -51,6 +54,10 @@ public class Arena {
 		if(OneVsOne.getPlugin().getConfig().getBoolean("scoreboard")) {
 			scoreboard = new Scoreboard(this);
 		}
+	}
+	
+	public Arena() {
+		this(ArenaMap.getMaps().get(new Random().nextInt(ArenaMap.getMaps().size())));
 	}
 	
 	
@@ -126,6 +133,16 @@ public class Arena {
 		
 	}
 	
+	public static Arena createAndRegisterArena(String mapName) { //create a arena (Name based on the amout of arenas) and register it in the OneVsOne Class
+		Arena arena = new Arena(mapName);
+		Collection<Arena> arenaCollection = OneVsOne.getArena();
+		arenaCollection.add(arena);
+		OneVsOne.setArena(new ArrayList<>(arenaCollection));
+		MySQLManager.addArena(arena); //Add Arena to Database
+		
+		return arena;
+	}
+	
 	public static Arena createAndRegisterArena() { //create a arena (Name based on the amout of arenas) and register it in the OneVsOne Class
 		Arena arena = new Arena();
 		Collection<Arena> arenaCollection = OneVsOne.getArena();
@@ -160,9 +177,7 @@ public class Arena {
 		return playercount;
 	}
 	
-	public String getArenaUuid() {
-		return arenaUuid;
-	}
+	
 	
 	public GameState getGameState() {
 		return gameState;
@@ -174,22 +189,8 @@ public class Arena {
 		this.gameState = gameState;
 	}
 	
-	private String getRandomString() {
-		 int leftLimit = 97; // letter 'a'
-		    int rightLimit = 122; // letter 'z'
-		    int targetStringLength = 14;
-		    Random random = new Random();
-
-		    String generatedString = random.ints(leftLimit, rightLimit + 1)
-		      .limit(targetStringLength)
-		      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-		      .toString();
-
-		  return generatedString;
-	}
-	
 	public String getArenaName() {
-		return arenaUuid;
+		return arenaName;
 	}
 
 	public Collection<Player> getPlayers() {

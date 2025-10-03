@@ -12,8 +12,10 @@ import com.github.gamedipoxx.oneVsOne.arena.ArenaMap;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneCommand;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneLeaveCommand;
 import com.github.gamedipoxx.oneVsOne.commands.OneVsOneSetupCommand;
+import com.github.gamedipoxx.oneVsOne.commands.KitCommand;
 import com.github.gamedipoxx.oneVsOne.listener.ArenaManager;
 import com.github.gamedipoxx.oneVsOne.listener.BlockBreakOnStartingListener;
+import com.github.gamedipoxx.oneVsOne.listener.KitListener;
 import com.github.gamedipoxx.oneVsOne.listener.LeaveItem;
 import com.github.gamedipoxx.oneVsOne.listener.OnTntPlaceListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerChatListener;
@@ -21,6 +23,7 @@ import com.github.gamedipoxx.oneVsOne.listener.PlayerJoinListener;
 import com.github.gamedipoxx.oneVsOne.listener.PlayerMoveEventCancel;
 import com.github.gamedipoxx.oneVsOne.listener.TabListRemover;
 import com.github.gamedipoxx.oneVsOne.scoreboard.ScoreboardManager;
+import com.github.gamedipoxx.oneVsOne.utils.KitManager;
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
@@ -58,6 +61,7 @@ public class OneVsOne extends JavaPlugin{
 		//register Commands and Bungeecord
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
 		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
+        this.getCommand("kitsave").setExecutor(new KitCommand());
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
 		//check for setupmode and cancel the rest of onEnable()
@@ -80,6 +84,7 @@ public class OneVsOne extends JavaPlugin{
 		if (!MySQLManager.init()) {
 			getServer().getPluginManager().disablePlugin(this);
 		}
+        KitManager.createKitDatabase();
 		//register all Events
 		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
 		getServer().getPluginManager().registerEvents(new PlayerMoveEventCancel(), this);
@@ -89,6 +94,7 @@ public class OneVsOne extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakOnStartingListener(), this);
 		getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
+        getServer().getPluginManager().registerEvents(new KitListener(), this);
 		//getServer().getPluginManager().registerEvents(new EventDebugger(), this); //USE THIS JUST FOR DEBUG PURPOSE!
 		
 		//Check if the scoreboard is enables and then register the listener
