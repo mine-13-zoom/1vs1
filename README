@@ -1,0 +1,2 @@
+this is a highly modifies version of another plugin, the main difference lies in the gui to join duels being opened by a command instead of sign and thus more usable /openduelgui
+also in the gameserver is modified in there being a system for people to save custom inventory layouts, also the naming of arenas in the gui is not random but worldname-number going up 
