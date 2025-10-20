@@ -61,7 +61,9 @@ public class OneVsOne extends JavaPlugin{
 		//register Commands and Bungeecord
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
 		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
-        this.getCommand("kitsave").setExecutor(new KitCommand());
+		KitCommand kitCommand = new KitCommand();
+		this.getCommand("kitsave").setExecutor(kitCommand);
+		this.getCommand("resetkit").setExecutor(kitCommand);
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
 		//check for setupmode and cancel the rest of onEnable()
