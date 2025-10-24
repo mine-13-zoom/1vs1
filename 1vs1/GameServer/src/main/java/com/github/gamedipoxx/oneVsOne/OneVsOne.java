@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -117,10 +118,14 @@ public class OneVsOne extends JavaPlugin{
 		
        	//create all Arenas as defined in the config.yml
          		if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-         			MultiverseCoreApi.whenLoaded(api -> {
-         				multiversecore = api;
+         			RegisteredServiceProvider<MultiverseCoreApi> provider = Bukkit.getServicesManager().getRegistration(MultiverseCoreApi.class);
+         			if (provider != null) {
+         				multiversecore = provider.getProvider();
          				ArenaManager.createMaxArenas();
-         			});
+         			} else {
+         				getLogger().severe("Multiverse-Core API not available! Disabling plugin.");
+         				Bukkit.getPluginManager().disablePlugin(this);
+         			}
          		} else {
          			getLogger().severe("Multiverse-Core is not installed! Disabling plugin.");
          			Bukkit.getPluginManager().disablePlugin(this);
