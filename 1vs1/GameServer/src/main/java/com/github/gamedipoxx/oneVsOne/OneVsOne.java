@@ -116,10 +116,18 @@ public class OneVsOne extends JavaPlugin{
 		MySQLManager.purgeDatabase();
 		
 		//create all Arenas as definded in the config.yml
-		MultiverseCoreApi.whenLoaded(coreApi -> {
-			multiversecore = coreApi;
-			ArenaManager.createMaxArenas();
-		});
+		if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+			try {
+				multiversecore = MultiverseCoreApi.get();
+				ArenaManager.createMaxArenas();
+			} catch (IllegalStateException e) {
+				getLogger().severe("Failed to get Multiverse-Core API: " + e.getMessage());
+				Bukkit.getPluginManager().disablePlugin(this);
+			}
+		} else {
+			getLogger().severe("Multiverse-Core is not enabled! Disabling plugin.");
+			Bukkit.getPluginManager().disablePlugin(this);
+		}
 
 		//Integrate bstats
 		int pluginId = 14364;
