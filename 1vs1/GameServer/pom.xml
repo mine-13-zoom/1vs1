@@ -28,6 +28,11 @@
 		</repository>
 
 		<repository>
+			<id>spigot-releases</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/releases/</url>
+		</repository>
+
+		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
@@ -58,7 +63,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.21.10-R0.1-SNAPSHOT</version>
+			<version>1.21.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
