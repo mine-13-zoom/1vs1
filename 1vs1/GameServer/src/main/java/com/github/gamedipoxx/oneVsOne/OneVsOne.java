@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -117,19 +116,18 @@ public class OneVsOne extends JavaPlugin{
 		MySQLManager.purgeDatabase();
 		
  		//create all Arenas as defined in the config.yml
- 		if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
- 			RegisteredServiceProvider<MultiverseCoreApi> provider = Bukkit.getServicesManager().getRegistration(MultiverseCoreApi.class);
- 			if (provider != null) {
- 				multiversecore = provider.getProvider();
- 				ArenaManager.createMaxArenas();
- 			} else {
- 				getLogger().severe("Multiverse-Core API is not available! Disabling plugin.");
- 				Bukkit.getPluginManager().disablePlugin(this);
- 			}
- 		} else {
- 			getLogger().severe("Multiverse-Core is not enabled! Disabling plugin.");
- 			Bukkit.getPluginManager().disablePlugin(this);
- 		}
+  		if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+  			try {
+  				multiversecore = MultiverseCoreApi.get();
+  				ArenaManager.createMaxArenas();
+  			} catch (IllegalStateException e) {
+  				getLogger().severe("Multiverse-Core API is not available! Disabling plugin.");
+  				Bukkit.getPluginManager().disablePlugin(this);
+  			}
+  		} else {
+  			getLogger().severe("Multiverse-Core is not enabled! Disabling plugin.");
+  			Bukkit.getPluginManager().disablePlugin(this);
+  		}
 
 		//Integrate bstats
 		int pluginId = 14364;
