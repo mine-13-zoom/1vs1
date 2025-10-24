@@ -16,6 +16,7 @@ import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.WorldManager;
 import org.mvplugins.multiverse.core.world.MultiverseWorld;
+import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
 
 import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 import org.mvplugins.multiverse.core.world.options.DeleteWorldOptions;
@@ -54,9 +55,9 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		worldManager.getWorld(worldName)
+		worldManager.getLoadedWorld(worldName)
 			.peek(world -> {
-				worldManager.deleteWorld(DeleteWorldOptions.world(world).keepFiles(List.of()))
+				worldManager.deleteWorld(DeleteWorldOptions.world(world))
 					.onFailure(failure -> {
 						OneVsOne.getPlugin().getLogger().warning("Failed to delete world " + worldName + ": " + failure.getFailureMessage());
 					})
@@ -103,9 +104,9 @@ public class ArenaMap {
 		}
 	}
 
- 	private void createWorld() {
-  		worldName = uuid;
-  		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
+  	private void createWorld() {
+   		worldName = uuid;
+   		worldManager = MultiverseCoreApi.get().getWorldManager(); // set Multiverse world manager
  		// Ensure template world is loaded before cloning
  		worldManager.getLoadedWorld(templateWorldName)
  			.peek(loadedTemplateWorld -> {
