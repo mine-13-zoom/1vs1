@@ -108,12 +108,12 @@ public class ArenaMap {
        		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
        		// Check if template world is already loaded, otherwise load it before cloning
       		worldManager.getLoadedWorld(templateWorldName)
-      			.peek(loadedWorld -> {
-      				// World is already loaded, clone directly
-      				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-      					.saveBukkitWorld(true);
-      				performClone(options);
-      			})
+       			.peek(loadedWorld -> {
+       				// World is already loaded, clone directly
+       				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
+       					.saveBukkitWorld(true);
+       				performClone(options);
+       			})
       			.onEmpty(() -> {
       				// World is not loaded, load it first
       				loadAndCloneTemplateWorld();
@@ -123,11 +123,11 @@ public class ArenaMap {
       	private void loadAndCloneTemplateWorld() {
       		worldManager.getWorld(templateWorldName)
       			.peek(world -> worldManager.loadWorld(LoadWorldOptions.world(world))
-      				.onSuccess(loadedWorld -> {
-      					CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-      						.saveBukkitWorld(true);
-      					performClone(options);
-      				})
+       				.onSuccess(loadedWorld -> {
+        				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
+        					.saveBukkitWorld(true);
+       					performClone(options);
+       				})
       				.onFailure(failure -> {
       					OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
       					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
@@ -139,8 +139,8 @@ public class ArenaMap {
       			});
       	}
 
-      	private void performClone(CloneWorldOptions options) {
-      		worldManager.cloneWorld(options)
+       	private void performClone(CloneWorldOptions options) {
+        		worldManager.cloneWorld(options)
       			.onSuccess(newWorld -> {
       				arenaWorld = newWorld.getBukkitWorld().getOrNull();
       				if (arenaWorld != null) {
