@@ -28,13 +28,13 @@ import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
-import org.mvplugins.multiverse.core.MultiverseCore;
+import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.bstats.bukkit.Metrics;
 
 public class OneVsOne extends JavaPlugin{
 	private static ArrayList<Arena> arena = new ArrayList<Arena>();
 	private static OneVsOne plugin;
-	private static MultiverseCore multiversecore;
+	private static MultiverseCoreApi multiversecore;
 	private static String servername;
 	@Override
 	public void onEnable() {
@@ -51,7 +51,7 @@ public class OneVsOne extends JavaPlugin{
 		
 		//init plugins and Apis
 		plugin = this;
-		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+		multiversecore = MultiverseCoreApi.get();
 		
 		//Check Version
 		UpdateChecker.setCurrentVersion(getDescription().getVersion());
@@ -147,7 +147,7 @@ public class OneVsOne extends JavaPlugin{
 		return plugin;
 	}
 	
-	public static MultiverseCore getMultiversecore() {
+	public static MultiverseCoreApi getMultiversecore() {
 		return multiversecore;
 	}
 
