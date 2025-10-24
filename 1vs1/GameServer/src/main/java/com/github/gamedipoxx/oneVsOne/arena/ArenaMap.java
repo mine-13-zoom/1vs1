@@ -20,7 +20,6 @@ import org.mvplugins.multiverse.core.world.MultiverseWorld;
 
 import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 import org.mvplugins.multiverse.core.world.options.DeleteWorldOptions;
-import org.mvplugins.multiverse.core.world.options.LoadWorldOptions;
 import org.mvplugins.multiverse.external.vavr.control.Option;
 
 public class ArenaMap {
@@ -55,7 +54,7 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		OneVsOne.getMultiversecore().getWorldManager().getLoadedWorld(worldName)
+		OneVsOne.getMultiversecore().getWorldManager().getWorld(worldName)
 			.peek(world -> {
 				OneVsOne.getMultiversecore().getWorldManager().deleteWorld(DeleteWorldOptions.world(world))
 					.onFailure(failure -> {
@@ -108,11 +107,11 @@ public class ArenaMap {
     		worldName = uuid;
     		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
     		// Ensure template world is loaded before cloning
- 		Option<LoadedMultiverseWorld> loadedOpt = worldManager.getLoadedWorld(templateWorldName);
-  		loadedOpt.peek(loadedWorld -> {
-  			CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-  				.saveBukkitWorld(true);
-  			worldManager.cloneWorld(options)
+  		Option<MultiverseWorld> loadedOpt = worldManager.getWorld(templateWorldName);
+   		loadedOpt.peek(loadedWorld -> {
+   			CloneWorldOptions options = CloneWorldOptions.fromTo((LoadedMultiverseWorld) loadedWorld, worldName)
+   				.saveBukkitWorld(true);
+   			worldManager.cloneWorld(options)
   				.onSuccess(newWorld -> {
   					arenaWorld = newWorld.getBukkitWorld().getOrNull();
   					if (arenaWorld != null) {
@@ -130,49 +129,12 @@ public class ArenaMap {
   					OneVsOne.getPlugin().getLogger().severe("Failed to clone world from " + templateWorldName + " to " + worldName + ": " + failure.getFailureMessage());
   					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
   				});
-  		}).onEmpty(() -> {
-  			// Template world is not loaded, try to load it first
-  			loadAndCloneTemplateWorld();
-  		});
+   		}).onEmpty(() -> {
+   			throw new IllegalStateException("Template world '" + templateWorldName + "' not found");
+   		});
    	}
 
-   	private void loadAndCloneTemplateWorld() {
-		Option<MultiverseWorld> templateOpt = worldManager.getWorld(templateWorldName);
-		templateOpt.peek(templateWorld -> {
-			// Load the template world first
-			LoadWorldOptions loadOptions = LoadWorldOptions.world(templateWorld);
-			worldManager.loadWorld(loadOptions)
-				.onSuccess(loadedTemplateWorld -> {
-					// Now clone the loaded world
-					CloneWorldOptions options = CloneWorldOptions.fromTo(loadedTemplateWorld, worldName)
-						.saveBukkitWorld(true);
-					worldManager.cloneWorld(options)
-						.onSuccess(newWorld -> {
-							arenaWorld = newWorld.getBukkitWorld().getOrNull();
-							if (arenaWorld != null) {
-								arenaWorld.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-								arenaWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-								arenaWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-								arenaWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-								arenaWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
-								arenaWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
-								// Load data from config now that world is ready
-								loadDataFromConfig();
-							}
-						})
-						.onFailure(failure -> {
-							OneVsOne.getPlugin().getLogger().severe("Failed to clone world from " + templateWorldName + " to " + worldName + ": " + failure.getFailureMessage());
-							Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
-						});
-				})
-				.onFailure(failure -> {
-					OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
-					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
-				});
-		}).onEmpty(() -> {
-			throw new IllegalStateException("Template world '" + templateWorldName + "' not found");
-		});
-   	}
+
 
 	private void loadConfig() {
 		arenaMapConfig = new YamlConfiguration();
