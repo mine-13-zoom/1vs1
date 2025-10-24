@@ -54,7 +54,7 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		worldManager.getLoadedWorld(worldName)
+		worldManager.getWorld(worldName)
 			.peek(world -> {
 				worldManager.deleteWorld(DeleteWorldOptions.world(world))
 					.onFailure(failure -> {
