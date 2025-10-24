@@ -100,9 +100,9 @@ public class ArenaMap {
 		}
 	}
 
-	private void createWorld() {
-		worldName = uuid;
-		worldManager = MultiverseCoreApi.get().getWorldManager(); // set Multiverse world manager
+ 	private void createWorld() {
+ 		worldName = uuid;
+ 		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
 		worldManager.getLoadedWorld(templateWorldName)
 			.peek(templateWorld -> {
 				CloneWorldOptions options = CloneWorldOptions.fromTo(templateWorld, worldName)
