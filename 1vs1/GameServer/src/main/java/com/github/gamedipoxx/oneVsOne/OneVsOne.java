@@ -28,8 +28,8 @@ import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.bstats.bukkit.Metrics;
+import org.mvplugins.multiverse.core.MultiverseCore;
+import org.bstats.bukkit.Metrics;
 
 public class OneVsOne extends JavaPlugin{
 	private static ArrayList<Arena> arena = new ArrayList<Arena>();
