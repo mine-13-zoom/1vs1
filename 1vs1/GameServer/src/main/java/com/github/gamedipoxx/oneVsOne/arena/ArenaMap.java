@@ -103,22 +103,12 @@ public class ArenaMap {
 		}
 	}
 
-      	private void createWorld() {
-       		worldName = uuid;
-       		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
-       		// Check if template world is already loaded, otherwise load it before cloning
-      		worldManager.getLoadedWorld(templateWorldName)
-       			.peek(loadedWorld -> {
-       				// World is already loaded, clone directly
-       				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-       					.saveBukkitWorld(true);
-       				performClone(options);
-       			})
-      			.onEmpty(() -> {
-      				// World is not loaded, load it first
-      				loadAndCloneTemplateWorld();
-      			});
-      	}
+       	private void createWorld() {
+        		worldName = uuid;
+        		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
+        		// Load the template world and clone it
+        		loadAndCloneTemplateWorld();
+       	}
 
       	private void loadAndCloneTemplateWorld() {
       		worldManager.getWorld(templateWorldName)
