@@ -110,24 +110,24 @@ public class ArenaMap {
         		loadAndCloneTemplateWorld();
        	}
 
-       	private void loadAndCloneTemplateWorld() {
-       		worldManager.getWorld(templateWorldName)
-       			.peek(world -> worldManager.loadWorld(LoadWorldOptions.world(world))
-        				.onSuccess(loadedWorld -> {
-         				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-         					.saveBukkitWorld(true);
-        					performClone(options);
+        private void loadAndCloneTemplateWorld() {
+        		worldManager.getWorld(templateWorldName)
+        			.peek(world -> worldManager.loadWorld(LoadWorldOptions.world(world))
+         				.onSuccess(loadedWorld -> {
+          				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
+          					.saveBukkitWorld(true);
+         					performClone(options);
+         				})
+        				.onFailure(failure -> {
+        					OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
+        					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
         				})
-       				.onFailure(failure -> {
-       					OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
-       					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
-       				})
-       			)
-       			.onEmpty(() -> {
-       				OneVsOne.getPlugin().getLogger().severe("Template world " + templateWorldName + " not found in Multiverse configuration");
-       				Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
-       			});
-       	}
+        			)
+        			.onEmpty(() -> {
+        				OneVsOne.getPlugin().getLogger().severe("Template world " + templateWorldName + " not found in Multiverse configuration");
+        				Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+        			});
+        	}
 
        	private void performClone(CloneWorldOptions options) {
         		worldManager.cloneWorld(options)
