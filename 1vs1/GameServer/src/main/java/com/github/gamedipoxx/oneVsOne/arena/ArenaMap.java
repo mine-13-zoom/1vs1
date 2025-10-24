@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.WorldManager;
+import org.mvplugins.multiverse.core.world.MultiverseWorld;
 import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
 import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 import org.mvplugins.multiverse.core.world.options.DeleteWorldOptions;
@@ -52,14 +53,16 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		Option<LoadedMultiverseWorld> worldOption = worldManager.getLoadedWorld(worldName);
-		if (worldOption.isDefined()) {
-			LoadedMultiverseWorld world = worldOption.get();
-			worldManager.deleteWorld(DeleteWorldOptions.world(world))
-				.onFailure(failure -> {
-					OneVsOne.getPlugin().getLogger().warning("Failed to delete world " + worldName + ": " + failure.getFailureMessage());
-				});
-		}
+		worldManager.getWorld(worldName)
+			.peek(world -> {
+				worldManager.deleteWorld(DeleteWorldOptions.world(world))
+					.onFailure(failure -> {
+						OneVsOne.getPlugin().getLogger().warning("Failed to delete world " + worldName + ": " + failure.getFailureMessage());
+					});
+			})
+			.onEmpty(() -> {
+				OneVsOne.getPlugin().getLogger().warning("World " + worldName + " not found for deletion");
+			});
 	}
 
 	private void loadDataFromConfig() {
