@@ -63,6 +63,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.mvplugins.multiverse.core</groupId>
+			<artifactId>multiverse-core</artifactId>
+			<version>5.3.3</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
 			<version>24.1.0</version>
@@ -74,13 +81,6 @@
 			<artifactId>vavr</artifactId>
 			<version>0.10.4</version>
 			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mvplugins.multiverse.core</groupId>
-			<artifactId>Multiverse-Core</artifactId>
-			<version>5.3.3</version>
-			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>
