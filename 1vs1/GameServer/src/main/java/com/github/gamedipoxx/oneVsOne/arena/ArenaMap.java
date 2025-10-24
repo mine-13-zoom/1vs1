@@ -55,7 +55,7 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		OneVsOne.getMultiversecore().getWorldManager().getWorld(worldName)
+		OneVsOne.getMultiversecore().getWorldManager().getLoadedWorld(worldName)
 			.peek(world -> {
 				OneVsOne.getMultiversecore().getWorldManager().deleteWorld(DeleteWorldOptions.world(world))
 					.onFailure(failure -> {
