@@ -16,7 +16,6 @@ import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.WorldManager;
 import org.mvplugins.multiverse.core.world.MultiverseWorld;
-import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
 
 import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 import org.mvplugins.multiverse.core.world.options.DeleteWorldOptions;
@@ -56,9 +55,12 @@ public class ArenaMap {
 	public void deleteMap() {
 		worldManager.getWorld(worldName)
 			.peek(world -> {
-				worldManager.deleteWorld(DeleteWorldOptions.world(world))
+				worldManager.deleteWorld(DeleteWorldOptions.world(world).keepFiles(List.of()))
 					.onFailure(failure -> {
 						OneVsOne.getPlugin().getLogger().warning("Failed to delete world " + worldName + ": " + failure.getFailureMessage());
+					})
+					.onSuccess(deletedWorld -> {
+						OneVsOne.getPlugin().getLogger().info("Successfully deleted world " + worldName);
 					});
 			})
 			.onEmpty(() -> {
@@ -103,7 +105,7 @@ public class ArenaMap {
  	private void createWorld() {
  		worldName = uuid;
  		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
-		worldManager.getLoadedWorld(templateWorldName)
+		worldManager.getWorld(templateWorldName)
 			.peek(templateWorld -> {
 				CloneWorldOptions options = CloneWorldOptions.fromTo(templateWorld, worldName)
 					.saveBukkitWorld(true);
@@ -127,7 +129,7 @@ public class ArenaMap {
 					});
 			})
 			.onEmpty(() -> {
-				throw new IllegalStateException("Template world '" + templateWorldName + "' is not loaded");
+				throw new IllegalStateException("Template world '" + templateWorldName + "' not found");
 			});
 	}
 
