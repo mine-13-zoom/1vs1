@@ -3,6 +3,7 @@ package com.github.gamedipoxx.oneVsOne;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,7 +52,6 @@ public class OneVsOne extends JavaPlugin{
 		
 		//init plugins and Apis
 		plugin = this;
-		multiversecore = MultiverseCoreApi.get();
 		
 		//Check Version
 		UpdateChecker.setCurrentVersion(getDescription().getVersion());
@@ -116,8 +116,11 @@ public class OneVsOne extends JavaPlugin{
 		MySQLManager.purgeDatabase();
 		
 		//create all Arenas as definded in the config.yml
-		ArenaManager.createMaxArenas();
-		
+		MultiverseCoreApi.whenLoaded(coreApi -> {
+			multiversecore = coreApi;
+			ArenaManager.createMaxArenas();
+		});
+
 		//Integrate bstats
 		int pluginId = 14364;
 		new Metrics(this, pluginId);
