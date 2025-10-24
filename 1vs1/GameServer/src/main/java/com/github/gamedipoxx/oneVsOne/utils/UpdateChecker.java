@@ -45,16 +45,12 @@ public class UpdateChecker implements Listener {
 			return;
 		}
 		Player player = event.getPlayer();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			
-			@Override
-			public void run() {
-				player.sendMessage(" ");
-				player.sendMessage("§7There is a new §lversion§r §7of §f§lOneVsOne§r §7available! Update now:");
-				player.sendMessage("§6§nhttps://www.spigotmc.org/resources/1vs1-bungee-only.99952 ");
-				player.sendMessage(" ");
-				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1.2F, 1F);
-			}
+		Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			player.sendMessage(" ");
+			player.sendMessage("§7There is a new §lversion§r §7of §f§lOneVsOne§r §7available! Update now:");
+			player.sendMessage("§6§nhttps://www.spigotmc.org/resources/1vs1-bungee-only.99952 ");
+			player.sendMessage(" ");
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1.2F, 1F);
 		}, 60L);
 
 	}
