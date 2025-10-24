@@ -54,9 +54,9 @@ public class ArenaMap {
 	}
 	
 	public void deleteMap() {
-		worldManager.getWorld(worldName)
+		OneVsOne.getMultiversecore().getWorldManager().getWorld(worldName)
 			.peek(world -> {
-				worldManager.deleteWorld(DeleteWorldOptions.world(world))
+				OneVsOne.getMultiversecore().getWorldManager().deleteWorld(DeleteWorldOptions.world(world))
 					.onFailure(failure -> {
 						OneVsOne.getPlugin().getLogger().warning("Failed to delete world " + worldName + ": " + failure.getFailureMessage());
 					})
@@ -103,38 +103,38 @@ public class ArenaMap {
 		}
 	}
 
- 	private void createWorld() {
-  		worldName = uuid;
-  		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
- 		// Ensure template world is loaded before cloning
- 		worldManager.getLoadedWorld(templateWorldName)
- 			.peek(loadedTemplateWorld -> {
- 				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedTemplateWorld, worldName)
- 					.saveBukkitWorld(true);
- 				worldManager.cloneWorld(options)
- 					.onSuccess(newWorld -> {
- 						arenaWorld = newWorld.getBukkitWorld().getOrNull();
- 						if (arenaWorld != null) {
- 							arenaWorld.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
- 							arenaWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
- 							arenaWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
- 							arenaWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
- 							arenaWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
- 							arenaWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
- 							// Load data from config now that world is ready
- 							loadDataFromConfig();
- 						}
- 					})
- 					.onFailure(failure -> {
- 						OneVsOne.getPlugin().getLogger().severe("Failed to clone world from " + templateWorldName + " to " + worldName + ": " + failure.getFailureMessage());
- 						Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
- 					});
- 			})
- 			.onEmpty(() -> {
- 				// Template world is not loaded, try to load it first
- 				loadAndCloneTemplateWorld();
- 			});
- 	}
+  	private void createWorld() {
+   		worldName = uuid;
+   		worldManager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse world manager
+  		// Ensure template world is loaded before cloning
+  		worldManager.getLoadedWorld(templateWorldName)
+  			.peek(loadedTemplateWorld -> {
+  				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedTemplateWorld, worldName)
+  					.saveBukkitWorld(true);
+  				worldManager.cloneWorld(options)
+  					.onSuccess(newWorld -> {
+  						arenaWorld = newWorld.getBukkitWorld().getOrNull();
+  						if (arenaWorld != null) {
+  							arenaWorld.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+  							arenaWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+  							arenaWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+  							arenaWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+  							arenaWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
+  							arenaWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+  							// Load data from config now that world is ready
+  							loadDataFromConfig();
+  						}
+  					})
+  					.onFailure(failure -> {
+  						OneVsOne.getPlugin().getLogger().severe("Failed to clone world from " + templateWorldName + " to " + worldName + ": " + failure.getFailureMessage());
+  						Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+  					});
+  			})
+  			.onEmpty(() -> {
+  				// Template world is not loaded, try to load it first
+  				loadAndCloneTemplateWorld();
+  			});
+  	}
 
  	private void loadAndCloneTemplateWorld() {
  		worldManager.getWorld(templateWorldName)
