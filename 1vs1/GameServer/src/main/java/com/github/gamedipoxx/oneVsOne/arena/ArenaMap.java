@@ -13,7 +13,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import org.mvplugins.multiverse.core.world.WorldManager;
+import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 
 public class ArenaMap {
 
@@ -27,7 +28,7 @@ public class ArenaMap {
 	private Location spawn2;
 	private FileConfiguration arenaMapConfig;
 	private String uuid;
-	private MVWorldManager worldmanager;
+	private WorldManager worldmanager;
 	private static List<String> maps;
 
 	public ArenaMap(String templateWorldName, String uuid) {
@@ -89,8 +90,8 @@ public class ArenaMap {
 
 	private void createWorld() {
 		worldName = uuid;
-		worldmanager = OneVsOne.getMultiversecore().getMVWorldManager(); // set Multiverse wolrdmanager
-		worldmanager.cloneWorld(templateWorldName, worldName); // clone world
+		worldmanager = OneVsOne.getMultiversecore().getWorldManager(); // set Multiverse wolrdmanager
+		worldmanager.cloneWorld(CloneWorldOptions.builder().from(templateWorldName).to(worldName).build()); // clone world
 		arenaWorld = Bukkit.getWorld(worldName);
 		arenaWorld.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
 		arenaWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
