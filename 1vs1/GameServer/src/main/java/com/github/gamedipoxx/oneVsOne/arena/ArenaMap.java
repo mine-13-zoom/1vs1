@@ -21,7 +21,6 @@ import org.mvplugins.multiverse.core.world.MultiverseWorld;
 import org.mvplugins.multiverse.core.world.options.CloneWorldOptions;
 import org.mvplugins.multiverse.core.world.options.DeleteWorldOptions;
 import org.mvplugins.multiverse.core.world.options.LoadWorldOptions;
-import org.mvplugins.multiverse.external.vavr.control.Option;
 
 public class ArenaMap {
 
