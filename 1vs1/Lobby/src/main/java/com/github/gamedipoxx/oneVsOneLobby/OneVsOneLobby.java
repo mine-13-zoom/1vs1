@@ -60,9 +60,9 @@ public class OneVsOneLobby extends JavaPlugin {
 		this.reloadConfig();
 		
 		//starting connection to database
-		if (MySQLManager.init() == false) {
-			Bukkit.getPluginManager().disablePlugin(this);
-		}
+		//if (MySQLManager.init() == false) {
+		//	Bukkit.getPluginManager().disablePlugin(this);
+		//}
 		//register listener
 		getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		//getServer().getPluginManager().registerEvents(new SignClick(), this);

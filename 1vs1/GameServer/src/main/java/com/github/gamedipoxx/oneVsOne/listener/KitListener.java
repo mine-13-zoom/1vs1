@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+
 public class KitListener implements Listener {
 
     @EventHandler
@@ -131,6 +132,7 @@ public class KitListener implements Listener {
             if (kit != null) {
                 player.getInventory().setContents(kit.getContents());
             } else {
+                // Give default kit from arena config
                 player.getInventory().setContents(arena.getArenaMap().getInventory().toArray(new ItemStack[0]));
                 player.getInventory().setArmorContents(arena.getArenaMap().getArmor().toArray(new ItemStack[0]));
             }

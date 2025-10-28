@@ -10,6 +10,7 @@ import com.github.gamedipoxx.oneVsOne.BungeeCordManager;
 import com.github.gamedipoxx.oneVsOne.Messages;
 import com.github.gamedipoxx.oneVsOne.OneVsOne;
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
+import com.github.gamedipoxx.oneVsOne.utils.GameState;
 import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 
 public class OneVsOneCommand implements CommandExecutor {
@@ -31,10 +32,19 @@ public class OneVsOneCommand implements CommandExecutor {
 				OneVsOne.getPlugin().getLogger().info(message);
  				break;
 			case ("join"):
-				if(!checkPermissions(player)) {
-					break;
-				}
-				if (args.length == 2) {
+				if (args.length == 1) {
+					if (OneVsOne.getArena().size() == 0) {
+						player.sendMessage(Messages.PREFIX.getString() + Messages.NOARENAAVAIBLE.getString());
+						break;
+					}
+					for (Arena arena : OneVsOne.getArena()) {
+						if (arena.getGameState() == GameState.WAITING) {
+							arena.joinPlayer(player);
+							break;
+						}
+					}
+					player.sendMessage(Messages.PREFIX.getString() + Messages.NOARENAFOUND.getString());
+				} else if (args.length == 2) {
 					if (OneVsOne.getArena().size() == 0) {
 						player.sendMessage(Messages.PREFIX.getString() + Messages.NOARENAAVAIBLE.getString());
 						break;

@@ -110,23 +110,55 @@ public class ArenaMap {
         		loadAndCloneTemplateWorld();
        	}
 
-        private void loadAndCloneTemplateWorld() {
-        		worldManager.getWorld(templateWorldName)
-        			.peek(world -> worldManager.loadWorld(LoadWorldOptions.world(world))
-         				.onSuccess(loadedWorld -> {
-          				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
-          					.saveBukkitWorld(true);
-         					performClone(options);
-         				})
-        				.onFailure(failure -> {
-        					OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
-        					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+private void loadAndCloneTemplateWorld() {
+        	// First check if the target world already exists and delete it
+        	worldManager.getWorld(worldName)
+        		.peek(existingWorld -> {
+        			OneVsOne.getPlugin().getLogger().info("Target world " + worldName + " already exists, deleting it first");
+        			worldManager.deleteWorld(DeleteWorldOptions.world(existingWorld))
+        				.onSuccess(deletedWorld -> {
+        					OneVsOne.getPlugin().getLogger().info("Successfully deleted existing world " + worldName);
+        					cloneTemplateWorld();
         				})
-        			)
-        			.onEmpty(() -> {
-        				OneVsOne.getPlugin().getLogger().severe("Template world " + templateWorldName + " not found in Multiverse configuration");
-        				Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
-        			});
+        				.onFailure(failure -> {
+        					OneVsOne.getPlugin().getLogger().severe("Failed to delete existing world " + worldName + ": " + failure.getFailureMessage());
+        					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+        				});
+        		})
+        		.onEmpty(() -> {
+        			// World doesn't exist, proceed with cloning
+        			cloneTemplateWorld();
+        		});
+        	}
+        	
+        	private void cloneTemplateWorld() {
+        	// First check if the world is already loaded
+        	worldManager.getLoadedWorld(templateWorldName)
+        		.peek(loadedWorld -> {
+        			// World is already loaded, use it directly
+        			CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
+        				.saveBukkitWorld(true);
+        			performClone(options);
+        		})
+        		.onEmpty(() -> {
+        			// World is not loaded, try to load it
+        			worldManager.getWorld(templateWorldName)
+        				.peek(world -> worldManager.loadWorld(LoadWorldOptions.world(world))
+        					.onSuccess(loadedWorld -> {
+                				CloneWorldOptions options = CloneWorldOptions.fromTo(loadedWorld, worldName)
+                					.saveBukkitWorld(true);
+                					performClone(options);
+                				})
+        					.onFailure(failure -> {
+        						OneVsOne.getPlugin().getLogger().severe("Failed to load template world " + templateWorldName + ": " + failure.getFailureMessage());
+        						Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+        					})
+        				)
+        				.onEmpty(() -> {
+        					OneVsOne.getPlugin().getLogger().severe("Template world " + templateWorldName + " not found in Multiverse configuration");
+        					Bukkit.getPluginManager().disablePlugin(OneVsOne.getPlugin());
+        				});
+        		});
         	}
 
        	private void performClone(CloneWorldOptions options) {
@@ -167,6 +199,10 @@ public class ArenaMap {
 
 	public String getWorldName() {
 		return worldName;
+	}
+
+	public String getTemplateWorldName() {
+		return templateWorldName;
 	}
 
 	public String getKitName() {
