@@ -45,21 +45,21 @@ jobs:
         mvn clean package -DskipTests
         
     - name: Upload GameServer artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: GameServer-plugin
         path: 1vs1/GameServer/target/GameServer-*.jar
         retention-days: 30
         
     - name: Upload Lobby artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: Lobby-plugin
         path: 1vs1/Lobby/target/Lobby-*.jar
         retention-days: 30
         
     - name: Upload all artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: all-plugins
         path: |
