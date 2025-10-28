@@ -1,0 +1,57 @@
+name: Build Plugins (GitHub)
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Build all modules
+      run: |
+        cd 1vs1
+        mvn clean package -DskipTests
+        
+    - name: Upload GameServer artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GameServer-plugin
+        path: 1vs1/GameServer/target/GameServer-*.jar
+        retention-days: 30
+        
+    - name: Upload Lobby artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Lobby-plugin
+        path: 1vs1/Lobby/target/Lobby-*.jar
+        retention-days: 30
+        
+    - name: Upload all artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: all-plugins
+        path: |
+          1vs1/GameServer/target/GameServer-*.jar
+          1vs1/Lobby/target/Lobby-*.jar
+        retention-days: 30
