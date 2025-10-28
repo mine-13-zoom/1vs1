@@ -45,21 +45,50 @@ jobs:
         mvn clean package -DskipTests
         
     - name: Upload GameServer artifact
+      uses: actions/upload-artifact@v4
+      if: github.server_url == 'https://github.com'
+      with:
+        name: GameServer-plugin
+        path: 1vs1/GameServer/target/GameServer-*.jar
+        retention-days: 30
+        
+    - name: Upload GameServer artifact (Gitea)
       uses: actions/upload-artifact@v3
+      if: github.server_url != 'https://github.com'
       with:
         name: GameServer-plugin
         path: 1vs1/GameServer/target/GameServer-*.jar
         retention-days: 30
         
     - name: Upload Lobby artifact
+      uses: actions/upload-artifact@v4
+      if: github.server_url == 'https://github.com'
+      with:
+        name: Lobby-plugin
+        path: 1vs1/Lobby/target/Lobby-*.jar
+        retention-days: 30
+        
+    - name: Upload Lobby artifact (Gitea)
       uses: actions/upload-artifact@v3
+      if: github.server_url != 'https://github.com'
       with:
         name: Lobby-plugin
         path: 1vs1/Lobby/target/Lobby-*.jar
         retention-days: 30
         
     - name: Upload all artifacts
+      uses: actions/upload-artifact@v4
+      if: github.server_url == 'https://github.com'
+      with:
+        name: all-plugins
+        path: |
+          1vs1/GameServer/target/GameServer-*.jar
+          1vs1/Lobby/target/Lobby-*.jar
+        retention-days: 30
+        
+    - name: Upload all artifacts (Gitea)
       uses: actions/upload-artifact@v3
+      if: github.server_url != 'https://github.com'
       with:
         name: all-plugins
         path: |
