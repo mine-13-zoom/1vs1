@@ -21,12 +21,16 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
+    - name: Install Maven
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y maven
+        
     - name: Verify Maven installation
       run: |
         echo "PATH: $PATH"
-        which mvn || echo "Maven not found in PATH"
-        ls -la /usr/bin/mvn || echo "Maven not in /usr/bin"
-        mvn --version || echo "Maven command failed"
+        which mvn
+        mvn --version
         
     - name: Cache Maven dependencies
       uses: actions/cache@v4
