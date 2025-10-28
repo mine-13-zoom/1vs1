@@ -20,9 +20,22 @@ ServerName: "GameHost-1"
 #The number of arenas which are online
 Arenas: 10
 #The enabled maps. This will be set with /onevsonesetup save
-Maps: []
+Maps: ["world"]
+#Default kit when no arena-specific kit is configured
+DefaultKit:
+   Contents:
+      - "IRON_SWORD"
+      - "FISHING_ROD"
+      - "BOW"
+      - "ARROW,10"
+      - "COOKED_PORKCHOP,10"
+   Armor:
+      - "IRON_BOOTS"
+      - "IRON_LEGGINGS"
+      - "IRON_CHESTPLATE"
+      - "IRON_HELMET"
 #Disable this in production. It is only for setting up the plugin
-setupmode: true
+setupmode: false
 #When you enable this the player can use the /leave command to go back to the lobby
 leaveCommand: true 
 #Setting for arena behavior

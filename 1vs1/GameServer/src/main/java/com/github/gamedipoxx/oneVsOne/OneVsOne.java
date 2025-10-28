@@ -3,8 +3,10 @@ package com.github.gamedipoxx.oneVsOne;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.gamedipoxx.oneVsOne.arena.Arena;
@@ -28,13 +30,13 @@ import com.github.gamedipoxx.oneVsOne.utils.MessagesFile;
 import com.github.gamedipoxx.oneVsOne.utils.MySQLManager;
 import com.github.gamedipoxx.oneVsOne.utils.UpdateChecker;
 import com.github.gamedipoxx.oneVsOne.utils.stats.GlobalStatsGUI;
-import org.mvplugins.multiverse.core.MultiverseCore;
-import com.onarandombox.bstats.bukkit.Metrics;
+import org.mvplugins.multiverse.core.MultiverseCoreApi;
+import org.bstats.bukkit.Metrics;
 
 public class OneVsOne extends JavaPlugin{
 	private static ArrayList<Arena> arena = new ArrayList<Arena>();
 	private static OneVsOne plugin;
-	private static MultiverseCore multiversecore;
+	private static MultiverseCoreApi multiversecore;
 	private static String servername;
 	@Override
 	public void onEnable() {
@@ -51,7 +53,6 @@ public class OneVsOne extends JavaPlugin{
 		
 		//init plugins and Apis
 		plugin = this;
-		multiversecore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		
 		//Check Version
 		UpdateChecker.setCurrentVersion(getDescription().getVersion());
@@ -61,7 +62,9 @@ public class OneVsOne extends JavaPlugin{
 		//register Commands and Bungeecord
 		this.getCommand("OneVsOne").setExecutor(new OneVsOneCommand());
 		this.getCommand("OneVsOneSetup").setExecutor(new OneVsOneSetupCommand());
-        this.getCommand("kitsave").setExecutor(new KitCommand());
+		KitCommand kitCommand = new KitCommand();
+		this.getCommand("kitsave").setExecutor(kitCommand);
+		this.getCommand("resetkit").setExecutor(kitCommand);
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		
 		//check for setupmode and cancel the rest of onEnable()
@@ -83,6 +86,7 @@ public class OneVsOne extends JavaPlugin{
 		MySQLManager.setSetupFile(getResource("dbsetup.sql"));
 		if (!MySQLManager.init()) {
 			getServer().getPluginManager().disablePlugin(this);
+			return;
 		}
         KitManager.createKitDatabase();
 		//register all Events
@@ -110,12 +114,42 @@ public class OneVsOne extends JavaPlugin{
 		//Create a Kit list
 		ArenaMap.setMaps(getConfig().getStringList("Maps"));
 		
+		// Debug: Check if DefaultKit is loaded correctly
+		if(getConfig().getBoolean("debug")) {
+			getLogger().info("Config loaded successfully");
+			getLogger().info("Config file path: " + getDataFolder().getAbsolutePath() + "/config.yml");
+			getLogger().info("DefaultKit.Contents: " + getConfig().getList("DefaultKit.Contents"));
+			getLogger().info("DefaultKit.Armor: " + getConfig().getList("DefaultKit.Armor"));
+			getLogger().info("Maps: " + getConfig().getStringList("Maps"));
+		}
+		
 		//clear Database
-		MySQLManager.purgeDatabase();
+		// MySQLManager.purgeDatabase();
 		
-		//create all Arenas as definded in the config.yml
-		ArenaManager.createMaxArenas();
-		
+//create all Arenas as defined in the config.yml
+          	if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+               			// Wait a tick to ensure all plugins are fully loaded
+               			Bukkit.getScheduler().runTaskLater(this, () -> {
+               				try {
+               					multiversecore = MultiverseCoreApi.get();
+               					if (multiversecore != null) {
+               						getLogger().info("Multiverse-Core API initialized successfully");
+               						ArenaManager.createMaxArenas();
+               					} else {
+               						getLogger().severe("Failed to initialize Multiverse-Core API");
+               						Bukkit.getPluginManager().disablePlugin(this);
+               					}
+               				} catch (Exception e) {
+               					getLogger().severe("Error initializing Multiverse-Core: " + e.getMessage());
+               					e.printStackTrace();
+               					Bukkit.getPluginManager().disablePlugin(this);
+               				}
+               			}, 1L); // Run after 1 tick
+               		} else {
+               			getLogger().severe("Multiverse-Core is not installed! Disabling plugin.");
+               			Bukkit.getPluginManager().disablePlugin(this);
+               		}
+
 		//Integrate bstats
 		int pluginId = 14364;
 		new Metrics(this, pluginId);
@@ -127,7 +161,9 @@ public class OneVsOne extends JavaPlugin{
 			return;
 		}
 		
-		MySQLManager.purgeDatabase();
+		if(MySQLManager.isInitialized()) {
+			MySQLManager.purgeDatabase();
+		}
 		@SuppressWarnings("unchecked")
 		ArrayList<Arena> templist = (ArrayList<Arena>) arena.clone();
 		for(Arena arena : templist) {
@@ -145,7 +181,7 @@ public class OneVsOne extends JavaPlugin{
 		return plugin;
 	}
 	
-	public static MultiverseCore getMultiversecore() {
+	public static MultiverseCoreApi getMultiversecore() {
 		return multiversecore;
 	}
 

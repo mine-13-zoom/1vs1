@@ -42,7 +42,7 @@ public class SetupObject {
 		mapConfig.set("Kit.Name", kitname);
 		
 		mapConfig.set("Kit.Armor", inv.getArmorContents());
-		mapConfig.set("Kit.Contens", inv.getContents());
+		mapConfig.set("Kit.Contents", inv.getContents());
 		
 		try {
 			mapConfig.save(new File(OneVsOne.getPlugin().getDataFolder(), spawn1.getWorld().getName() + ".yml"));

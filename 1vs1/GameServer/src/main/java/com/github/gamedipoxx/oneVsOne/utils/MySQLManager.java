@@ -37,11 +37,22 @@ public class MySQLManager {
 		plugin.getLogger().info("§2Starting Database Setup");
 		try {
 			connect();
+		} catch (SQLException e) {
+			plugin.getLogger().severe("Database connection failed: " + e.getMessage());
+			plugin.getLogger().severe("Please check your database configuration in config.yml");
+			plugin.getLogger().severe("Make sure MySQL server is running and credentials are correct");
+			e.printStackTrace();
+			return false;
 		} catch (Exception e) {
+			plugin.getLogger().severe("Database initialization failed: " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean isInitialized() {
+		return datasource != null;
 	}
 
 	private static void connect() throws SQLException {
@@ -50,17 +61,42 @@ public class MySQLManager {
 			plugin.getLogger().info(
 					"MySqlCredentails [Host: " + config.getString("Database.Host") + " Port: " + config.getInt("Database.Port") + " Database: " + config.getString("Database.Database") + " User: " + config.getString("Database.User") + " Password: " + config.getString("Database.Password") + "]");
 		}
-		datasource = new MysqlDataSource();
+		
+		// Explicitly load MySQL driver to avoid class loading issues
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			plugin.getLogger().info("MySQL driver loaded successfully");
+		} catch (ClassNotFoundException e) {
+			plugin.getLogger().severe("Failed to load MySQL driver: " + e.getMessage());
+			throw new SQLException("MySQL driver not found", e);
+		}
+		
+		// Validate configuration
+		String host = config.getString("Database.Host");
+		Integer port = config.getInt("Database.Port");
+		String database = config.getString("Database.Database");
+		String user = config.getString("Database.User");
+		String password = config.getString("Database.Password");
+		
+		if (host == null || database == null || user == null || password == null) {
+			throw new SQLException("Database configuration is incomplete. Please check your config.yml file.");
+		}
+		
+		try {
+			datasource = new MysqlDataSource();
+		} catch (Exception e) {
+			plugin.getLogger().severe("Failed to create MySQL datasource: " + e.getMessage());
+			throw new SQLException("Failed to initialize MySQL connection", e);
+		}
 
-		datasource.setServerName(config.getString("Database.Host"));
-		datasource.setPortNumber(config.getInt("Database.Port"));
-		datasource.setDatabaseName(config.getString("Database.Database"));
-		datasource.setUser(config.getString("Database.User"));
-		datasource.setPassword(config.getString("Database.Password"));
+		datasource.setServerName(host);
+		datasource.setPortNumber(port);
+		datasource.setDatabaseName(database);
+		datasource.setUser(user);
+		datasource.setPassword(password);
 		plugin.getLogger().info("§2Connecting to Database");
 		try (Connection connection = datasource.getConnection()) {
 			if (!connection.isValid(1000)) {
-				disableplugin();
 				throw new SQLException("Could not establish database connection.");
 			}
 		}
@@ -69,10 +105,9 @@ public class MySQLManager {
 			plugin.getLogger().info("§2Initialize Tables");
 			setupDB();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new SQLException("Failed to read database setup file: " + e.getMessage(), e);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			disableplugin();
+			throw new SQLException("Failed to initialize database tables: " + e.getMessage(), e);
 		}
 
 	}
@@ -123,12 +158,22 @@ public class MySQLManager {
 		});
 	}
 
-	public static void addArena(Arena arena) {
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+public static void addArena(Arena arena) {
+		// Don't add arena to database if plugin is disabled
+		if (!OneVsOne.getPlugin().isEnabled()) {
+			return;
+		}
+		
+		Bukkit.getScheduler().runTaskAsynchronously(OneVsOne.getPlugin(), new Runnable() {
 
 			@Override
 			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
+				// Double-check plugin is still enabled before accessing database
+				if (!OneVsOne.getPlugin().isEnabled()) {
+					return;
+				}
+				
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE "+ version +"_Arenas(ArenaName, ArenaState, Kit, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
 
 					stmt.setString(1, arena.getArenaName());
 					stmt.setString(2, arena.getGameState().toString());
@@ -278,9 +323,13 @@ public class MySQLManager {
 						stmt.setString(3, player.getName());
 						stmt.execute();
 
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+} catch (SQLException e) {
+					plugin.getLogger().severe("Failed to add arena to database: " + e.getMessage());
+					e.printStackTrace();
+				} catch (Exception e) {
+					plugin.getLogger().severe("Unexpected error adding arena to database: " + e.getMessage());
+					e.printStackTrace();
+				}
 				}
 			}
 		});

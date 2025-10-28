@@ -4,10 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.RayTraceResult;
 
 import com.github.gamedipoxx.oneVsOne.utils.SimpleArenaDatabaseObject;
 import com.github.gamedipoxx.oneVsOne.utils.stats.MainStatsGUI;
@@ -94,7 +96,12 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 				if(args.length != 1) {
 					break;
 				}
-				Block block = player.getTargetBlock(null, 6);
+				RayTraceResult result = player.rayTraceBlocks(6.0);
+				if (result == null || result.getHitBlock() == null) {
+					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
+					break;
+				}
+				Block block = result.getHitBlock();
 				if(block.getState() == null) {
 					player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.WRONGSIGNCREATE.getString());
 					break;
@@ -104,10 +111,10 @@ public class OneVsOneLobbyCommand implements CommandExecutor {
 					break;
 				}
 				Sign sign = (Sign) block.getState();
-				sign.setLine(0, LobbyMessages.JOINSIGN_LINE1.getString());
-				sign.setLine(1, LobbyMessages.JOINSIGN_LINE2.getString());
-				sign.setLine(2, LobbyMessages.JOINSIGN_LINE3.getString());
-				sign.setLine(3, LobbyMessages.JOINSIGN_LINE4.getString());
+				sign.getSide(Side.FRONT).setLine(0, LobbyMessages.JOINSIGN_LINE1.getString());
+				sign.getSide(Side.FRONT).setLine(1, LobbyMessages.JOINSIGN_LINE2.getString());
+				sign.getSide(Side.FRONT).setLine(2, LobbyMessages.JOINSIGN_LINE3.getString());
+				sign.getSide(Side.FRONT).setLine(3, LobbyMessages.JOINSIGN_LINE4.getString());
 				sign.update();
 				player.sendMessage(LobbyMessages.PREFIX.getString() + LobbyMessages.SIGNCREATESUCESS.getString());
 				break;

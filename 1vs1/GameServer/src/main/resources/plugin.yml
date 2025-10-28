@@ -10,10 +10,12 @@ commands:
       description: Manage OneVsOne
    OneVsOneSetup:
       description: Setup OneVsOne
-   leave: 
+   leave:
       description: leave arena
    kitsave:
       description: Save your kit
+   resetkit:
+      description: Reset your kit to default
 permissions:
    OneVsOne.admin:
       description: Admin permission

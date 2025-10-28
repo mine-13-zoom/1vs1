@@ -19,12 +19,12 @@ public class OnTntPlaceListener implements Listener{
 		event.setCancelled(true);
 		event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
 		World world = event.getBlock().getLocation().getWorld();
-		world.spawnEntity(event.getBlock().getLocation(), EntityType.PRIMED_TNT);
+		world.spawnEntity(event.getBlock().getLocation(), EntityType.TNT);
 	}
 	
 	@EventHandler
 	private void onBlockBreakEvent(EntityExplodeEvent event) {
-		if(event.getEntityType() != EntityType.PRIMED_TNT) {
+		if(event.getEntityType() != EntityType.TNT) {
 			return;
 		}
 		event.setYield(0F);

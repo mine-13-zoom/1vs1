@@ -71,6 +71,13 @@ public class JoinGUI {
 			arenaMapping.put(i, sado);
 			i++;
 		}
+
+		// Add close button in bottom middle (slot 49)
+		joingui.addCloseButton();
+
+		// Add random arena button in bottom right (slot 53)
+		joingui.addRandomArenaButton(arenas);
+
 		for(HumanEntity humanEntity : joingui.inventory.getViewers()) {
 			Bukkit.getPlayer(humanEntity.getUniqueId()).updateInventory();
 		}
@@ -96,6 +103,25 @@ public class JoinGUI {
 		itemmeta.setLore(list);
 		itemstack.setItemMeta(itemmeta);
 		joingui.inventory.setItem(index, itemstack);
+	}
+
+	private void addCloseButton() {
+		ItemStack closeButton = new ItemStack(Material.BARRIER, 1);
+		ItemMeta meta = closeButton.getItemMeta();
+		meta.setDisplayName("§cClose");
+		closeButton.setItemMeta(meta);
+		joingui.inventory.setItem(49, closeButton);
+	}
+
+	private void addRandomArenaButton(ArrayList<SimpleArenaDatabaseObject> arenas) {
+		ItemStack randomButton = new ItemStack(Material.ENDER_PEARL, 1);
+		ItemMeta meta = randomButton.getItemMeta();
+		meta.setDisplayName("§6Random Arena");
+		List<String> lore = new ArrayList<String>();
+		lore.add("§7Click to join a random arena!");
+		meta.setLore(lore);
+		randomButton.setItemMeta(meta);
+		joingui.inventory.setItem(53, randomButton);
 	}
 	
 	public static void openForPlayer(Player player) {
