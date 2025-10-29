@@ -1,1 +1,5 @@
 paper-server/
+
+# Maven build outputs
+target/
+**/target/
