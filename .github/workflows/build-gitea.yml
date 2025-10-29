@@ -52,25 +52,22 @@ jobs:
         zip -r all-plugins.zip GameServer.jar Lobby.jar
         
     - name: Upload GameServer artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: GameServer-plugin
         path: 1vs1/artifacts/GameServer-plugin.zip
         retention-days: 30
-        compression-level: 9
         
     - name: Upload Lobby artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: Lobby-plugin
         path: 1vs1/artifacts/Lobby-plugin.zip
         retention-days: 30
-        compression-level: 9
         
     - name: Upload all artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: all-plugins
         path: 1vs1/artifacts/all-plugins.zip
         retention-days: 30
-        compression-level: 9
