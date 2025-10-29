@@ -1,0 +1,32 @@
+2025-10-24T16:47:30.950513624Z main WARN Advanced terminal features are not available in this environment
+[18:47:31 INFO]: Booting up Velocity 3.4.0-SNAPSHOT (git-b6b6b20f-b555)...
+[18:47:31 INFO]: Loading localizations...
+[18:47:31 INFO]: Connections will use epoll channels, libdeflate (Linux x86_64) compression, OpenSSL 3.x.x (Linux x86_64) ciphers
+[18:47:31 WARN]: The proxy is running in offline mode! This is a security risk and you will NOT receive any support!
+[18:47:31 INFO]: Loading plugins...
+[18:47:31 INFO]: Loaded 1 plugins
+[18:47:31 INFO]: Listening on /[0:0:0:0:0:0:0:0]:25577
+[18:47:31 INFO]: Done (0.31s)!
+[18:47:36 INFO]: [connected player] Bot1 (/[0:0:0:0:0:0:0:1]:60954) has connected
+[18:47:37 ERROR]: [connected player] Bot1 (/[0:0:0:0:0:0:0:1]:60954): unable to connect to server lobby
+io.netty.channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed with error(-111): Connection refused: /127.0.0.1:25565
+Caused by: java.net.ConnectException: finishConnect(..) failed with error(-111): Connection refused
+	at io.netty.channel.unix.Errors.newConnectException0(Errors.java:166) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.unix.Errors.handleConnectErrno(Errors.java:131) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.unix.Socket.finishConnect(Socket.java:361) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.doFinishConnect(AbstractEpollChannel.java:764) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.finishConnect(AbstractEpollChannel.java:741) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.epollOutReady(AbstractEpollChannel.java:611) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.AbstractEpollChannel$AbstractEpollUnsafe.handle(AbstractEpollChannel.java:472) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.EpollIoHandler$DefaultEpollIoRegistration.handle(EpollIoHandler.java:317) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.EpollIoHandler.processReady(EpollIoHandler.java:515) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.epoll.EpollIoHandler.run(EpollIoHandler.java:460) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.SingleThreadIoEventLoop.runIo(SingleThreadIoEventLoop.java:225) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.channel.SingleThreadIoEventLoop.run(SingleThreadIoEventLoop.java:196) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1193) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[velocity.jar:3.4.0-SNAPSHOT (git-b6b6b20f-b555)]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+[18:47:37 INFO]: [connected player] Bot1 (/[0:0:0:0:0:0:0:1]:60954) has disconnected: [38;5;9mUnable to connect you to lobby. Please try again later.[0m
+[18:52:03 INFO]: Shutting down the proxy...
+[18:52:03 INFO]: Closing endpoint /0.0.0.0:25577

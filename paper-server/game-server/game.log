@@ -1,0 +1,149 @@
+Starting org.bukkit.craftbukkit.Main
+2025-10-24T16:47:35.227257282Z ServerMain WARN Advanced terminal features are not available in this environment
+[18:47:35 INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.8+9; Arch Linux null) on Linux 6.17.2-arch1-1 (amd64)
+[18:47:35 INFO]: [bootstrap] Loading Paper 1.21.10-85-main@d98142e (2025-10-23T17:10:21Z) for Minecraft 1.21.10
+[18:47:35 INFO]: [PluginInitializerManager] Initializing plugins...
+[18:47:35 INFO]: [PluginRemapper] Remapping plugin 'plugins/GameServer-1.2.2.jar'...
+[18:47:36 INFO]: [PluginRemapper] Done remapping plugin 'plugins/GameServer-1.2.2.jar' in 1045ms.
+[18:47:36 INFO]: [PluginInitializerManager] Initialized 1 plugin
+[18:47:36 INFO]: [PluginInitializerManager] Bukkit plugins (1):
+ - OneVsOne (1.2.2)
+[18:47:39 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[18:47:39 INFO]: Loaded 1461 recipes
+[18:47:39 INFO]: Loaded 1574 advancements
+[18:47:39 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[18:47:39 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 191.3ms
+[18:47:40 INFO]: Starting minecraft server version 1.21.10
+[18:47:40 INFO]: Loading properties
+[18:47:40 INFO]: This server is running Paper version 1.21.10-85-main@d98142e (2025-10-23T17:10:21Z) (Implementing API version 1.21.10-R0.1-SNAPSHOT)
+[18:47:40 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[18:47:40 INFO]: Server Ping Player Sample Count: 12
+[18:47:40 INFO]: Using 4 threads for Netty based IO
+[18:47:40 INFO]: [MoonriseCommon] Paper is using 6 worker threads, 1 I/O threads
+[18:47:40 INFO]: Default game type: SURVIVAL
+[18:47:40 INFO]: Generating keypair
+[18:47:40 INFO]: Starting Minecraft server on *:25566
+[18:47:40 INFO]: Using epoll channel type
+[18:47:40 INFO]: Paper: Using libdeflate (Linux x86_64) compression from Velocity.
+[18:47:40 INFO]: Paper: Using OpenSSL 3.x.x (Linux x86_64) cipher from Velocity.
+[18:47:40 INFO]: [OneVsOne] Loading server plugin OneVsOne v1.2.2
+[18:47:40 INFO]: Server permissions file permissions.yml is empty, ignoring it
+[18:47:40 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[18:47:40 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[18:47:40 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[18:47:40 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[18:47:40 INFO]: Preparing level "world"
+[18:47:40 INFO]: Loading 0 persistent chunks for world 'minecraft:overworld'...
+[18:47:40 INFO]: Prepared spawn area in 0 ms
+[18:47:40 INFO]: Loading 0 persistent chunks for world 'minecraft:the_nether'...
+[18:47:40 INFO]: Prepared spawn area in 0 ms
+[18:47:40 INFO]: Loading 0 persistent chunks for world 'minecraft:the_end'...
+[18:47:40 INFO]: Prepared spawn area in 0 ms
+[18:47:40 INFO]: Done preparing level "world" (0.226s)
+[18:47:40 INFO]: [OneVsOne] Enabling OneVsOne v1.2.2
+[18:47:40 WARN]: org.bukkit.configuration.InvalidConfigurationException: while parsing a block mapping
+[18:47:40 WARN]:  in 'reader', line 1, column 1:
+[18:47:40 WARN]:     Prefix: "&7[&f&l1vs1&r&7] &r"
+[18:47:40 WARN]:     ^
+[18:47:40 WARN]: expected <block end>, but found '<block sequence start>'
+[18:47:40 WARN]:  in 'reader', line 33, column 4:
+[18:47:40 WARN]:        - " "
+[18:47:40 WARN]:        ^
+[18:47:40 WARN]: 
+[18:47:40 WARN]: 	at org.bukkit.configuration.file.YamlConfiguration.loadFromString(YamlConfiguration.java:112)
+[18:47:40 WARN]: 	at org.bukkit.configuration.file.FileConfiguration.load(FileConfiguration.java:160)
+[18:47:40 WARN]: 	at org.bukkit.configuration.file.FileConfiguration.load(FileConfiguration.java:128)
+[18:47:40 WARN]: 	at GameServer-1.2.2.jar//com.github.gamedipoxx.oneVsOne.utils.MessagesFile.createCustomConfig(MessagesFile.java:37)
+[18:47:40 WARN]: 	at GameServer-1.2.2.jar//com.github.gamedipoxx.oneVsOne.utils.MessagesFile.init(MessagesFile.java:21)
+[18:47:40 WARN]: 	at GameServer-1.2.2.jar//com.github.gamedipoxx.oneVsOne.OneVsOne.onEnable(OneVsOne.java:48)
+[18:47:40 WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279)
+[18:47:40 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202)
+[18:47:40 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109)
+[18:47:40 WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520)
+[18:47:40 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:640)
+[18:47:40 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596)
+[18:47:40 WARN]: 	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636)
+[18:47:40 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:368)
+[18:47:40 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1262)
+[18:47:40 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:383)
+[18:47:40 WARN]: 	at java.base/java.lang.Thread.run(Thread.java:1583)
+[18:47:40 WARN]: Caused by: while parsing a block mapping
+[18:47:40 WARN]:  in 'reader', line 1, column 1:
+[18:47:40 WARN]:     Prefix: "&7[&f&l1vs1&r&7] &r"
+[18:47:40 WARN]:     ^
+[18:47:40 WARN]: expected <block end>, but found '<block sequence start>'
+[18:47:40 WARN]:  in 'reader', line 33, column 4:
+[18:47:40 WARN]:        - " "
+[18:47:40 WARN]:        ^
+[18:47:40 WARN]: 
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.parser.ParserImpl$ParseBlockMappingKey.produce(ParserImpl.java:654)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.parser.ParserImpl.peekEvent(ParserImpl.java:161)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.comments.CommentEventsCollector$1.peek(CommentEventsCollector.java:57)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.comments.CommentEventsCollector$1.peek(CommentEventsCollector.java:43)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.comments.CommentEventsCollector.collectEvents(CommentEventsCollector.java:136)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.comments.CommentEventsCollector.collectEvents(CommentEventsCollector.java:116)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeScalarNode(Composer.java:241)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeNode(Composer.java:205)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeValueNode(Composer.java:369)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeMappingChildren(Composer.java:348)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeMappingNode(Composer.java:323)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.composeNode(Composer.java:209)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.getNode(Composer.java:131)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.composer.Composer.getSingleNode(Composer.java:157)
+[18:47:40 WARN]: 	at org.yaml.snakeyaml.Yaml.compose(Yaml.java:575)
+[18:47:40 WARN]: 	at org.bukkit.configuration.file.YamlConfiguration.loadFromString(YamlConfiguration.java:105)
+[18:47:40 WARN]: 	... 16 more
+[18:47:40 ERROR]: Error occurred while enabling OneVsOne v1.2.2 (Is it up to date?)
+java.lang.NullPointerException: Cannot invoke "String.toCharArray()" because "textToTranslate" is null
+	at net.md_5.bungee.api.ChatColor.translateAlternateColorCodes(ChatColor.java:216) ~[bungeecord-chat-1.21-R0.2-deprecated+build.21.jar:?]
+	at GameServer-1.2.2.jar/com.github.gamedipoxx.oneVsOne.Messages.getString(Messages.java:50) ~[GameServer-1.2.2.jar:?]
+	at GameServer-1.2.2.jar/com.github.gamedipoxx.oneVsOne.OneVsOne.onEnable(OneVsOne.java:50) ~[GameServer-1.2.2.jar:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.10-R0.1-SNAPSHOT.jar:?]
+	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.10-R0.1-SNAPSHOT.jar:?]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:640) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:368) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1262) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:383) ~[paper-1.21.10.jar:1.21.10-85-d98142e]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
+[18:47:40 INFO]: [OneVsOne] Disabling OneVsOne v1.2.2
+[18:47:40 INFO]: [spark] Starting background profiler...
+[WARN] Install JVM debug symbols to improve profile accuracy
+[WARN] Install JVM debug symbols to improve profile accuracy
+[18:47:41 INFO]: Running delayed init tasks
+[18:47:41 INFO]: Done (6.068s)! For help, type "help"
+[18:52:03 INFO]: Stopping server
+[18:52:03 INFO]: Saving players
+[18:52:03 INFO]: Saving worlds
+[18:52:03 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[18:52:03 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[18:52:03 INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[18:52:03 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[18:52:04 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world' in 0.10s
+[18:52:04 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+[18:52:04 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+[18:52:04 INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[18:52:04 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[18:52:04 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[18:52:04 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[18:52:04 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world_nether' in 0.00s
+[18:52:04 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+[18:52:04 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+[18:52:04 INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[18:52:04 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[18:52:04 INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[18:52:04 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[18:52:04 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world_the_end' in 0.00s
+[18:52:04 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+[18:52:04 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+[18:52:04 INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[18:52:04 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[18:52:04 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[18:52:04 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[18:52:04 INFO]: Waiting for all RegionFile I/O tasks to complete...
+[18:52:04 INFO]: All RegionFile I/O tasks to complete
+[18:52:04 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[18:52:04 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...
