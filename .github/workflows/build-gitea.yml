@@ -38,25 +38,39 @@ jobs:
         cd 1vs1
         mvn clean package -DskipTests
         
+    - name: Create compressed artifacts
+      run: |
+        cd 1vs1
+        mkdir -p artifacts
+        # Use original JARs (without dependencies) to reduce size
+        cp GameServer/target/original-GameServer-*.jar artifacts/GameServer.jar
+        cp Lobby/target/original-Lobby-*.jar artifacts/Lobby.jar
+        # Create zip archives for better compression
+        cd artifacts
+        zip -r GameServer-plugin.zip GameServer.jar
+        zip -r Lobby-plugin.zip Lobby.jar
+        zip -r all-plugins.zip GameServer.jar Lobby.jar
+        
     - name: Upload GameServer artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: GameServer-plugin
-        path: 1vs1/GameServer/target/GameServer-*.jar
+        path: 1vs1/artifacts/GameServer-plugin.zip
         retention-days: 30
+        compression-level: 9
         
     - name: Upload Lobby artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Lobby-plugin
-        path: 1vs1/Lobby/target/Lobby-*.jar
+        path: 1vs1/artifacts/Lobby-plugin.zip
         retention-days: 30
+        compression-level: 9
         
     - name: Upload all artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: all-plugins
-        path: |
-          1vs1/GameServer/target/GameServer-*.jar
-          1vs1/Lobby/target/Lobby-*.jar
+        path: 1vs1/artifacts/all-plugins.zip
         retention-days: 30
+        compression-level: 9
